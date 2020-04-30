@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const serviceGoogle = axios.create({
-  baseURL:'http://localhost:8081/api/v1', // url = base url + request url
+  baseURL:'http://35.240.254.227:8081/api/v1', // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 10000 // request timeout
 })
