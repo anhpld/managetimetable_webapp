@@ -10,7 +10,6 @@
                 <div v-for="item in listSlotData" :key="item" class="list-subject-content">
                     <p v-if="item.room" class="list-subject-content_name">{{ item.room }}</p>
                     <p v-if="item.slotNumber" class="list-subject-content_name">Slot {{ item.slotNumber }}</p>
-
                     <ul class="table-custom__main--lever">
                         <li v-for="oneSlot in header" :key="oneSlot" class="table-custom__main--lever-item">
                             <div v-for="oneContent in item.timetable" :key="oneContent" class="table-custom__content"
@@ -147,7 +146,9 @@ export default {
             margin: 0;
             width: 100%;
 
-            .name-item {
+
+
+            .name-item {// draft
                 color: #409EFF;
                 font-weight: 700;
             }
