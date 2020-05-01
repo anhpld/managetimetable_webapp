@@ -239,7 +239,13 @@
           }
           this.$store.dispatch('calendarView/updateLecturerConfirm', data).then((data) => {
               this.lecturerConfirm = this.$store.state.calendarView.lecturerConfirmUpdate;
-              console.log(this.lecturerConfirmUpdate,'lectuerer confirm')
+            this.$notify({
+              title: 'Success',
+              message: 'Confirm Successfully',
+              type: 'success',
+              duration: 2000
+            })
+
 
           }).catch(() => {
               this.loading = false
@@ -257,6 +263,12 @@
           this.$store.dispatch('calendarView/updateLecturerConfirm', data).then((data) => {
               this.lecturerConfirm = this.$store.state.calendarView.lecturerConfirmUpdate;
               this.dialogFormVisibleComment = false
+            this.$notify({
+              title: 'Success',
+              message: 'Confirm Successfully',
+              type: 'success',
+              duration: 2000
+            })
 
           }).catch(() => {
               this.loading = false

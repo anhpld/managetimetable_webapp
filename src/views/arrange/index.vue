@@ -566,8 +566,7 @@ export default {
             }
           }
           this.$store.dispatch('arrange/addConfirm', data).then(() => {
-            this.getDataListSlot()
-            this.getDataListLecturer()
+            this.resetModifier()
             this.$notify({
               title: 'Success',
               message: 'Request Confirm Successfully',
