@@ -7,105 +7,116 @@
           :key="item.value"
           :label="item.season + ' ' + item.year"
           :value="item.id"
-          class="arrange-item-select"/>
+          class="arrange-item-select"
+        />
       </el-select>
       <el-select
-        filterable
         v-model="valueTeacher"
+        filterable
         multiple
         style="margin-left: 20px;"
-        placeholder="Select Teacher">
+        placeholder="Select Teacher"
+      >
         <!-- search components -->
         <el-option
           v-for="item in dataListLecturer"
           :key="item.shortName"
           :label="item.shortName"
-          :value="item.shortName">
-        </el-option>
+          :value="item.shortName"
+        />
       </el-select>
 
       <el-select
-        filterable
         v-model="valueClass"
+        filterable
         multiple
         style="margin-left: 20px;"
-        placeholder="Select Class">
+        placeholder="Select Class"
+      >
         <el-option
           v-for="item in dataListClass"
           :key="item.id"
           :label="item.name"
-          :value="item.name">
-        </el-option>
+          :value="item.name"
+        />
       </el-select>
       <el-select
-        filterable
         v-model="valueRoom"
+        filterable
         multiple
         style="margin-left: 20px;"
-        placeholder="Select Room">
+        placeholder="Select Room"
+      >
         <el-option
           v-for="item in dataListRoom"
           :key="item.id"
           :label="item.name"
-          :value="item.name">
-        </el-option>
+          :value="item.name"
+        />
       </el-select>
       <el-select
-        filterable
         v-model="valueSubject"
+        filterable
         multiple
         style="margin-left: 20px;"
-        placeholder="Select Subject">
+        placeholder="Select Subject"
+      >
         <el-option
           v-for="item in dataListSubject"
           :key="item.id"
           :label="item.code"
-          :value="item.code">
-        </el-option>
+          :value="item.code"
+        />
       </el-select>
-<!--      <el-select-->
-<!--        filterable-->
-<!--        v-model="valueStatus"-->
-<!--        multiple-->
-<!--        style="margin-left: 20px;"-->
-<!--        placeholder="Select Status">-->
-<!--        &lt;!&ndash; search components &ndash;&gt;-->
-<!--        <el-option-->
-<!--          v-for="item in listStatus"-->
-<!--          :key="item.value"-->
-<!--          :label="item.label"-->
-<!--          :value="item.value">-->
-<!--        </el-option>-->
-<!--      </el-select>-->
+      <!--      <el-select-->
+      <!--        filterable-->
+      <!--        v-model="valueStatus"-->
+      <!--        multiple-->
+      <!--        style="margin-left: 20px;"-->
+      <!--        placeholder="Select Status">-->
+      <!--        &lt;!&ndash; search components &ndash;&gt;-->
+      <!--        <el-option-->
+      <!--          v-for="item in listStatus"-->
+      <!--          :key="item.value"-->
+      <!--          :label="item.label"-->
+      <!--          :value="item.value">-->
+      <!--        </el-option>-->
+      <!--      </el-select>-->
       <el-button type="primary" @click="getDataListSlot">Search</el-button>
     </div>
     <div class="arrange-content">
-      <div class="arrange-content-detail" v-loading="loading">
+      <div v-loading="loading" class="arrange-content-detail">
         <p class="title">Timetable Modify</p>
         <p class="arrange-content_nameObject">Subject<span class="name-subject">{{ dataDetail.subjectCode }}</span></p>
         <div class="wrapper-input">
           <span class="title-name">Room</span>
-          <el-select filterable v-model="modelRoom" placeholder="Select" class="content-input" :disabled="!isEdit">
+          <el-select v-model="modelRoom" filterable placeholder="Select" class="content-input" :disabled="!isEdit">
             <el-option
               v-for="item in dataListClassDetail"
               :key="item.id"
               :label="item.name"
-              :value="item.name"/>
+              :value="item.name"
+            />
           </el-select>
         </div>
 
         <div class="wrapper-input">
           <span class="title-name">Lecturer</span>
-          <el-select filterable v-model="modelLecturer" placeholder="Select Lecturer" class="content-input"
-                     :disabled="!isEdit">
+          <el-select
+            v-model="modelLecturer"
+            filterable
+            placeholder="Select Lecturer"
+            class="content-input"
+            :disabled="!isEdit"
+          >
             <el-option
               v-for="item in dataListTeacherDetail"
               :key="item.id"
               :label="item.shortName"
-              :value="item.shortName"/>
+              :value="item.shortName"
+            />
           </el-select>
         </div>
-
 
         <div class="button">
           <el-button :disabled="!isEdit" type="primary" @click="saveCalendar">Edit</el-button>
@@ -113,23 +124,31 @@
         <p class="title">Swap timetable</p>
         <div class="wrapper-input">
           <span class="title-name">Lecturer Swap</span>
-          <el-select filterable v-model="idTimetableSwap" placeholder="Select Lecturer " class="content-input"
-                     :disabled="!isEdit">
+          <el-select
+            v-model="idTimetableSwap"
+            filterable
+            placeholder="Select Lecturer "
+            class="content-input"
+            :disabled="!isEdit"
+          >
             <el-option
 
               v-for="item in lecturerForSwap"
               :key="item.id"
               :label="item.lecturerShortName"
-              :value="item.id"/>
+              :value="item.id"
+            />
           </el-select>
         </div>
 
         <div class="button">
-          <el-button type="primary" :disabled="!isEdit || dataDetail.lecturerShortName === ' NOT_ASSIGN'" @click="swap">Swap</el-button>
+          <el-button type="primary" :disabled="!isEdit || dataDetail.lecturerShortName === ' NOT_ASSIGN'" @click="swap">
+            Swap
+          </el-button>
         </div>
         <p class="title">Request Confirm</p>
         <div class="button">
-          <el-button type="primary" @click="addConfirm" :disabled="isDisableConfirm()">Request Lecturer Confirm
+          <el-button type="primary" :disabled="isDisableConfirm()" @click="addConfirm">Request Lecturer Confirm
           </el-button>
         </div>
       </div>
@@ -137,12 +156,17 @@
         <div class="group-by">
           <label>Group By :</label>
           <el-select v-model="groupBy" placeholder="Select">
-            <el-option value='lecturer' class="arrange-item-select">Lecturer</el-option>
-            <el-option value='room' class="arrange-item-select">Room</el-option>
+            <el-option value="lecturer" class="arrange-item-select">Lecturer</el-option>
+            <el-option value="room" class="arrange-item-select">Room</el-option>
           </el-select>
         </div>
-        <TableCustom :list-slot-data="listSlot" :header="slot" :group-by="groupBy" @dataEdit="getDataItemArrange"
-                     @dataSwap="getDataSwap" :dataSwap="dataSwap"/>
+        <TableCustom
+          :list-slot-data="listSlot"
+          :header="slot"
+          :group-by="groupBy"
+          :data-swap="dataSwap"
+          @dataEdit="getDataItemArrange"
+        />
       </div>
     </div>
 
@@ -150,426 +174,436 @@
 </template>
 
 <script>
-  import TableCustom from '@/components/TableCustom'
+import TableCustom from '@/components/TableCustom'
 
-  export default {
-    name: 'Arrange',
-    components: {
-      TableCustom
-    },
+export default {
+  name: 'Arrange',
+  components: {
+    TableCustom
+  },
 
-    data() {
-      return {
-        slot: ['M1', 'M2', 'M3', 'E1', 'E2', 'E3', 'M4', 'M5', 'E4', 'E5'],
-        loading: true,
-        optionId: '',
-        listYear: [],
-        listSlot: [],
-        dataDetail: {},
-        dataListRoom: [],
-        dataListClass: [],
-        dataListLecturer: [],
-        dataListSubject: [],
-        modelRoom: '',
-        valueTeacher: [],
-        valueClass: [],
-        valueRoom: [],
-        valueSubject: [],
-        modelClass: '',
-        modelLecturer: '',
-        modelSubject: '',
-        isEdit: false,
-        dataListTeacherDetail: [],
-        dataListClassDetail: [],
-        listTeacherConfirm: [],
-        groupBy: 'room',
-        dataSwap: [],
-        isSwap: false,
-        listId: [],
-        dataListTeacherSwap: [],
-        lecturerForSwap: [],
-        idTimetableSwap: '',
-        listStatus: [
-          {
-            'label': 'FINAL',
-            'value': 'FINAL'
-          },
-          {
-            'label': 'PUBLIC',
-            'value': 'PUBLIC'
-          },
-          {
-            'label': 'REJECT',
-            'value': 'REJECT'
-          },
-          {
-            'label': 'DRAFT',
-            'value': 'DRAFT'
-          }
-        ],
-        valueStatus: '',
-      }
-    },
-
-    watch: {
-      groupBy() {
-        this.getDataListSlot()
-      },
-      valueTeacher() {
-        this.listTeacherConfirm = this.dataListLecturer.filter(item => {
-          return this.valueTeacher.includes(item.shortName)
-        })
-      },
-    },
-
-    created() {
-      this.infoUser = JSON.parse(localStorage.getItem('infoUser'))
-      this.getYear()
-
-    },
-
-    methods: {
-       groupBy1 (array, key) {
-        // Return the end result
-        const result =  []
-        return array.reduce((result, currentValue) => {
-          // If an array already present for key, push it to the array. Else create an array and push the object
-          (result[currentValue[key]] = result[currentValue[key]] || []).push(
-            currentValue
-          );
-          // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
-          return result;
-        }, {}); // empty object is the initial value for result object
-      },
-      getYear() {
-        this.loading = true
-        this.$store.dispatch('expected/getListYear').then((data) => {
-          this.listYear = this.$store.state.expected.listYear
-          this.listYear.forEach(element => {
-            if (element.now) {
-              this.optionId = element.id
-            }
-          })
-          this.getDataListLecturer()
-          this.getDataListSlot()
-          this.getDataListSubject()
-          this.getDataListRoom()
-          this.getDataListClass()
-
-        }).catch(() => {
-          this.loading = false
-        })
-      },
-
-      getDataListSubject() {
-        const data = {
-          params: {
-            semesterId: this.optionId
-          },
-          postData: {}
+  data() {
+    return {
+      slot: ['M1', 'M2', 'M3', 'E1', 'E2', 'E3', 'M4', 'M5', 'E4', 'E5'],
+      loading: true,
+      optionId: '',
+      listYear: [],
+      listSlot: [],
+      dataDetail: {},
+      dataListRoom: [],
+      dataListClass: [],
+      dataListLecturer: [],
+      dataListSubject: [],
+      modelRoom: '',
+      valueTeacher: [],
+      valueClass: [],
+      valueRoom: [],
+      valueSubject: [],
+      modelClass: '',
+      modelLecturer: '',
+      modelSubject: '',
+      isEdit: false,
+      dataListTeacherDetail: [],
+      dataListClassDetail: [],
+      listTeacherConfirm: [],
+      groupBy: 'room',
+      dataSwap: [],
+      isSwap: false,
+      listId: [],
+      dataListTeacherSwap: [],
+      lecturerForSwap: [],
+      idTimetableSwap: '',
+      listStatus: [
+        {
+          'label': 'FINAL',
+          'value': 'FINAL'
+        },
+        {
+          'label': 'PUBLIC',
+          'value': 'PUBLIC'
+        },
+        {
+          'label': 'REJECT',
+          'value': 'REJECT'
+        },
+        {
+          'label': 'DRAFT',
+          'value': 'DRAFT'
         }
-        this.$store.dispatch('arrange/getDataSubject', data).then((data) => {
-          this.dataListSubject = this.$store.state.arrange.dataListSubject
+      ],
+      valueStatus: ''
+    }
+  },
 
-        }).catch(() => {
-          this.loading = false
+  watch: {
+    groupBy() {
+      this.getDataListSlot()
+    },
+    valueTeacher() {
+      this.listTeacherConfirm = this.dataListLecturer.filter(item => {
+        return this.valueTeacher.includes(item.shortName)
+      })
+    }
+  },
+
+  created() {
+    this.infoUser = JSON.parse(localStorage.getItem('infoUser'))
+    this.getYear()
+  },
+
+  methods: {
+    getYear() {
+      this.loading = true
+      this.$store.dispatch('expected/getListYear').then((data) => {
+        this.listYear = this.$store.state.expected.listYear
+        this.listYear.forEach(element => {
+          if (element.now) {
+            this.optionId = element.id
+          }
         })
-      },
-      getListForSwap() {
-        const newArray = this.listSlot.flatMap(x => x.timetable);
-        this.lecturerForSwap = newArray.filter(i => i.slot === this.dataDetail.slot && i.lecturerShortName !== ' NOT_ASSIGN'
-          && i.lecturerShortName !== this.dataDetail.lecturerShortName)
-      },
-      swap() {
+        this.getDataListLecturer()
+        this.getDataListSlot()
+        this.getDataListSubject()
+        this.getDataListRoom()
+        this.getDataListClass()
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+
+    getDataListSubject() {
+      const data = {
+        params: {
+          semesterId: this.optionId
+        },
+        postData: {}
+      }
+      this.$store.dispatch('arrange/getDataSubject', data).then((data) => {
+        this.dataListSubject = this.$store.state.arrange.dataListSubject
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    getListForSwap() {
+      const newArray = this.listSlot.flatMap(x => x.timetable)
+      this.lecturerForSwap = newArray.filter(i => i.slot === this.dataDetail.slot && i.lecturerShortName !== ' NOT_ASSIGN' &&
+          i.lecturerShortName !== this.dataDetail.lecturerShortName)
+    },
+    swap() {
+      const lecturerPublic = []
+      const newArray = this.listSlot.flatMap(x => x.timetable)
+      const timetableDetail = newArray.filter(x => x.id === this.idTimetableSwap)[0]
+      if (timetableDetail.timetableStatus !== 'DRAFT') {
+        lecturerPublic.push(timetableDetail.lecturerShortName)
+      }
+      if (this.dataDetail.timetableStatus !== 'DRAFT') {
+        lecturerPublic.push(this.dataDetail.lecturerShortName)
+      }
+      if (lecturerPublic.length > 0) {
+        this.$confirm('Timetable status  of lecturer <strong> \' ' + lecturerPublic + '\'</strong> is not <span style="color: #409EFF;"> DRAFT</span>,  you must send request again after edit. Do you still want edit?', 'Warning', {
+          confirmButtonText: 'YES',
+          cancelButtonText: 'NO',
+          dangerouslyUseHTMLString: true,
+          type: 'warning'
+        }).then(async() => {
+          this.$store.dispatch('arrange/swapData', [this.dataDetail.id, this.idTimetableSwap]).then(() => {
+            this.getListForSwap()
+            this.resetModifier()
+          })
+        })
+      } else {
         this.$store.dispatch('arrange/swapData', [this.dataDetail.id, this.idTimetableSwap]).then(() => {
           this.getListForSwap()
           this.resetModifier()
         })
+      }
+    },
 
-      },
-      resetModifier() {
-        this.idTimetableSwap = ''
-        this.modelLecturer = ''
-        this.modelRoom = ''
-        this.getDataListSlot()
-        this.isEdit = false
-        this.getDataListLecturer()
-      },
-      saveCalendar() {
-        const postData = {
-          id: this.dataDetail.id,
-          lecturerShortName: this.modelLecturer,
-          room: this.modelRoom
-        }
-        if (this.dataDetail.timetableStatus === 'PUBLIC' || this.dataDetail.timetableStatus === 'FINAL') {
+    resetModifier() {
+      this.idTimetableSwap = ''
+      this.modelLecturer = ''
+      this.modelRoom = ''
+      this.getDataListSlot()
+      this.isEdit = false
+      this.getDataListLecturer()
+    },
+    saveCalendar() {
+      const postData = {
+        id: this.dataDetail.id,
+        lecturerShortName: this.modelLecturer,
+        room: this.modelRoom
+      }
+      const lecturerPublic = []
+      const timetable = this.dataListTeacherDetail.filter(x => x.shortName === this.modelLecturer && x.timetableStatus !== 'DRAFT' && x.shortName !='NOT_ASSIGN')
+      if (timetable.length > 0) {
+        lecturerPublic.push(timetable[0].shortName)
+      }
+      if (this.dataDetail.timetableStatus !== 'DRAFT') {
+        lecturerPublic.push(this.dataDetail.lecturerShortName)
+      }
 
-          this.$confirm('Timetable status  of\' ' + this.dataDetail.lecturerShortName + '\' is in ' + this.dataDetail.timetableStatus + ',you must send request again after edit. Do you want edit?', 'Warning', {
-            confirmButtonText: 'YES',
-            cancelButtonText: 'NO',
-            type: 'warning'
-          })
-            .then(async () => {
-              this.loading = true
-              this.$store.dispatch('arrange/saveCalendar', postData).then((data) => {
-                this.resetModifier();
-
-                this.$notify({
-                  title: 'Success',
-                  message: 'Update Successfully',
-                  type: 'success',
-                  duration: 2000
-                })
-                this.isEdit = false
-              }).catch(() => {
-                this.loading = false
-              })
-            })
-        } else {
-          this.loading = true
-          this.$store.dispatch('arrange/saveCalendar', postData).then((data) => {
-            this.resetModifier()
-            this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
-              type: 'success',
-              duration: 2000
-            })
-            this.isEdit = false
-          }).catch(() => {
-            this.loading = false
-          })
-        }
-      },
-
-      getDataListSlot() {
-        this.loading = true
-        const data = {
-          postData: {
-            criteria: {
-              'timetable.semester': {
-                id: this.optionId
-              },
-              subject: {
-                department: this.infoUser.department
-              },
-
-              "timetable": {
-                "temp": false
-              }
-
-            },
-            inCriteria: {
-              room: {
-                name: this.valueRoom
-              },
-              className: {
-                name: this.valueClass
-              },
-              lecturer: {
-                shortName: this.valueTeacher
-              },
-              subject: {
-                code: this.valueSubject
-              },
-            }
-          },
-
-          queryParam: {
-            groupBy: this.groupBy,
-            semesterId: this.optionId
-          }
-        }
-
-        this.$store.dispatch('arrange/getListSlot', data).then((data) => {
-          this.listSlot = this.$store.state.arrange.dataListSlot
-          this.loading = false
-        }).catch(() => {
-          this.loading = false
-        })
-      },
-
-      getDataListRoom() {
-        const data = {
-          params: {
-            semesterId: this.optionId
-          },
-          postData: {}
-        }
-        this.$store.dispatch('arrange/getDataRoom', data).then((data) => {
-          this.dataListRoom = this.$store.state.arrange.dataListRoom
-          this.dataListRoom.unshift({
-            id: null,
-            name: 'NOT_ASSIGN'
-          })
-
-        }).catch(() => {
-          this.loading = false
-        })
-      },
-
-      getDataListLecturer() {
-        const postData = {
-          postData: {
-            criteria: {
-              'login': true,
-              'status': 0,
-              department: this.infoUser.department
-            }
-          },
-          params: {
-            semesterId: this.optionId
-          },
-        }
-        this.$store.dispatch('arrange/getDataLecturer', postData).then((data) => {
-          this.dataListLecturer = this.$store.state.arrange.dataListLecturer.results
-          this.dataListLecturer.unshift({
-            id: null,
-            shortName: 'NOT_ASSIGN'
-          })
-
-        }).catch(() => {
-          this.loading = false
-        })
-      },
-
-      getDataListClass() {
-        const data = {
-          params: {
-            semesterId: this.optionId
-          },
-          postData: {}
-        }
-        this.$store.dispatch('arrange/getDataClass', data).then((data) => {
-          this.dataListClass = this.$store.state.arrange.dataListClass
-          // this.$router.push({ path: this.redirect || '/' })
-
-        }).catch(() => {
-          this.loading = false
-        })
-      },
-
-      getDataListClassDetail() {
-        const data = {
-          params: {
-            timetableDetailId: this.dataDetail.id
-          },
-          postData: {
-            criteria: {
-              status: 0,
-              login: true
-            }
-          }
-        }
-        this.$store.dispatch('arrange/getDataClassDetail', data).then((data) => {
-          this.dataListClassDetail = this.$store.state.arrange.dataListClassDetail
-          this.dataListClassDetail.unshift({
-            id: null,
-            name: 'NOT_ASSIGN'
-          })
-
-        }).catch(() => {
-          this.loading = false
-        })
-      },
-
-
-      getDataListTeacherDetail() {
-
-        const data = {
-          params: {
-            timetableDetailId: this.dataDetail.id
-          },
-          postData: {
-            criteria: {
-              status: 0,
-              login: true
-            }
-          }
-        }
-        this.$store.dispatch('arrange/getDataTeacherDetail', data).then((data) => {
-          this.dataListTeacherDetail = this.$store.state.arrange.dataListTeacherDetail
-          this.dataListTeacherDetail.unshift({
-            id: null,
-            shortName: 'NOT_ASSIGN'
-          })
-
-        }).catch(() => {
-          this.loading = false
-        })
-      },
-
-      getDataItemArrange(itemSlot) {
-        this.isEdit = true
-        this.dataDetail = itemSlot
-        this.modelRoom = itemSlot.room
-        this.modelLecturer = itemSlot.lecturerShortName
-        this.getListForSwap();
-
-
-        this.getDataListTeacherDetail()
-        this.getDataListClassDetail()
-      },
-      addConfirm() {
-        this.$confirm('Do you want send request confirm to : \'' + this.listTeacherConfirm.map(x => x.shortName) + '\' ?', 'Warning', {
-          confirmButtonText: 'Confirm',
-          cancelButtonText: 'Cancel',
+      if (lecturerPublic.length > 0 ) {
+        this.$confirm('Timetable status  of lecturer <strong> \' ' + lecturerPublic + '\'</strong> is not <span style="color: #409EFF;"> DRAFT</span>' +
+          ' ,  you must send request again after edit. Do you still want edit?', 'Warning', {
+          confirmButtonText: 'YES',
+          cancelButtonText: 'NO',
+          dangerouslyUseHTMLString: true,
           type: 'warning'
         })
-          .then(async () => {
-            const data = {
-              params: {
-                semesterId: this.optionId,
-              },
-              postData: {
-                abc: this.listTeacherConfirm.map(x => x.id)
-              }
-            }
-            this.$store.dispatch('arrange/addConfirm', data).then(() => {
-              this.getDataListSlot();
-              this.getDataListLecturer()
+          .then(async() => {
+            this.loading = true
+            this.$store.dispatch('arrange/saveCalendar', postData).then((data) => {
+              this.resetModifier()
+
               this.$notify({
                 title: 'Success',
-                message: 'Request Confirm Successfully',
+                message: 'Update Successfully',
                 type: 'success',
                 duration: 2000
               })
+              this.isEdit = false
+            }).catch(() => {
+              this.loading = false
             })
           })
-      },
-      isDisableConfirm() {
-        const isNotDraft = this.listTeacherConfirm.filter(i => {
-          if (i.timetableStatus != 'DRAFT') {
-            return true
-          }
+      } else {
+        this.loading = true
+        this.$store.dispatch('arrange/saveCalendar', postData).then((data) => {
+          this.resetModifier()
+          this.$notify({
+            title: 'Success',
+            message: 'Update Successfully',
+            type: 'success',
+            duration: 2000
+          })
+          this.isEdit = false
+        }).catch(() => {
+          this.loading = false
         })
-        if (this.valueTeacher.length === 0 || this.valueTeacher.includes('NOT_ASSIGN') || isNotDraft.length > 0) {
+      }
+    },
+
+    getDataListSlot() {
+      this.loading = true
+      const data = {
+        postData: {
+          criteria: {
+            'timetable.semester': {
+              id: this.optionId
+            },
+            subject: {
+              department: this.infoUser.department
+            },
+
+            'timetable': {
+              'temp': false
+            }
+
+          },
+          inCriteria: {
+            room: {
+              name: this.valueRoom
+            },
+            className: {
+              name: this.valueClass
+            },
+            lecturer: {
+              shortName: this.valueTeacher
+            },
+            subject: {
+              code: this.valueSubject
+            }
+          }
+        },
+
+        queryParam: {
+          groupBy: this.groupBy,
+          semesterId: this.optionId
+        }
+      }
+
+      this.$store.dispatch('arrange/getListSlot', data).then((data) => {
+        this.listSlot = this.$store.state.arrange.dataListSlot
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+
+    getDataListRoom() {
+      const data = {
+        params: {
+          semesterId: this.optionId
+        },
+        postData: {}
+      }
+      this.$store.dispatch('arrange/getDataRoom', data).then((data) => {
+        this.dataListRoom = this.$store.state.arrange.dataListRoom
+        this.dataListRoom.unshift({
+          id: null,
+          name: 'NOT_ASSIGN'
+        })
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+
+    getDataListLecturer() {
+      const postData = {
+        postData: {
+          criteria: {
+            'login': true,
+            'status': 0,
+            department: this.infoUser.department
+          }
+        },
+        params: {
+          semesterId: this.optionId
+        }
+      }
+      this.$store.dispatch('arrange/getDataLecturer', postData).then((data) => {
+        this.dataListLecturer = this.$store.state.arrange.dataListLecturer.results
+        this.dataListLecturer.unshift({
+          id: null,
+          shortName: 'NOT_ASSIGN'
+        })
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+
+    getDataListClass() {
+      const data = {
+        params: {
+          semesterId: this.optionId
+        },
+        postData: {}
+      }
+      this.$store.dispatch('arrange/getDataClass', data).then((data) => {
+        this.dataListClass = this.$store.state.arrange.dataListClass
+        // this.$router.push({ path: this.redirect || '/' })
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+
+    getDataListClassDetail() {
+      const data = {
+        params: {
+          timetableDetailId: this.dataDetail.id
+        },
+        postData: {
+          criteria: {
+            status: 0,
+            login: true
+          }
+        }
+      }
+      this.$store.dispatch('arrange/getDataClassDetail', data).then((data) => {
+        this.dataListClassDetail = this.$store.state.arrange.dataListClassDetail
+        this.dataListClassDetail.unshift({
+          id: null,
+          name: 'NOT_ASSIGN'
+        })
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+
+    getDataListTeacherDetail() {
+      const data = {
+        params: {
+          timetableDetailId: this.dataDetail.id
+        },
+        postData: {
+          criteria: {
+            status: 0,
+            login: true
+          }
+        }
+      }
+      this.$store.dispatch('arrange/getDataTeacherDetail', data).then((data) => {
+        this.dataListTeacherDetail = this.$store.state.arrange.dataListTeacherDetail
+        this.dataListTeacherDetail.unshift({
+          id: null,
+          shortName: 'NOT_ASSIGN'
+        })
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+
+    getDataItemArrange(itemSlot) {
+      this.isEdit = true
+      this.dataDetail = itemSlot
+      this.modelRoom = itemSlot.room
+      this.modelLecturer = itemSlot.lecturerShortName
+      this.getListForSwap()
+
+      this.getDataListTeacherDetail()
+      this.getDataListClassDetail()
+    },
+    addConfirm() {
+      this.$confirm('Do you want send request confirm to :<strong> \'' + this.listTeacherConfirm.map(x => x.shortName) + '\'</strong> ?', 'Warning', {
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel',
+        dangerouslyUseHTMLString: true,
+        type: 'warning'
+      })
+        .then(async() => {
+          const data = {
+            params: {
+              semesterId: this.optionId
+            },
+            postData: {
+              abc: this.listTeacherConfirm.map(x => x.id)
+            }
+          }
+          this.$store.dispatch('arrange/addConfirm', data).then(() => {
+            this.getDataListSlot()
+            this.getDataListLecturer()
+            this.$notify({
+              title: 'Success',
+              message: 'Request Confirm Successfully',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        })
+    },
+    isDisableConfirm() {
+      const isNotDraft = this.listTeacherConfirm.filter(i => {
+        if (i.timetableStatus != 'DRAFT') {
           return true
         }
-        return false
-      },
-
-
-      //
-      // saveSwap() {
-      //   this.$store.dispatch('arrange/swapData', this.listId).then(() => {
-      //     this.listId = []
-      //     this.dataSwap = []
-      //     this.isSwap = false
-      //     this.getDataListSlot()
-      //   })
-      // },
-      //
-      // getDataSwap(data) {
-      //   this.dataSwap = data
-      //   if (this.dataSwap.length === 2) {
-      //     this.isSwap = true
-      //   } else {
-      //     this.isSwap = false
-      //   }
-      //   this.listId = this.dataSwap.map(x => x.id)
-      // }
+      })
+      if (this.valueTeacher.length === 0 || this.valueTeacher.includes('NOT_ASSIGN') || isNotDraft.length > 0) {
+        return true
+      }
+      return false
     }
+
+    //
+    // saveSwap() {
+    //   this.$store.dispatch('arrange/swapData', this.listId).then(() => {
+    //     this.listId = []
+    //     this.dataSwap = []
+    //     this.isSwap = false
+    //     this.getDataListSlot()
+    //   })
+    // },
+    //
+    // getDataSwap(data) {
+    //   this.dataSwap = data
+    //   if (this.dataSwap.length === 2) {
+    //     this.isSwap = true
+    //   } else {
+    //     this.isSwap = false
+    //   }
+    //   this.listId = this.dataSwap.map(x => x.id)
+    // }
   }
+}
 </script>
 
 <style lang="scss">
@@ -652,19 +686,20 @@
       width: auto;
       margin-right: 20px;
 
-    .el-select {
-      margin-bottom: 10px;
-      max-height: 70px;
-    }
+      .el-select {
+        margin-bottom: 10px;
+        max-height: 70px;
+      }
 
-   .el-select__tags {
-     max-height: 55px;
-     overflow: auto;
-   }
+      .el-select__tags {
+        max-height: 55px;
+        overflow: auto;
+      }
 
-   ::-webkit-scrollbar {
-     width: 0px;
-   }
+      ::-webkit-scrollbar {
+        width: 0px;
+      }
+
       .el-select {
         margin-bottom: 10px;
       }
@@ -725,7 +760,6 @@
           &:last-child {
             border-bottom: none;
           }
-
 
           &:nth-child(odd) {
             background: #ececec;

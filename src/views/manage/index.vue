@@ -178,9 +178,8 @@
     </div>
       <div v-if="yearSelected[0]">
         <p></p>
-      <span v-if="yearSelected[0].now && this.$store.state.expected.dataExpected.id === 0" class="title">{{currentRow.fullName}} chưa có nguyện vọng kỳ này, sử dụng lại hoặc tạo mới ! </span>
-      <span v-if="!yearSelected[0].hasData" class="title-warning">Don't have data for this semester! Please go to <span
-        style="font-weight: 700">DATA PROCESSING</span> for import data !</span>
+      <span v-if="yearSelected[0].now && this.$store.state.expected.dataExpected.id === 0" class="title">{{currentRow.fullName}} no expectations in this term,select other term to reuse or create new ! </span>
+      <span v-if="!yearSelected[0].hasData" class="title-warning">Don't have data for this semester!</span>
       </div>
       <div v-if="yearSelected[0]">
       <div v-if="yearSelected[0].hasData" class="manager-radio_content">

@@ -71,6 +71,10 @@
         <el-button type="success" icon="el-icon-check" circle @click="acceptTimetable"></el-button>
         <el-button type="danger" icon="el-icon-close" circle @click="dialogFormVisibleComment = true"></el-button>
       </div>
+      <div v-if="lecturerConfirm.status === 'DRAFT' && lecturerConfirm.confirmed ===  true" class="calendar-view-comment">
+        <span>Timetable is in process re-arrange !</span>
+
+      </div>
 
       <div class="calendar-view-table">
         <TableCustom :list-slot-data="dataListCalendar" :header="day" />
@@ -140,7 +144,7 @@
   methods: {
     getListCalendar() {
       console.log(this.infoUser,'uuser')
-      if(!this.lecturerConfirm.status && this.infoUser.role.roleName === 'ROLE_USER'){
+      if(this.lecturerConfirm.status ==='DRAFT' && this.infoUser.role.roleName === 'ROLE_USER'){
         this.dataListCalendar = []
         return;
       }
@@ -355,6 +359,7 @@
         position: relative;
 
         &::before {
+
           content: "";
           width: 10px;
           height: 10px;

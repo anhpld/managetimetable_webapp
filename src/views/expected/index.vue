@@ -21,7 +21,10 @@
       </el-button>
     </div>
     <span v-if="yearSelected[0] && yearSelected[0].now && this.$store.state.expected.dataExpected.id === 0" class="title">
-You have no expectations in this term, reuse or create new ! </span>
+You have no expectations in this term,select other term to reuse or create new ! </span>
+    <span v-if="yearSelected[0] && yearSelected[0].now && this.$store.state.expected.dataExpected.id !== 0" class="title-done">
+
+You have filled out expected for this term  ! </span>
     <span v-if="yearSelected[0] && !yearSelected[0].hasData" class="title-warning">Don't have data for this semester! Please go to <span
       style="font-weight: 700">DATA PROCESSING</span> for import data !</span>
 
@@ -385,8 +388,15 @@ export default {
     }
 
     .title {
-
       color: #00adff;
+      text-transform: uppercase;
+      font-weight: 600;
+      width: 600px;
+      display: inline-block;
+      padding-top: 20px;
+    }
+    .title-done {
+      color: #13ce66;
       text-transform: uppercase;
       font-weight: 600;
       width: 600px;
