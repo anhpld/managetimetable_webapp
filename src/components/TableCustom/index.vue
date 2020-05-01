@@ -155,8 +155,6 @@ export default {
             margin: 0;
             width: 100%;
 
-
-
             .name-item {// draft
                 color: #409EFF;
                 font-weight: 700;
@@ -209,16 +207,19 @@ export default {
                 right: 0px;
                 font-weight: 400;
                 overflow: auto;
+                top: 60px;
+              }
 
-                &::after {
-                  content: " ";
-                  border-left: 5px solid transparent;
-                  border-right: 5px solid transparent;
-                  border-bottom: 5px solid black;
-                  width: 0;
-                  height: 0;
-                  position: absolute;
-                }
+              &::after {
+                content: " ";
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid #304156;
+                width: 0;
+                height: 0;
+                position: absolute;
+                top: 55px;
+                right: 55px;
               }
             }
           }
