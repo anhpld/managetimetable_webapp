@@ -192,20 +192,28 @@
             <span class="title">SLOT / PREFERENCE LEVEL</span>
             <ListRadio :data-subjects="expectedSlots" :is-edit="isEdit" :is-subject="false" @changeValueRadio="handleDataExpectedEdit" />
             <div class="note">
-            <div class="main-content">
-              <span class="title-content"> Note</span>
-              <span class="content"><span class="title">M1:</span> slot 1 Mon,Tue,Fri</span>
-              <span class="content"><span class="title">M2:</span> slot 2 Mon,Tue,Fri</span>
-              <span class="content"><span class="title">M3:</span> slot 3 Mon,Tue,Fri</span>
-              <span class="content"><span class="title">E1:</span> slot 4 Mon,Tue,Fri</span>
-              <span class="content"><span class="title">E2:</span> slot 5 Mon,Tue,Fri</span>
-              <span class="content"><span class="title">E3:</span> slot 6 Mon,Tue,Fri</span>
-              <span class="content"><span class="title">M4:</span> slot 1,2 Tue, 1 Thursday</span>
-              <span class="content"><span class="title">M5:</span> slot 3 Tue, 2,3 Thursday</span>
-              <span class="content"><span class="title">E4:</span> slot 4,5 Tue, 1 Thursday</span>
-              <span class="content"><span class="title">E5:</span> slot 6 Tue, 5,6 Thursday</span>
+              <div class="note-wrapper">
+                <div class="main-content">
+                <span class="title-content"> Note</span>
+                <span class="content"><span class="title">M1:</span> slot 1 Mon,Tue,Fri</span>
+                <span class="content"><span class="title">M2:</span> slot 2 Mon,Tue,Fri</span>
+                <span class="content"><span class="title">M3:</span> slot 3 Mon,Tue,Fri</span>
+                <span class="content"><span class="title">E1:</span> slot 4 Mon,Tue,Fri</span>
+                <span class="content"><span class="title">E2:</span> slot 5 Mon,Tue,Fri</span>
+                <span class="content"><span class="title">E3:</span> slot 6 Mon,Tue,Fri</span>
+                <span class="content"><span class="title">M4:</span> slot 1,2 Tue | 1 Thursday</span>
+                <span class="content"><span class="title">M5:</span> slot 3 Tue | 2,3 Thursday</span>
+                <span class="content"><span class="title">E4:</span> slot 4,5 Tue | 1 Thursday</span>
+                <span class="content"><span class="title">E5:</span> slot 6 Tue | 5,6 Thursday</span>
+              </div>
+              <div class="content-number">
+                <span class="title">0,1,2,3,4,5:</span>
+                <span class="content">- Level of Lecturer's preference for slot/ subject.</span>
+                <span class="content">- The higher number, the higher preference.</span>
+                <span class="content">- Select 0 if Lecturer cannot teach this subject / slot.</span>
+              </div>
+              </div>
             </div>
-          </div>
           </div>
       </div>
       <div class="manager-radio_content-footer">
@@ -763,33 +771,47 @@ export default {
 <style lang="scss">
 .manager {
   .note {
-      .main-content {
-        border: 1px solid #e8e8e8;
-        border-radius: 4px;
-        padding: 15px;
-        margin-top: 15px;
-        height: 309px;
+    .note-wrapper {
+      border: 1px solid #e8e8e8;
+      border-radius: 4px;
+      padding: 15px;
+      margin-top: 15px;
+      display: flex;
+    }
+    .main-content {
+      width: 40%;
 
-        .title-content {
-          display: block;
-          margin-bottom: 10px;
+      .title-content {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 600;
+        font-size: 20px;
+      }
+
+      .content {
+        display: block;
+        font-size: 1.1em;
+        margin: 7px;
+        .title {
+          font-size: 1em;
+          padding-right: 13px;
+          display: inline;
           font-weight: 600;
-        }
-
-        .content {
-          display: block;
-          font-size: 1.1em;
-          margin: 7px;
-          .title {
-            font-size: 1em;
-            padding-right: 13px;
-            display: inline;
-            font-weight: 600;
-            color: #00adff;
-          }
+          color: #00adff;
         }
       }
     }
+
+    .content-number {
+      width: 60%;
+      padding-left: 10px;
+      border-left: 1px solid #cecece;
+
+      .content {
+        display: block;
+      }
+    }
+  }
   .el-dialog {
     width: 90%;
   }
