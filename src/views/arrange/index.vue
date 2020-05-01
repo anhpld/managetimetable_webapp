@@ -159,6 +159,12 @@
             <el-option value="lecturer" class="arrange-item-select">Lecturer</el-option>
             <el-option value="room" class="arrange-item-select">Room</el-option>
           </el-select>
+          <div class="wrapper-color">
+            <span class="final">Final</span>
+            <span class="public">Public</span>
+            <span class="reject">Reject</span>
+            <span class="draft">Draft</span>
+          </div>
         </div>
         <TableCustom
           :list-slot-data="listSlot"
@@ -650,6 +656,7 @@ export default {
     &-content {
       display: flex;
       margin-top: 180px;
+      position: relative;
 
       &-detail {
         width: 280px;
@@ -657,6 +664,7 @@ export default {
         padding: 20px;
         margin-right: 20px;
         border-radius: 4px;
+        position: fixed;
       }
 
       &_nameObject {
@@ -727,11 +735,64 @@ export default {
       display: flex;
       flex-wrap: wrap;
       width: calc(100% - 280px);
-      overflow: scroll;
+      overflow: auto;
       height: calc(100vh - 190px);
+      right: 0;
+      position: absolute;
+      padding-left: 10px;
 
       .group-by {
         margin-bottom: 10px;
+        position: fixed;
+        top: 182px;
+        display: block;
+
+        .wrapper-color {
+          display: inline-block;
+
+          .final,
+          .public,
+          .reject,
+          .draft {
+            position: relative;
+            margin-left: 20px;
+            margin-left: 60px;
+
+            &::before {
+              content: "";
+              position: absolute;
+              top: 0;
+              width: 20px;
+              height: 17px;
+              left: -25px;
+            }
+          }
+
+          .final {
+            &::before {
+              background-color: #13ce66;
+
+            }
+          }
+
+          .public {
+            &::before {
+              background-color: orange;
+            }
+          }
+
+          .draft {
+            &::before {
+              background-color: #409EFF;
+            }
+          }
+
+          .reject {
+            &::before {
+              background-color: red;
+            }
+          }
+        }
 
         .el-input__inner {
           text-transform: capitalize;
@@ -740,10 +801,6 @@ export default {
         .el-select {
           margin-left: 10px;
         }
-      }
-
-      .group-by {
-        display: block;
       }
 
       &_content {
