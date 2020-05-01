@@ -664,6 +664,7 @@ export default {
         margin-right: 20px;
         border-radius: 4px;
         position: fixed;
+        margin-top: -70px;
       }
 
       &_nameObject {
@@ -735,7 +736,7 @@ export default {
       flex-wrap: wrap;
       width: calc(100% - 280px);
       overflow: auto;
-      height: calc(100vh - 190px);
+      height: calc(100vh - 290px);
       right: 0;
       position: absolute;
       padding-left: 10px;
