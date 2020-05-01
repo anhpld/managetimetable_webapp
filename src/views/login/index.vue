@@ -236,7 +236,6 @@ $light_gray:#eee;
     padding: 15px 15px;
     margin: 150px auto;
     overflow: hidden;
-    border-radius: 15px;
     background-color:rgba(255,255,255,0.8);
     border: 2px solid rgba(255, 255, 255, 0.1);
 

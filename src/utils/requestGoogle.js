@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const serviceGoogle = axios.create({
-  baseURL:'http://localhost:8081/api/v1', // url = base url + request url
+  baseURL:process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 10000 // request timeout
 })
@@ -61,11 +61,12 @@ serviceGoogle.interceptors.response.use(
   },
   error => {
     Message({
-      message: error.response.data.message,
+      message: error.response.data,
       type: 'error',
       duration: 5 * 1000
     })
     return Promise.reject(error)
   }
 )
+
 export default serviceGoogle

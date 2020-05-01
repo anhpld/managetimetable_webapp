@@ -10,7 +10,6 @@
                 <div v-for="item in listSlotData" :key="item" class="list-subject-content">
                     <p v-if="item.room" class="list-subject-content_name">{{ item.room }}</p>
                     <p v-if="item.slotNumber" class="list-subject-content_name">Slot {{ item.slotNumber }}</p>
-
                     <ul class="table-custom__main--lever">
                         <li v-for="oneSlot in header" :key="oneSlot" class="table-custom__main--lever-item">
                             <div v-for="oneContent in item.timetable" :key="oneContent" class="table-custom__content"
@@ -23,11 +22,19 @@
                                     <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='DRAFT'" class="name-item" >{{ oneContent.room }}</span>
                                     <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='PUBLIC'" class="name-item-public" >{{ oneContent.room }}</span>
                                   <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='FINAL'" class="name-item-final" >{{ oneContent.room }}</span>
-                                  <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='REJECT'" class="name-item-reject" >{{ oneContent.room }}</span>
+                                  <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='REJECT'" class="name-item-reject" >
+                                    <el-tooltip content="oneContent.resson" placement="bottom" effect="light">
+                                      <el-button>{{ oneContent.room }}</el-button>
+                                    </el-tooltip>
+                                  </span>
                                     <span v-if="groupBy==='room' && oneContent.timetableStatus==='DRAFT'" class="name-item" >{{ oneContent.lecturerShortName }}</span>
                                    <span v-if="groupBy==='room' && oneContent.timetableStatus==='PUBLIC'" class="name-item-public" >{{ oneContent.lecturerShortName }}</span>
                                   <span v-if="groupBy==='room' && oneContent.timetableStatus==='FINAL'" class="name-item-final  " >{{ oneContent.lecturerShortName }}</span>
-                                  <span v-if="groupBy==='room' && oneContent.timetableStatus==='REJECT'" class="name-item-reject  " >{{ oneContent.lecturerShortName }}</span>
+                                  <span v-if="groupBy==='room' && oneContent.timetableStatus==='REJECT'" class="name-item-reject  " > {{ oneContent.lecturerShortName }}
+                                    <div class="content-tooltip">
+                                      {{ oneContent.reason}}
+                                    </div>
+                                  </span>
 
                                 </div>
                             </div>
@@ -117,6 +124,7 @@ export default {
         }
 
         &__content {
+          position: relative;
             span {
                 display: block;
                 padding-bottom: 7px;
@@ -147,7 +155,7 @@ export default {
             margin: 0;
             width: 100%;
 
-            .name-item {
+            .name-item {// draft
                 color: #409EFF;
                 font-weight: 700;
             }
@@ -161,6 +169,60 @@ export default {
           .name-item-reject {
             color: red;
             font-weight: 700;
+
+            .content-tooltip {
+              display: none;
+            }
+
+            /* width */
+            ::-webkit-scrollbar {
+              width: 0px;
+            }
+
+            /* Track */
+            ::-webkit-scrollbar-track {
+              background: #f1f1f1;
+            }
+
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+              background: #888;
+            }
+
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+              background: #555;
+            }
+
+            &:hover {
+              .content-tooltip {
+                display: block;
+                position: absolute;
+                width: 200px;
+                height: 74px;
+                border-radius: 10px;
+                background: #304156;
+                color: #fff;
+                padding: 10px;
+                z-index: 99;
+                right: 0px;
+                font-weight: 400;
+                overflow: auto;
+                top: 60px;
+              }
+
+              &::after {
+                content: " ";
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid #304156;
+                width: 0;
+                height: 0;
+                position: absolute;
+                top: 55px;
+                right: 90px;
+              }
+            }
           }
 
             &-header {

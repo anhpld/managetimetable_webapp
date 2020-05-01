@@ -100,8 +100,8 @@
         <el-form-item label="Lecturer Name" prop="fullName">
           <el-input v-model="temp.fullName" />
         </el-form-item>
-        <el-form-item label="Phone Number" prop="phone">
-          <el-input v-model="temp.phone" />
+        <el-form-item label="Phone Number" prop="phone" >
+          <el-input type="number" v-model="temp.phone" />
         </el-form-item>
         <el-form-item label="Short Name" prop="shortName">
           <el-input v-model="temp.shortName" />
@@ -118,7 +118,7 @@
         <el-form-item label="Full-time Lecturer?" prop="fullTime">
           <el-checkbox v-model="temp.fullTime"></el-checkbox>
         </el-form-item>
-        <el-form-item label="Number of class quota" prop="quotaClass">
+        <el-form-item label="Min of class quota" prop="quotaClass">
           <el-input-number v-model="temp.quotaClass" :min="1" :max="10"></el-input-number>
         </el-form-item>
       </el-form>
@@ -178,9 +178,8 @@
     </div>
       <div v-if="yearSelected[0]">
         <p></p>
-      <span v-if="yearSelected[0].now && this.$store.state.expected.dataExpected.id === 0" class="title">{{currentRow.fullName}} chưa có nguyện vọng kỳ này, sử dụng lại hoặc tạo mới ! </span>
-      <span v-if="!yearSelected[0].hasData" class="title-warning">Don't have data for this semester! Please go to <span
-        style="font-weight: 700">DATA PROCESSING</span> for import data !</span>
+      <span v-if="yearSelected[0].now && this.$store.state.expected.dataExpected.id === 0" class="title">{{currentRow.fullName}} no expectations in this term,select other term to reuse or create new ! </span>
+      <span v-if="!yearSelected[0].hasData" class="title-warning">Don't have data for this semester!</span>
       </div>
       <div v-if="yearSelected[0]">
       <div v-if="yearSelected[0].hasData" class="manager-radio_content">
@@ -193,20 +192,28 @@
             <span class="title">SLOT / PREFERENCE LEVEL</span>
             <ListRadio :data-subjects="expectedSlots" :is-edit="isEdit" :is-subject="false" @changeValueRadio="handleDataExpectedEdit" />
             <div class="note">
-            <div class="main-content">
-              <span class="title-content"> Note</span>
-              <span class="content"><span class="title">M1:</span> slot 1 Mon,Tue,Fri</span>
-              <span class="content"><span class="title">M2:</span> slot 2 Mon,Tue,Fri</span>
-              <span class="content"><span class="title">M3:</span> slot 3 Mon,Tue,Fri</span>
-              <span class="content"><span class="title">E1:</span> slot 4 Mon,Tue,Fri</span>
-              <span class="content"><span class="title">E2:</span> slot 5 Mon,Tue,Fri</span>
-              <span class="content"><span class="title">E3:</span> slot 6 Mon,Tue,Fri</span>
-              <span class="content"><span class="title">M4:</span> slot 1,2 Tue, 1 Thursday</span>
-              <span class="content"><span class="title">M5:</span> slot 3 Tue, 2,3 Thursday</span>
-              <span class="content"><span class="title">E4:</span> slot 4,5 Tue, 1 Thursday</span>
-              <span class="content"><span class="title">E5:</span> slot 6 Tue, 5,6 Thursday</span>
+              <div class="note-wrapper">
+                <div class="main-content">
+                <span class="title-content"> Note</span>
+                <span class="content"><span class="title">M1:</span> slot 1 Mon,Tue,Fri</span>
+                <span class="content"><span class="title">M2:</span> slot 2 Mon,Tue,Fri</span>
+                <span class="content"><span class="title">M3:</span> slot 3 Mon,Tue,Fri</span>
+                <span class="content"><span class="title">E1:</span> slot 4 Mon,Tue,Fri</span>
+                <span class="content"><span class="title">E2:</span> slot 5 Mon,Tue,Fri</span>
+                <span class="content"><span class="title">E3:</span> slot 6 Mon,Tue,Fri</span>
+                <span class="content"><span class="title">M4:</span> slot 1,2 Tue | 1 Thursday</span>
+                <span class="content"><span class="title">M5:</span> slot 3 Tue | 2,3 Thursday</span>
+                <span class="content"><span class="title">E4:</span> slot 4,5 Tue | 1 Thursday</span>
+                <span class="content"><span class="title">E5:</span> slot 6 Tue | 5,6 Thursday</span>
+              </div>
+              <div class="content-number">
+                <span class="title">0,1,2,3,4,5:</span>
+                <span class="content">- Level of Lecturer's preference for slot/ subject.</span>
+                <span class="content">- The higher number, the higher preference.</span>
+                <span class="content">- Select 0 if Lecturer cannot teach this subject / slot.</span>
+              </div>
+              </div>
             </div>
-          </div>
           </div>
       </div>
       <div class="manager-radio_content-footer">
@@ -295,7 +302,7 @@ export default {
         googleId: '',
         fullName: '',
         email: '',
-        phone: '',
+        phone: null,
         shortName: '',
         quotaClass: '',
         fillingExpected: '',
@@ -329,7 +336,7 @@ export default {
       rules: {
         fullName: [{ required: true, message: 'Name is required.', trigger: 'change' }],
         shortName: [{ required: true, message: 'Short Name is required.', trigger: 'change' }],
-        email: [{ type: 'email', required: true, message: 'Email is required', trigger: 'change' }]
+        email: [{ type: 'email', required: true, message: 'Email is required', trigger: 'change' }],
       },
       emailAddRule: {
         email: [{ type: 'email', required: true, message: 'Email is required', trigger: 'change' }]
@@ -424,11 +431,12 @@ export default {
         'lecturerGoogleId': row.googleId
       }
       if (status === 'DEACTIVATE') {
-        this.$confirm('Will remove timetable of lecturer : \''+row.email+'\' in current semester (if exist)?', 'Warning', {
+        this.$confirm('Will remove timetable of lecturer : \'<strong>'+row.email+'</strong>\' in current semester (if exist)?', 'Warning', {
         iconColor:"red",
+          dangerouslyUseHTMLString:true,
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
-        type: 'warning'
+        type: 'DEACTIVATE'
       })
         .then(async() => {
           this.callAPIChangeStatus(data)
@@ -517,10 +525,12 @@ export default {
       })
     },
     handleHOD(row) {
-      this.$confirm('Do you really want to transfer Head of Department role to lecturer : \''+row.email+'\' ?', 'Warning', {
+      this.$confirm('Do you really want to transfer Head of Department role to lecturer : \'<strong>'+row.email+'</strong>\' ?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
-        type: 'warning'
+        dangerouslyUseHTMLString:true,
+        type: 'warning',
+        title:'TRANSFER ROLE'
       })
         .then(async() => {
           this.listLoading = true
@@ -538,7 +548,7 @@ export default {
         })
     },
     handleDelete(row, index) {
-      this.$confirm('Confirm to delete?', 'Warning', {
+      this.$confirm('Do you really want to delete lecturer : \'<strong>'+row.email+'</strong>\' ?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
         type: 'warning'
@@ -764,33 +774,47 @@ export default {
 <style lang="scss">
 .manager {
   .note {
-      .main-content {
-        border: 1px solid #e8e8e8;
-        border-radius: 4px;
-        padding: 15px;
-        margin-top: 15px;
-        height: 309px;
+    .note-wrapper {
+      border: 1px solid #e8e8e8;
+      border-radius: 4px;
+      padding: 15px;
+      margin-top: 15px;
+      display: flex;
+    }
+    .main-content {
+      width: 40%;
 
-        .title-content {
-          display: block;
-          margin-bottom: 10px;
+      .title-content {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 600;
+        font-size: 20px;
+      }
+
+      .content {
+        display: block;
+        font-size: 1.1em;
+        margin: 7px;
+        .title {
+          font-size: 1em;
+          padding-right: 13px;
+          display: inline;
           font-weight: 600;
-        }
-
-        .content {
-          display: block;
-          font-size: 1.1em;
-          margin: 7px;
-          .title {
-            font-size: 1em;
-            padding-right: 13px;
-            display: inline;
-            font-weight: 600;
-            color: #00adff;
-          }
+          color: #00adff;
         }
       }
     }
+
+    .content-number {
+      width: 60%;
+      padding-left: 10px;
+      border-left: 1px solid #cecece;
+
+      .content {
+        display: block;
+      }
+    }
+  }
   .el-dialog {
     width: 90%;
   }

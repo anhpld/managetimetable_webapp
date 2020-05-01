@@ -21,7 +21,10 @@
       </el-button>
     </div>
     <span v-if="yearSelected[0] && yearSelected[0].now && this.$store.state.expected.dataExpected.id === 0" class="title">
-You have no expectations in this term, reuse or create new ! </span>
+You have no expectations in this term,select other term to reuse or create new ! </span>
+    <span v-if="yearSelected[0] && yearSelected[0].now && this.$store.state.expected.dataExpected.id !== 0" class="title-done">
+
+You have filled out expected for this term  ! </span>
     <span v-if="yearSelected[0] && !yearSelected[0].hasData" class="title-warning">Don't have data for this semester! Please go to <span
       style="font-weight: 700">DATA PROCESSING</span> for import data !</span>
 
@@ -37,7 +40,8 @@ You have no expectations in this term, reuse or create new ! </span>
           <ListRadio :data-subjects="expectedSlots" :is-edit="isEdit" :is-subject="false"
                      @changeValueRadio="handleDataExpectedEdit"/>
           <div class="note">
-            <div class="main-content">
+            <div class="note-wrapper">
+              <div class="main-content">
               <span class="title-content"> Note</span>
               <span class="content"><span class="title">M1:</span> slot 1 Mon,Tue,Fri</span>
               <span class="content"><span class="title">M2:</span> slot 2 Mon,Tue,Fri</span>
@@ -49,9 +53,13 @@ You have no expectations in this term, reuse or create new ! </span>
               <span class="content"><span class="title">M5:</span> slot 3 Tue | 2,3 Thursday</span>
               <span class="content"><span class="title">E4:</span> slot 4,5 Tue | 1 Thursday</span>
               <span class="content"><span class="title">E5:</span> slot 6 Tue | 5,6 Thursday</span>
-              <span class="content"><span class="title">0,1,2,3,4,5:</span> Level of Lecturer's preference for slot/ subject.</span>
-              <span class="content" style="padding-left: 105px"> The higher number, the higher preference.</span>
-              <span class="content" style="padding-left: 105px"> Select 0 if Lecturer cannot teach this subject / slot.</span>
+            </div>
+            <div class="content-number">
+              <span class="title">0,1,2,3,4,5:</span>
+              <span class="content">- Level of Lecturer's preference for slot/ subject.</span>
+              <span class="content">- The higher number, the higher preference.</span>
+              <span class="content">- Select 0 if Lecturer cannot teach this subject / slot.</span>
+            </div>
             </div>
           </div>
         </div>
@@ -310,12 +318,15 @@ export default {
     }
 
     .note {
-      .main-content {
+      .note-wrapper {
         border: 1px solid #e8e8e8;
         border-radius: 4px;
         padding: 15px;
         margin-top: 15px;
-        height: 400px;
+        display: flex;
+      }
+      .main-content {
+        width: 40%;
 
         .title-content {
           display: block;
@@ -326,7 +337,7 @@ export default {
 
         .content {
           display: block;
-          font-size: 1.1em;
+          font-size: 14px;
           margin: 7px;
           .title {
             font-size: 1em;
@@ -335,6 +346,17 @@ export default {
             font-weight: 600;
             color: #00adff;
           }
+        }
+      }
+
+      .content-number {
+        width: 60%;
+        padding-left: 10px;
+        border-left: 1px solid #cecece;
+        font-size: 14px;
+
+        .content {
+          display: block;
         }
       }
     }
@@ -385,8 +407,15 @@ export default {
     }
 
     .title {
-
       color: #00adff;
+      text-transform: uppercase;
+      font-weight: 600;
+      width: 600px;
+      display: inline-block;
+      padding-top: 20px;
+    }
+    .title-done {
+      color: #13ce66;
       text-transform: uppercase;
       font-weight: 600;
       width: 600px;

@@ -10,7 +10,6 @@ export function getListSlot(data) {
 }
 
 export function getDataRoom(data) {
-  console.log('data', data)
   return request({
     url: 'rooms/filter',
     method: 'post',
