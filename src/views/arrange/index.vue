@@ -146,7 +146,11 @@
             Swap
           </el-button>
         </div>
-        <p class="title">Request Confirm</p>
+        <p class="title" >Request Confirm
+          <el-tooltip placement="bottom" effect="light">
+            <div slot="content">Select teacher in search section to send request confirm.<br/><u>Note:</u> Only available for status. <strong>DRAFT</strong></div>
+          <i class="el-icon-info"></i>
+        </el-tooltip></p>
         <div class="button">
           <el-button type="primary" :disabled="isDisableConfirm()" @click="addConfirm">Request Lecturer Confirm
           </el-button>
@@ -664,6 +668,7 @@ export default {
         margin-right: 20px;
         border-radius: 4px;
         position: fixed;
+        margin-top: -70px;
       }
 
       &_nameObject {
@@ -735,7 +740,7 @@ export default {
       flex-wrap: wrap;
       width: calc(100% - 280px);
       overflow: auto;
-      height: calc(100vh - 190px);
+      height: calc(100vh - 290px);
       right: 0;
       position: absolute;
       padding-left: 10px;
