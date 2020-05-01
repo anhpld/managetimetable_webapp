@@ -359,23 +359,14 @@ export default {
       this.dialogFormAdd = true
     },
     addData() {
-      var isDuplicate = false;
       this.$refs['dataFormAdd'].validate((valid) => {
         const postData = {
           'content': this.form.purpose
         }
-        this.dataListEmail.forEach(element => {
-            isDuplicate =  element.value === this.form.purpose ? true : false;
-        })
+
         if (valid) {
-          if(isDuplicate) {
-            this.$notify({
-                title: 'Error',
-                message: 'Email already exists.',
-                type: 'error',
-                duration: 2000
-              })
-          } else {
+            this.dialogFormAdd = false
+            this.loading =true
             this.$store.dispatch('report/addReport', postData).then(() => {
               this.$notify({
                 title: 'Success',
@@ -383,10 +374,9 @@ export default {
                 type: 'success',
                 duration: 2000
               })
-              this.dialogFormAdd = false
               this.getListReport()
             })
-          }
+
         }
       })
     },
@@ -403,6 +393,7 @@ export default {
           'status': status
         }
         if (valid) {
+          this.dialogFormReply = false
           this.$store.dispatch('report/approveReport', postData).then(() => {
             this.$notify({
               title: 'Success',
@@ -410,7 +401,6 @@ export default {
               type: 'success',
               duration: 2000
             })
-            this.dialogFormReply = false
             this.getListReport()
           })
         }
