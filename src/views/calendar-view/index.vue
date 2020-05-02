@@ -145,7 +145,7 @@
     getListCalendar() {
       console.log(this.infoUser,'uuser')
       console.log(this.lecturerConfirm.status,'status')
-      if(this.lecturerConfirm.status ==='DRAFT'  && this.infoUser.role.roleName === 'ROLE_USER'){
+      if((this.lecturerConfirm.status ==='DRAFT' || !this.lecturerConfirm)  && this.infoUser.role.roleName === 'ROLE_USER'){
         this.dataListCalendar = []
         return;
       }

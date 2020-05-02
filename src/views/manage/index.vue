@@ -551,6 +551,7 @@ export default {
       this.$confirm('Do you really want to delete lecturer : \'<strong>'+row.email+'</strong>\' ?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
+        dangerouslyUseHTMLString:true,
         type: 'warning'
       })
         .then(async() => {
