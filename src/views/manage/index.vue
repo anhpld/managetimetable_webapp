@@ -594,8 +594,9 @@ export default {
       this.dialogFormAdd = true
     },
     updateData() {
+      const regexPhoneNumber = /((09|03|07|08|05)+([0-9]{8})\b)/g
       this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
+        if (valid && regexPhoneNumber.test(this.temp.phone)) {
           this.$store.dispatch('manager/updateUser', this.temp).then(() => {
             this.fetchData()
             this.dialogFormVisible = false
@@ -605,6 +606,15 @@ export default {
               type: 'success',
               duration: 2000
             })
+          })
+        }
+
+        if (valid && !regexPhoneNumber.test(this.temp.phone)) {
+          this.$confirm('Số điện thoại không đúng định dạng.', 'Warning', {
+            confirmButtonText: 'Ok',
+            cancelButtonText: 'Cancel',
+            dangerouslyUseHTMLString: true,
+            type: 'warning'
           })
         }
       })
