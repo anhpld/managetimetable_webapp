@@ -101,7 +101,7 @@
           <el-input v-model="temp.fullName" />
         </el-form-item>
         <el-form-item label="Phone Number" prop="phone" >
-          <el-input type="number" v-model="temp.phone" />
+          <el-input v-model="temp.phone" />
         </el-form-item>
         <el-form-item label="Short Name" prop="shortName">
           <el-input v-model="temp.shortName" />
@@ -617,7 +617,7 @@ export default {
         }
 
         if (valid && !regexPhoneNumber.test(this.temp.phone)) {
-          this.$confirm('Số điện thoại không đúng định dạng.', 'Warning', {
+          this.$confirm('Not correct phone format!.', 'Warning', {
             confirmButtonText: 'Ok',
             cancelButtonText: 'Cancel',
             dangerouslyUseHTMLString: true,
