@@ -21,6 +21,7 @@ const mutations = {
   },
   START_INTERVAL: (state, data) => {
     state.startInterval = data
+    console.log('state.startInterval', state.startInterval)
   }
 }
 

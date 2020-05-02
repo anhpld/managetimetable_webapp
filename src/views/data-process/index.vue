@@ -259,6 +259,8 @@ export default {
     isRunning() {
       if (this.isRunning) {
         this.startInterval = setInterval(this.getListGeneration, 5000)
+        console.log('aaa', this.startInterval)
+
         this.$store.dispatch('request/startInterval', this.startInterval)
       } else {
         clearInterval(this.startInterval)
@@ -423,7 +425,7 @@ export default {
             stdCoff: parseFloat(this.stdCoff.toFixed(2)),
             satisfactionSumCoff: parseFloat(this.satisfactionSumCoff.toFixed(2)),
             distanceCoff: parseFloat(this.distanceCoff.toFixed(2)),
-              fulltimeCoff: parseFloat(this.fulltimeCoff.toFixed(2))
+            fulltimeCoff: parseFloat(this.fulltimeCoff.toFixed(2))
           }
         },
         queryParam: {
@@ -455,7 +457,6 @@ export default {
       clearInterval(this.startInterval)
       this.getListGeneration()
       this.$store.dispatch('request/stopArrange', {}).then(() => {
-
         this.isRunning = false
         this.loading = false
       }).catch(() => {
