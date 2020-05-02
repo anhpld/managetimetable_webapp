@@ -100,8 +100,8 @@
         <el-form-item label="Lecturer Name" prop="fullName">
           <el-input v-model="temp.fullName" />
         </el-form-item>
-        <el-form-item label="Phone Number" prop="phone">
-          <el-input v-model="temp.phone" />
+        <el-form-item label="Phone Number" prop="phone" >
+          <el-input type="number" v-model="temp.phone" />
         </el-form-item>
         <el-form-item label="Short Name" prop="shortName">
           <el-input v-model="temp.shortName" />
@@ -118,7 +118,7 @@
         <el-form-item label="Full-time Lecturer?" prop="fullTime">
           <el-checkbox v-model="temp.fullTime"></el-checkbox>
         </el-form-item>
-        <el-form-item label="Number of class quota" prop="quotaClass">
+        <el-form-item label="Min of class quota" prop="quotaClass">
           <el-input-number v-model="temp.quotaClass" :min="1" :max="10"></el-input-number>
         </el-form-item>
       </el-form>
@@ -302,7 +302,7 @@ export default {
         googleId: '',
         fullName: '',
         email: '',
-        phone: '',
+        phone: null,
         shortName: '',
         quotaClass: '',
         fillingExpected: '',
@@ -336,7 +336,7 @@ export default {
       rules: {
         fullName: [{ required: true, message: 'Name is required.', trigger: 'change' }],
         shortName: [{ required: true, message: 'Short Name is required.', trigger: 'change' }],
-        email: [{ type: 'email', required: true, message: 'Email is required', trigger: 'change' }]
+        email: [{ type: 'email', required: true, message: 'Email is required', trigger: 'change' }],
       },
       emailAddRule: {
         email: [{ type: 'email', required: true, message: 'Email is required', trigger: 'change' }]
@@ -439,11 +439,12 @@ export default {
         'lecturerGoogleId': row.googleId
       }
       if (status === 'DEACTIVATE') {
-        this.$confirm('Will remove timetable of lecturer : \''+row.email+'\' in current semester (if exist)?', 'Warning', {
+        this.$confirm('Will remove timetable of lecturer : \'<strong>'+row.email+'</strong>\' in current semester (if exist)?', 'Warning', {
         iconColor:"red",
+          dangerouslyUseHTMLString:true,
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
-        type: 'warning'
+        type: 'DEACTIVATE'
       })
         .then(async() => {
           this.callAPIChangeStatus(data)
@@ -532,10 +533,12 @@ export default {
       })
     },
     handleHOD(row) {
-      this.$confirm('Do you really want to transfer Head of Department role to lecturer : \''+row.email+'\' ?', 'Warning', {
+      this.$confirm('Do you really want to transfer Head of Department role to lecturer : \'<strong>'+row.email+'</strong>\' ?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
-        type: 'warning'
+        dangerouslyUseHTMLString:true,
+        type: 'warning',
+        title:'TRANSFER ROLE'
       })
         .then(async() => {
           this.listLoading = true
@@ -553,7 +556,7 @@ export default {
         })
     },
     handleDelete(row, index) {
-      this.$confirm('Confirm to delete?', 'Warning', {
+      this.$confirm('Do you really want to delete lecturer : \'<strong>'+row.email+'</strong>\' ?', 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
         type: 'warning'

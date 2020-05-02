@@ -61,11 +61,12 @@ serviceGoogle.interceptors.response.use(
   },
   error => {
     Message({
-      message: error.response.data.message,
+      message: error.response.data,
       type: 'error',
       duration: 5 * 1000
     })
     return Promise.reject(error)
   }
 )
+
 export default serviceGoogle
