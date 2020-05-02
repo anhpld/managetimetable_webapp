@@ -220,11 +220,7 @@ export default {
                 height: 0;
                 position: absolute;
                 top: 55px;
-<<<<<<< HEAD
-                right: 55px;
-=======
                 right: 90px;
->>>>>>> ac10d8aec6d763080663c2f22ce452994743d19f
               }
             }
           }
