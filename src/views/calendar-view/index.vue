@@ -66,12 +66,12 @@
     </div>
 
     <div class="calendar-view-content">
-      <div v-if="lecturerConfirm.status === 'PUBLIC'" class="calendar-view-comment">
-        <span>Are you satisfied with this calendar ?</span>
+      <div v-if="lecturerConfirm && lecturerConfirm.status === 'PUBLIC'" class="calendar-view-comment">
+        <span>Are you satisfied with your timetable ?</span>
         <el-button type="success" icon="el-icon-check" circle @click="acceptTimetable"></el-button>
         <el-button type="danger" icon="el-icon-close" circle @click="dialogFormVisibleComment = true"></el-button>
       </div>
-      <div v-if="lecturerConfirm.status === 'DRAFT' && lecturerConfirm.confirmed ===  true" class="calendar-view-comment">
+      <div v-if="lecturerConfirm && lecturerConfirm.status === 'DRAFT' && lecturerConfirm.confirmed ===  true" class="calendar-view-comment">
         <span>Timetable is in process re-arrange !</span>
 
       </div>
@@ -144,7 +144,8 @@
   methods: {
     getListCalendar() {
       console.log(this.infoUser,'uuser')
-      if(this.lecturerConfirm.status ==='DRAFT' && this.infoUser.role.roleName === 'ROLE_USER'){
+      console.log(this.lecturerConfirm.status,'status')
+      if(this.lecturerConfirm.status ==='DRAFT'  && this.infoUser.role.roleName === 'ROLE_USER'){
         this.dataListCalendar = []
         return;
       }
@@ -224,7 +225,7 @@
           }
           this.$store.dispatch('calendarView/getLecturerConfirm', data).then((data) => {
               this.lecturerConfirm = this.$store.state.calendarView.lecturerConfirm;
-              console.log(this.lecturerConfirm,'lectuerer confirm')
+              this.getListCalendar()
               this.loading = false
           }).catch(() => {
               this.loading = false
@@ -307,7 +308,6 @@
         this.dataListLecturer = this.$store.state.arrange.dataListLecturer.results
         // this.$router.push({ path: this.redirect || '/' })
         this.valueTeacher.push(this.infoUser.shortName)
-        this.getListCalendar()
       }).catch(() => {
         this.loading = false
       })
