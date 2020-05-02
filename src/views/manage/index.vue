@@ -32,7 +32,7 @@
       element-loading-text="Loading"
       border
       fit
-      stripe
+      :stripe="isActive"
       highlight-current-row
       :row-class-name="tableRowClassName"
       style="box-shadow: 0px 0px 4px -1px #d2d2d2;"
@@ -377,7 +377,8 @@ export default {
         }
       },
       valueEmail: '',
-      listLoadingRadio: false
+      listLoadingRadio: false,
+      isActive: true
     }
   },
   watch: {
@@ -385,9 +386,16 @@ export default {
       this.getDataExpected()
     },
     valueOptionStatus() {
+      console.log('valueOptionStatus', this.valueOptionStatus)
+      if (this.valueOptionStatus === 0) {
+        this.isActive = true
+      } else {
+        this.isActive = false
+      }
+
       setTimeout(()=>{
         this.fetchData(this.valueOptionStatus, this.valueEmail)
-      }, 1000);
+      }, 1000)
     },
     valueEmail() {
       setTimeout(()=>{
