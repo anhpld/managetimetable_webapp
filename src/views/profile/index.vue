@@ -8,7 +8,7 @@
         <el-input v-model="userInfo.fullName" />
       </el-form-item>
       <el-form-item label="Phone Number" prop="phone">
-        <el-input v-model="userInfo.phone" />
+        <el-input type="number" v-model="userInfo.phone" />
       </el-form-item>
       <el-form-item label="Short Name" prop="shortName">
         <el-input v-model="userInfo.shortName" />
@@ -22,7 +22,7 @@
       <el-form-item label="Department" prop="department">
         <span>{{ userInfo.department }}</span>
       </el-form-item>
-      <el-form-item label="Full Time" prop="fullTime">
+      <el-form-item v-if="userInfo.role.roleName === 'ROLE_ADMIN'" label="Full Time" prop="fullTime">
         <el-checkbox v-model="userInfo.fullTime"></el-checkbox>
       </el-form-item>
       <el-form-item v-if="userInfo.role.roleName === 'ROLE_ADMIN'" label="Min of class quota" prop="quotaClass">
