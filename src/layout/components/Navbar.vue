@@ -63,7 +63,7 @@ export default {
       await this.$store.dispatch('user/logout')
       localStorage.removeItem('infoUser')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-      const startInterval = this.$store.state.startInterval
+      const startInterval = this.$store.state.request.startInterval
       clearInterval(startInterval)
     }
   }

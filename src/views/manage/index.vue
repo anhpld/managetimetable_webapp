@@ -32,7 +32,7 @@
       element-loading-text="Loading"
       border
       fit
-      stripe
+      :stripe="isActive"
       highlight-current-row
       :row-class-name="tableRowClassName"
       style="box-shadow: 0px 0px 4px -1px #d2d2d2;"
@@ -54,7 +54,7 @@
         </template>
       </el-table-column>
       <el-table-column label="Status" align="center">
-        <template slot-scope="{row}">
+        <template slot-scope="{row}" v-if="row.status === 1">
           <el-tag v-if="row.login" class="text-success">
             Logged in
           </el-tag>
@@ -101,7 +101,7 @@
           <el-input v-model="temp.fullName" />
         </el-form-item>
         <el-form-item label="Phone Number" prop="phone" >
-          <el-input type="number" v-model="temp.phone" />
+          <el-input v-model="temp.phone" />
         </el-form-item>
         <el-form-item label="Short Name" prop="shortName">
           <el-input v-model="temp.shortName" />
@@ -302,7 +302,7 @@ export default {
         googleId: '',
         fullName: '',
         email: '',
-        phone: null,
+        phone: '',
         shortName: '',
         quotaClass: '',
         fillingExpected: '',
@@ -377,7 +377,8 @@ export default {
         }
       },
       valueEmail: '',
-      listLoadingRadio: false
+      listLoadingRadio: false,
+      isActive: true
     }
   },
   watch: {
@@ -385,14 +386,21 @@ export default {
       this.getDataExpected()
     },
     valueOptionStatus() {
+      this.getListEmail()
+      if (this.valueOptionStatus === 0) {
+        this.isActive = true
+
+      } else {
+        this.isActive = false
+      }
       setTimeout(()=>{
         this.fetchData(this.valueOptionStatus, this.valueEmail)
-      }, 1000);
+      }, 300)
     },
     valueEmail() {
       setTimeout(()=>{
         this.fetchData(this.valueOptionStatus, this.valueEmail)
-      }, 1000);
+      }, 300);
     }
   },
   created() {
@@ -465,7 +473,8 @@ export default {
             id : 2
           },
           department: this.infoUser.department,
-          email: this.valueEmail
+          email: this.valueEmail,
+          status : this.valueOptionStatus
         },
           'sortField': 'email',
           'ascending': false
@@ -473,6 +482,12 @@ export default {
       }
       this.$store.dispatch('manager/getListUser',data).then((data) => {
         var data = this.$store.state.manager.listUser.results
+        this.dataListEmail = [
+          {
+            value: '',
+            title: 'All Email'
+          }
+        ],
         data.forEach(element => {
           this.dataListEmail.push({
             'title': element.email,
@@ -586,8 +601,9 @@ export default {
       this.dialogFormAdd = true
     },
     updateData() {
+      const regexPhoneNumber = /((09|03|07|08|05)+([0-9]{8})\b)/g
       this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
+        if (valid && regexPhoneNumber.test(this.temp.phone)) {
           this.$store.dispatch('manager/updateUser', this.temp).then(() => {
             this.fetchData()
             this.dialogFormVisible = false
@@ -597,6 +613,15 @@ export default {
               type: 'success',
               duration: 2000
             })
+          })
+        }
+
+        if (valid && !regexPhoneNumber.test(this.temp.phone)) {
+          this.$confirm('Not correct phone format!.', 'Warning', {
+            confirmButtonText: 'Ok',
+            cancelButtonText: 'Cancel',
+            dangerouslyUseHTMLString: true,
+            type: 'warning'
           })
         }
       })
