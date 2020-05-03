@@ -603,7 +603,8 @@ export default {
     updateData() {
       const regexPhoneNumber = /((0)+([0-9]{9}))/g
       this.$refs['dataForm'].validate((valid) => {
-        if (valid && regexPhoneNumber.test(this.temp.phone) && this.temp.phone.length === 10 || valid && this.temp.phone.length === 0) {
+        const isValidPhone =valid && regexPhoneNumber.test(this.temp.phone) && this.temp.phone.length === 10 || valid && this.temp.phone.length === 0;
+        if (isValidPhone) {
           this.$store.dispatch('manager/updateUser', this.temp).then(() => {
             this.fetchData()
             this.dialogFormVisible = false
@@ -615,7 +616,7 @@ export default {
             })
           })
         }
-        if (valid && !regexPhoneNumber.test(this.temp.phone) || valid && this.temp.phone.length > 10) {
+        if (!isValidPhone) {
           this.$confirm('Số điện thoại không đúng định dạng.', 'Warning', {
             confirmButtonText: 'Ok',
             cancelButtonText: 'Cancel',
