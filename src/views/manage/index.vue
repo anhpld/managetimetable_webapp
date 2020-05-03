@@ -54,7 +54,7 @@
         </template>
       </el-table-column>
       <el-table-column label="Status" align="center">
-        <template slot-scope="{row}">
+        <template slot-scope="{row}" v-if="row.status === 1">
           <el-tag v-if="row.login" class="text-success">
             Logged in
           </el-tag>
@@ -101,7 +101,7 @@
           <el-input v-model="temp.fullName" />
         </el-form-item>
         <el-form-item label="Phone Number" prop="phone" >
-          <el-input type="number" v-model="temp.phone" />
+          <el-input v-model="temp.phone" />
         </el-form-item>
         <el-form-item label="Short Name" prop="shortName">
           <el-input v-model="temp.shortName" />
@@ -302,7 +302,7 @@ export default {
         googleId: '',
         fullName: '',
         email: '',
-        phone: null,
+        phone: '',
         shortName: '',
         quotaClass: '',
         fillingExpected: '',
@@ -386,21 +386,21 @@ export default {
       this.getDataExpected()
     },
     valueOptionStatus() {
-      console.log('valueOptionStatus', this.valueOptionStatus)
+      this.getListEmail()
       if (this.valueOptionStatus === 0) {
         this.isActive = true
+
       } else {
         this.isActive = false
       }
-
       setTimeout(()=>{
         this.fetchData(this.valueOptionStatus, this.valueEmail)
-      }, 1000)
+      }, 300)
     },
     valueEmail() {
       setTimeout(()=>{
         this.fetchData(this.valueOptionStatus, this.valueEmail)
-      }, 1000);
+      }, 300);
     }
   },
   created() {
@@ -473,7 +473,8 @@ export default {
             id : 2
           },
           department: this.infoUser.department,
-          email: this.valueEmail
+          email: this.valueEmail,
+          status : this.valueOptionStatus
         },
           'sortField': 'email',
           'ascending': false
@@ -481,6 +482,12 @@ export default {
       }
       this.$store.dispatch('manager/getListUser',data).then((data) => {
         var data = this.$store.state.manager.listUser.results
+        this.dataListEmail = [
+          {
+            value: '',
+            title: 'All Email'
+          }
+        ],
         data.forEach(element => {
           this.dataListEmail.push({
             'title': element.email,
@@ -608,8 +615,6 @@ export default {
             })
           })
         }
-
-        console.log('this.temp.phone.length', regexPhoneNumber.test(this.temp.phone))
         if (valid && !regexPhoneNumber.test(this.temp.phone) || valid && this.temp.phone.length > 10) {
           this.$confirm('Số điện thoại không đúng định dạng.', 'Warning', {
             confirmButtonText: 'Ok',
