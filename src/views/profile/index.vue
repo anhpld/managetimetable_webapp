@@ -26,7 +26,7 @@
         <el-checkbox v-model="userInfo.fullTime"></el-checkbox>
       </el-form-item>
       <el-form-item v-if="userInfo.role.roleName === 'ROLE_ADMIN'" label="Min of class quota" prop="quotaClass">
-        <el-input-number v-model="userInfo.quotaClass" :min="1" :max="10"></el-input-number>
+        <el-input-number v-model="userInfo.quotaClass"min="0" :max="10"></el-input-number>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">

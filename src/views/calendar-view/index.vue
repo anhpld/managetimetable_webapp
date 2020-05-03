@@ -143,8 +143,9 @@
   },
   methods: {
     getListCalendar() {
-      console.log(this.infoUser,'uuser')
-      console.log(this.lecturerConfirm.status,'status')
+      if(!this.valueTeacher.includes(this.infoUser.shortName)) {
+        this.valueTeacher.push(this.infoUser.shortName);
+      }
       if((this.lecturerConfirm.status ==='DRAFT' || !this.lecturerConfirm)  && this.infoUser.role.roleName === 'ROLE_USER'){
         this.dataListCalendar = []
         return;
@@ -307,7 +308,6 @@
       this.$store.dispatch('arrange/getDataLecturer', postData).then((data) => {
         this.dataListLecturer = this.$store.state.arrange.dataListLecturer.results
         // this.$router.push({ path: this.redirect || '/' })
-        this.valueTeacher.push(this.infoUser.shortName)
       }).catch(() => {
         this.loading = false
       })
