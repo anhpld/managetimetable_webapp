@@ -606,7 +606,7 @@ export default {
         const isValidPhone = valid && regexPhoneNumber.test(this.temp.phone) || valid && !this.temp.phone && !regexPhoneNumber.test(this.temp.phone)
         if (isValidPhone) {
           this.$store.dispatch('manager/updateUser', this.temp).then(() => {
-            this.fetchData()
+            this.fetchData(this.valueOptionStatus, this.valueEmail)
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
