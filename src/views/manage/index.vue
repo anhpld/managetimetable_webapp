@@ -606,8 +606,8 @@ export default {
     updateData() {
       const regexPhoneNumber = /((0)+([0-9]{9}))/g
       this.$refs['dataForm'].validate((valid) => {
-        const isValidPhone = valid && regexPhoneNumber.test(this.temp.phone) || valid && !this.temp.phone && !regexPhoneNumber.test(this.temp.phone)
-        if (isValidPhone) {
+        const isValidPhone = regexPhoneNumber.test(this.temp.phone) || !this.temp.phone && !regexPhoneNumber.test(this.temp.phone)
+        if (valid && isValidPhone) {
           this.$store.dispatch('manager/updateUser', this.temp).then(() => {
             this.fetchData(this.valueOptionStatus, this.valueEmail)
             this.dialogFormVisible = false
