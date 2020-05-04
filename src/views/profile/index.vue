@@ -8,7 +8,7 @@
         <el-input v-model="userInfo.fullName" />
       </el-form-item>
       <el-form-item label="Phone Number" prop="phone">
-        <el-input type="number" v-model="userInfo.phone" />
+        <el-input type="text" v-model="userInfo.phone" />
       </el-form-item>
       <el-form-item label="Short Name" prop="shortName">
         <el-input v-model="userInfo.shortName" />
@@ -54,8 +54,10 @@ export default {
   },
   methods: {
     updateData() {
+      const regexPhoneNumber = /((0)+([0-9]{9}))/g
       this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
+        const isValidPhone = regexPhoneNumber.test(this.userInfo.phone) || !this.userInfo.phone && !regexPhoneNumber.test(this.userInfo.phone)
+        if (valid && isValidPhone) {
           this.$store.dispatch('manager/updateUserLocalStorage', this.userInfo).then(() => {
             this.$notify({
               title: 'Success',
@@ -63,6 +65,15 @@ export default {
               type: 'success',
               duration: 2000
             })
+          })
+        }
+
+        if (!isValidPhone) {
+          this.$confirm('Số điện thoại không đúng định dạng.', 'Warning', {
+            confirmButtonText: 'Ok',
+            cancelButtonText: 'Cancel',
+            dangerouslyUseHTMLString: true,
+            type: 'warning'
           })
         }
       })
