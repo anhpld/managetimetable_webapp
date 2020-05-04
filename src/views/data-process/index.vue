@@ -168,6 +168,8 @@
         <TableCustom :list-slot-data="listDetailGeneration" :header="slot" group-by="lecturer" />
       </div>
     </el-dialog>
+      <TableCustom :list-slot-data="listSlotExpectedView" :header="slot" />
+      <TableCustom :list-slot-data="listSubjectExpectedView" :header="dataListSubject" />
   </div>
   </div>
 </template>
@@ -185,7 +187,7 @@ export default {
   },
   data() {
     return {
-      slot: ['M1', 'M2', 'M3', 'M4', 'M5', 'E1', 'E2', 'E3', 'E4', 'E5'],
+      slot: ['M1', 'M2', 'M3', 'E1', 'E2', 'E3', 'M4', 'M5', 'E4', 'E5'],
       file: '',
       valueOptionId: '',
       listYear: '',
@@ -243,7 +245,10 @@ export default {
       satisfactionSumCoff: 1.0,
       distanceCoff: 0,
       consicutiveClassCoff: 0,
-      fulltimeCoff: 0.5
+      fulltimeCoff: 0.5,
+      listSlotExpectedView :[],
+      listSubjectExpectedView :[],
+      dataListSubject:[]
     }
   },
   computed: {
@@ -254,6 +259,10 @@ export default {
   watch: {
     valueOptionId() {
       this.yearSelected = this.listYear.filter(i => i.id === this.valueOptionId)
+      this.getListSlotExpForView();
+      this.getListSubjectExpForView();
+      this.getDataListSubject()
+      this.getListGeneration()
     },
 
     isRunning() {
@@ -276,6 +285,7 @@ export default {
         }
       })
     },
+
 
     fulltimeCoff() {
       this.parttimeCoff = 1 - this.fulltimeCoff
@@ -300,6 +310,7 @@ export default {
   created() {
     this.getYear()
     this.getListGeneration()
+
     this.infoUser = JSON.parse(localStorage.getItem('infoUser'))
   },
   methods: {
@@ -341,9 +352,43 @@ export default {
         })
       })
     },
+    getDataListSubject() {
+      const data = {
+        params: {
+          semesterId: this.valueOptionId
+        },
+        postData: {}
+      }
+      this.$store.dispatch('arrange/getDataSubject', data).then((data) => {
+        this.dataListSubject = this.$store.state.arrange.dataListSubject.map(x=>x.code);
+         this.sort(this.dataListSubject)
+      }).catch(() => {
+        this.loading = false
+      })
+    },
 
     handleDataExpectedEdit() {
 
+    },
+    getListSlotExpForView() {
+      const paramQuery = {
+        semesterId: this.valueOptionId,
+        groupBy:'slot',
+
+      }
+      this.$store.dispatch('expected/listExpectedForView',paramQuery).then((data) => {
+        this.listSlotExpectedView = this.$store.state.expected.listExpected;
+      })
+    },
+    getListSubjectExpForView() {
+      const paramQuery = {
+        semesterId: this.valueOptionId,
+        groupBy:'subject',
+
+      }
+      this.$store.dispatch('expected/listExpectedForView',paramQuery).then((data) => {
+        this.listSubjectExpectedView = this.$store.state.expected.listExpected;
+      })
     },
 
     getYear() {
@@ -356,7 +401,11 @@ export default {
           }
         })
         this.yearSelected = this.listYear.filter(i => i.id === this.valueOptionId)
-        this.getList()
+        this.getListSlotExpForView();
+        this.getListSubjectExpForView();
+        this.getDataListSubject()
+        this.getListGeneration()
+
         this.loading = false
       }).catch(() => {
         this.loading = false
@@ -396,7 +445,19 @@ export default {
         this.loading=false;
       })
     },
-
+    sort(list) {
+      list.sort(function (a, b) {
+        const nameA = a.toUpperCase()
+        const nameB = b.toUpperCase()
+        if (nameA < nameB) {
+          return -1
+        }
+        if (nameA > nameB) {
+          return 1
+        }
+        return 0
+      })
+    },
     previewGeneration(row) {
       this.listTeach=[]
       this.selected = row

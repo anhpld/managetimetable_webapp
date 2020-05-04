@@ -10,6 +10,7 @@
                 <div v-for="item in listSlotData" :key="item" class="list-subject-content">
                     <p v-if="item.room" class="list-subject-content_name">{{ item.room }}</p>
                     <p v-if="item.slotNumber" class="list-subject-content_name">Slot {{ item.slotNumber }}</p>
+                    <p v-if="item.lecturerName" class="list-subject-content_name"> {{ item.lecturerName }}</p>
                     <ul class="table-custom__main--lever">
                         <li v-for="oneSlot in header" :key="oneSlot" class="table-custom__main--lever-item">
                             <div v-for="oneContent in item.timetable" :key="oneContent" class="table-custom__content"
@@ -50,6 +51,15 @@
                                     <span class="name-item">{{ oneContent.lecturerShortName }}</span>
                                 </div>
                             </div>
+                          <div v-for="oneContent in item.timetable" :key="oneContent"
+                               v-if="oneContent.lecturerShortName && oneContent.subjectCode === oneSlot"
+                               @click="getDataItemArrange(oneContent)">
+                            <div>
+                              <span v-if="oneContent.levelOfPreference === 0">{{ oneContent.levelOfPreference }}</span>
+                              <span v-if="oneContent.levelOfPreference !== 0" class="name-item">{{ oneContent.levelOfPreference }}</span>
+                            </div>
+                          </div>
+
                         </li>
                     </ul>
                 </div>
