@@ -253,6 +253,12 @@ export default {
       this.listTeacherConfirm = this.dataListLecturer.filter(item => {
         return this.valueTeacher.includes(item.shortName)
       })
+    },
+    optionId(){
+      this.getDataListSubject()
+      this.getDataListRoom()
+      this.getDataListClass()
+      this.getDataListLecturer()
     }
   },
 

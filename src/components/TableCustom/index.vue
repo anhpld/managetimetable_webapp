@@ -16,7 +16,7 @@
                                  v-if="oneContent.slot && oneContent.slot === oneSlot"
                                  @click="getDataItemArrange(oneContent)"
                                  v-bind:class="{active : oneContent.id===dataChange.id}">
-                                <div>
+                                <div >
                                     <span>{{ oneContent.className }}</span>
                                     <span>{{ oneContent.subjectCode }}</span>
                                     <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='DRAFT'" class="name-item" >{{ oneContent.room }}</span>

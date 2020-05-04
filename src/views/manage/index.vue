@@ -43,6 +43,9 @@
       <el-table-column label="Full Name">
         <template slot-scope="{row}">{{ row.fullName }}</template>
       </el-table-column>
+      <el-table-column label="Short Name">
+        <template slot-scope="{row}">{{ row.shortName }}</template>
+      </el-table-column>
       <el-table-column label="Expected" align="center">
         <template v-if="row.login" slot-scope="{row}">
           <el-tag v-if="row.fillingExpected && row.status === 'ACTIVATE'" class="text-success link-type" @click="infoexpected(row)">
@@ -54,7 +57,7 @@
         </template>
       </el-table-column>
       <el-table-column label="Status" align="center">
-        <template slot-scope="{row}" v-if="row.status === 1">
+        <template slot-scope="{row}" v-if="row.status === 'ACTIVATE'">
           <el-tag v-if="row.login" class="text-success">
             Logged in
           </el-tag>

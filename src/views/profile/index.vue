@@ -31,7 +31,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="updateData()">
-        Edit
+        SAVE
       </el-button>
     </div>
   </div>
