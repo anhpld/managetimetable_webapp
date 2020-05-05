@@ -24,7 +24,7 @@
     </div>
     <div class="content">
       <span class="title">Decision support system for timetabling:</span>
-      <span class="title" style="padding-left: 70px">Select Model</span>
+      <span class="title" style="padding-left: 70px">SELECT MODEL</span>
       <el-select v-model="valueModel" placeholder="Select" class="arrange-item-select">
         <el-option
           v-for="item in listModel"
