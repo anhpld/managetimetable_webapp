@@ -135,6 +135,16 @@
 
       }
     },
+      watch: {
+
+          optionId(){
+              this.getDataListSubject()
+              this.getDataListRoom()
+              this.getDataListClass()
+              this.getDataListLecturer()
+              this.getLecturerConfirm()
+          }
+      },
 
     created() {
       this.infoUser = JSON.parse(localStorage.getItem('infoUser'))

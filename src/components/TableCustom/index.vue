@@ -23,10 +23,10 @@
                                     <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='DRAFT'" class="name-item" >{{ oneContent.room }}</span>
                                     <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='PUBLIC'" class="name-item-public" >{{ oneContent.room }}</span>
                                   <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='FINAL'" class="name-item-final" >{{ oneContent.room }}</span>
-                                  <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='REJECT'" class="name-item-reject" >
-                                    <el-tooltip content="oneContent.resson" placement="bottom" effect="light">
-                                      <el-button>{{ oneContent.room }}</el-button>
-                                    </el-tooltip>
+                                  <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='REJECT'" class="name-item-reject" > {{ oneContent.room }}
+                                   <div class="content-tooltip">
+                                      {{ oneContent.reason}}
+                                    </div>
                                   </span>
                                     <span v-if="groupBy==='room' && oneContent.timetableStatus==='DRAFT'" class="name-item" >{{ oneContent.lecturerShortName }}</span>
                                    <span v-if="groupBy==='room' && oneContent.timetableStatus==='PUBLIC'" class="name-item-public" >{{ oneContent.lecturerShortName }}</span>

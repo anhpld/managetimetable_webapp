@@ -71,6 +71,7 @@ export default {
         if (!isValidPhone) {
           this.$confirm('Số điện thoại không đúng định dạng.', 'Warning', {
             confirmButtonText: 'Ok',
+
             cancelButtonText: 'Cancel',
             dangerouslyUseHTMLString: true,
             type: 'warning'

@@ -122,7 +122,7 @@
           <el-checkbox v-model="temp.fullTime"></el-checkbox>
         </el-form-item>
         <el-form-item label="Min of class quota" prop="quotaClass">
-          <el-input-number v-model="temp.quotaClass" :min="1" :max="10"></el-input-number>
+          <el-input-number v-model="temp.quotaClass" :min="0" :max="10"></el-input-number>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
