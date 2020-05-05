@@ -169,6 +169,7 @@
             <span class="reject">Reject</span>
             <span class="draft">Draft</span>
           </div>
+          <el-button type="primary" @click="getDataListSlot" class="ml-20">Viell All Expected</el-button>
         </div>
         <TableCustom
           :list-slot-data="listSlot"
@@ -260,6 +261,7 @@ export default {
       this.getDataListSlot()
     },
     valueTeacher() {
+      const heightHeader = document.querySelector('.arrange-header').offsetWidth
       this.listTeacherConfirm = this.dataListLecturer.filter(item => {
         return this.valueTeacher.includes(item.shortName)
       })
@@ -708,7 +710,7 @@ export default {
         margin-right: 20px;
         border-radius: 4px;
         position: fixed;
-        margin-top: -70px;
+        margin-top: -48px;
       }
 
       &_nameObject {
@@ -788,8 +790,12 @@ export default {
       .group-by {
         margin-bottom: 10px;
         position: fixed;
-        top: 182px;
+        top: 190px;
         display: block;
+
+        .ml-20 {
+          margin-left: 20px;
+        }
 
         .wrapper-color {
           display: inline-block;
