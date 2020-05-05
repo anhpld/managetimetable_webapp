@@ -179,8 +179,7 @@
         <TableCustom :list-slot-data="listDetailGeneration" :header="slot" group-by="lecturer" />
       </div>
     </el-dialog>
-      <TableCustom :list-slot-data="listSlotExpectedView" :header="slot" />
-      <TableCustom :list-slot-data="listSubjectExpectedView" :header="dataListSubject" />
+
   </div>
   </div>
 </template>
@@ -257,9 +256,7 @@ export default {
       distanceCoff: 0,
       consicutiveClassCoff: 0,
       fulltimeCoff: 0.5,
-      listSlotExpectedView :[],
-      listSubjectExpectedView :[],
-      dataListSubject:[],
+
         valueModel:0,
         listModel:[
             {
@@ -284,9 +281,7 @@ export default {
       },
     valueOptionId() {
       this.yearSelected = this.listYear.filter(i => i.id === this.valueOptionId)
-      this.getListSlotExpForView();
-      this.getListSubjectExpForView();
-      this.getDataListSubject()
+
       this.getListGeneration()
     },
 
@@ -377,45 +372,12 @@ export default {
         })
       })
     },
-    getDataListSubject() {
-      const data = {
-        params: {
-          semesterId: this.valueOptionId
-        },
-        postData: {}
-      }
-      this.$store.dispatch('arrange/getDataSubject', data).then((data) => {
-        this.dataListSubject = this.$store.state.arrange.dataListSubject.map(x=>x.code);
-         this.sort(this.dataListSubject)
-          this.loading=false;
-      }).catch(() => {
-        this.loading = false
-      })
-    },
+
 
     handleDataExpectedEdit() {
 
     },
-    getListSlotExpForView() {
-      const paramQuery = {
-        semesterId: this.valueOptionId,
-        groupBy:'slot',
 
-      }
-      this.$store.dispatch('expected/listExpectedForView',paramQuery).then((data) => {
-        this.listSlotExpectedView = this.$store.state.expected.listExpected;
-      })
-    },
-    getListSubjectExpForView() {
-      const paramQuery = {
-        semesterId: this.valueOptionId,
-        groupBy:'subject',
-
-      }
-      this.$store.dispatch('expected/listExpectedForView',paramQuery).then((data) => {
-        this.listSubjectExpectedView = this.$store.state.expected.listExpected;
-      })
-    },
 
     getYear() {
       this.loading = true
@@ -427,9 +389,7 @@ export default {
           }
         })
         this.yearSelected = this.listYear.filter(i => i.id === this.valueOptionId)
-        this.getListSlotExpForView();
-        this.getListSubjectExpForView();
-        this.getDataListSubject()
+
         this.getListGeneration()
 
 

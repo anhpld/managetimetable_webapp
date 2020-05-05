@@ -177,8 +177,14 @@
           :data-swap="dataSwap"
           @dataEdit="getDataItemArrange"
         />
+
+        //day chi oi
+        <TableCustom :list-slot-data="listSlotExpectedView" :header="slot" />
+        <TableCustom :list-slot-data="listSubjectExpectedView" :header="dataListSubject" />
       </div>
+
     </div>
+
 
   </div>
 </template>
@@ -241,7 +247,11 @@ export default {
           'value': 'DRAFT'
         }
       ],
-      valueStatus: ''
+      valueStatus: '',
+      listSlotExpectedView :[],
+      listSubjectExpectedView :[],
+      dataListSubject:[],
+
     }
   },
 
@@ -259,6 +269,11 @@ export default {
       this.getDataListRoom()
       this.getDataListClass()
       this.getDataListLecturer()
+
+      this.getListSlotExpForView();
+      this.getListSubjectExpForView();
+      this.getDataListSubject()
+
     }
   },
 
@@ -282,6 +297,10 @@ export default {
         this.getDataListSubject()
         this.getDataListRoom()
         this.getDataListClass()
+
+        this.getListSlotExpForView();
+        this.getListSubjectExpForView();
+        this.getDataListSubject()
       }).catch(() => {
         this.loading = false
       })
@@ -596,27 +615,42 @@ export default {
         return true
       }
       return false
-    }
+    },
+    getListSlotExpForView() {
+      const paramQuery = {
+        semesterId: this.optionId,
+        groupBy:'slot',
 
-    //
-    // saveSwap() {
-    //   this.$store.dispatch('arrange/swapData', this.listId).then(() => {
-    //     this.listId = []
-    //     this.dataSwap = []
-    //     this.isSwap = false
-    //     this.getDataListSlot()
-    //   })
-    // },
-    //
-    // getDataSwap(data) {
-    //   this.dataSwap = data
-    //   if (this.dataSwap.length === 2) {
-    //     this.isSwap = true
-    //   } else {
-    //     this.isSwap = false
-    //   }
-    //   this.listId = this.dataSwap.map(x => x.id)
-    // }
+      }
+      this.$store.dispatch('expected/listExpectedForView',paramQuery).then((data) => {
+        this.listSlotExpectedView = this.$store.state.expected.listExpected;
+      })
+    },
+    getListSubjectExpForView() {
+      const paramQuery = {
+        semesterId: this.optionId,
+        groupBy:'subject',
+
+      }
+      this.$store.dispatch('expected/listExpectedForView',paramQuery).then((data) => {
+        this.listSubjectExpectedView = this.$store.state.expected.listExpected;
+      })
+    },
+    getDataListSubject() {
+      const data = {
+        params: {
+          semesterId: this.optionId
+        },
+        postData: {}
+      }
+      this.$store.dispatch('arrange/getDataSubject', data).then((data) => {
+        this.dataListSubject = this.$store.state.arrange.dataListSubject.map(x=>x.code);
+        this.sort(this.dataListSubject)
+        this.loading=false;
+      }).catch(() => {
+        this.loading = false
+      })
+    },
   }
 }
 </script>
