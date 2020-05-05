@@ -39,11 +39,11 @@
         <div class="content-input-1">
           <div class="mt-1">
             <label class="title">Mutation rate</label>
-            <el-input-number v-model="mutationRate" :disabled="valueModel === 1"  :min="0" :max="1" precision="2" step="0.01"></el-input-number>
+            <el-input-number v-model="mutationRate"   :min="0" :max="1" precision="2" step="0.01"></el-input-number>
           </div>
           <div class="mt-1 border-bottom">
             <label class="title">Population size</label>
-            <el-input-number v-model="populationSize" :disabled="valueModel === 1"  :min="50"  precision="0"></el-input-number>
+            <el-input-number v-model="populationSize"   :min="50"  precision="0"></el-input-number>
           </div>
           <div class="mt-2">
             <label class="title">Hard Constraint Coefficient</label>
@@ -75,21 +75,21 @@
         <div class="content-input-2">
           <div class="mt-1">
             <label class="title">Tournament size</label>
-            <el-input-number v-model="tournamentSize" :disabled="valueModel === 1"  :min="1"  precision="2"></el-input-number>
+            <el-input-number v-model="tournamentSize"   :min="1"  precision="2"></el-input-number>
           </div>
           <div class="mt-1 border-bottom">
             <label class="title">Convergence Check Range</label>
-            <el-input-number v-model="convergenceCheckRange"  :disabled="valueModel === 1" :min="1" precision="0"></el-input-number>
+            <el-input-number v-model="convergenceCheckRange"   :min="1" precision="0"></el-input-number>
           </div>
 
           <div class="mt-3">
             <label class="title">Parttime Coefficient</label>
-            <el-input-number v-model="parttimeCoff" :disabled="valueModel === 1"  :min="0" :max="1"  precision="2" step="0.01"></el-input-number>
+            <el-input-number v-model="parttimeCoff"   :min="0" :max="1"  precision="2" step="0.01"></el-input-number>
           </div>
 
           <div class="mt-3 border-bottom">
             <label class="title">Fulltime Coefficient</label>
-            <el-input-number v-model="fulltimeCoff" :disabled="valueModel === 1"  :min="0" :max="1" precision="2" step="0.01"></el-input-number>
+            <el-input-number v-model="fulltimeCoff"  :min="0" :max="1" precision="2" step="0.01"></el-input-number>
           </div>
 
           <div class="mt-2">
@@ -526,11 +526,17 @@ export default {
         } else {
               data = {
                 postData: {
-                    stepGeneration: this.stepGen,
                     modelType:this.valueModel,
+                    mutationRate: parseFloat(this.mutationRate.toFixed(2)),
+                    populationSize: parseFloat(this.populationSize),
+                    tournamentSize: parseFloat(this.tournamentSize.toFixed(2)),
+                    convergenceCheckRange: parseFloat(this.convergenceCheckRange),
+                    stepGeneration: this.stepGen,
                     cofficient: {
                         hardConstraintCoff: parseFloat(this.hardConstraintCoff.toFixed(2)),
                         softConstraintCoff: parseFloat(this.softConstraintCoff.toFixed(2)),
+                        parttimeCoff: parseFloat(this.parttimeCoff.toFixed(2)),
+                        fulltimeCoff: parseFloat(this.fulltimeCoff.toFixed(2))
                     }
 
                 },
