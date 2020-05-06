@@ -182,12 +182,12 @@
 
     </div>
 
-    <el-dialog title="View All" :visible.sync="dialogViewAll" class="view-all">
+    <el-dialog title="View All Expected" :visible.sync="dialogViewAll" class="view-all">
       <el-tabs type="border-card">
-        <el-tab-pane label="User">
+        <el-tab-pane label="SLOT">
           <TableCustom :list-slot-data="listSlotExpectedView" :header="slot" />
         </el-tab-pane>
-        <el-tab-pane label="Config">
+        <el-tab-pane label="SUBJECT">
           <TableCustom :list-slot-data="listSubjectExpectedView" :header="dataListSubject" />
         </el-tab-pane>
       </el-tabs>
