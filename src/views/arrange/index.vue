@@ -169,7 +169,7 @@
             <span class="reject">Reject</span>
             <span class="draft">Draft</span>
           </div>
-          <el-button type="primary" @click="getDataListSlot" class="ml-20">Viell All Expected</el-button>
+          <el-button type="primary" @click="dialogViewAll = true" class="ml-20">Viell All Expected</el-button>
         </div>
         <TableCustom
           :list-slot-data="listSlot"
@@ -178,15 +178,20 @@
           :data-swap="dataSwap"
           @dataEdit="getDataItemArrange"
         />
-
-        //day chi oi
-        <TableCustom :list-slot-data="listSlotExpectedView" :header="slot" />
-        <TableCustom :list-slot-data="listSubjectExpectedView" :header="dataListSubject" />
       </div>
 
     </div>
 
-
+    <el-dialog title="View All Expected" :visible.sync="dialogViewAll" class="view-all">
+      <el-tabs type="border-card">
+        <el-tab-pane label="SLOT">
+          <TableCustom :list-slot-data="listSlotExpectedView" :header="slot" />
+        </el-tab-pane>
+        <el-tab-pane label="SUBJECT">
+          <TableCustom :list-slot-data="listSubjectExpectedView" :header="dataListSubject" />
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
   </div>
 </template>
 
@@ -252,7 +257,7 @@ export default {
       listSlotExpectedView :[],
       listSubjectExpectedView :[],
       dataListSubject:[],
-
+      dialogViewAll: false
     }
   },
 
@@ -653,6 +658,9 @@ export default {
         this.loading = false
       })
     },
+    showViewAll() {
+      this.dialogViewAll = true
+    }
   }
 }
 </script>
@@ -660,6 +668,12 @@ export default {
 <style lang="scss">
   .arrange {
     display: block;
+
+    .view-all {
+      .el-dialog {
+        width: 80%;
+      }
+    }
 
     .name-subject {
       padding-left: 25px;

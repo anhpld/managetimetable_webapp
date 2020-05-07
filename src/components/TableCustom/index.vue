@@ -53,7 +53,7 @@
                             </div>
                           <div v-for="oneContent in item.timetable" :key="oneContent"
                                v-if="oneContent.lecturerShortName && oneContent.subjectCode === oneSlot"
-                               @click="getDataItemArrange(oneContent)">
+                               @click="getDataItemArrange(oneContent)" class="text-center">
                             <div>
                               <span v-if="oneContent.levelOfPreference === 0">{{ oneContent.levelOfPreference }}</span>
                               <span v-if="oneContent.levelOfPreference !== 0" class="name-item">{{ oneContent.levelOfPreference }}</span>
@@ -290,6 +290,10 @@ export default {
             &:nth-child(odd) {
                 background: white;
             }
+        }
+
+        .text-center {
+          text-align: center;
         }
     }
 
