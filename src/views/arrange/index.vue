@@ -82,23 +82,17 @@
       <!--          :value="item.value">-->
       <!--        </el-option>-->
       <!--      </el-select>-->
-      <el-button type="primary" @click="getDataListSlot">Search</el-button>
+      <el-button type="primary" @click="getDataListSlot" :disabled="yearSelected[0] && !yearSelected[0].hasData" >Search</el-button>
+
     </div>
-    <div class="arrange-content">
+    <span v-if="yearSelected[0] && !yearSelected[0].hasData" class="title-warning" >Don't have data for this semester! Please go to <span
+      style="font-weight: 700">DSST</span> for import data !</span>
+    <div v-if="yearSelected[0] && yearSelected[0].hasData" class="arrange-content">
       <div v-loading="loading" class="arrange-content-detail">
         <p class="title">Timetable Modify</p>
-        <p class="arrange-content_nameObject">Subject<span class="name-subject">{{ dataDetail.subjectCode }}</span></p>
-        <div class="wrapper-input">
-          <span class="title-name">Room</span>
-          <el-select v-model="modelRoom" filterable placeholder="Select" class="content-input" :disabled="!isEdit">
-            <el-option
-              v-for="item in dataListClassDetail"
-              :key="item.id"
-              :label="item.name"
-              :value="item.name"
-            />
-          </el-select>
-        </div>
+        <p class="arrange-content_nameObject">Subject <span class="name-subject" style="margin-left: 8px">{{ dataDetail.subjectCode }}</span></p>
+        <p class="arrange-content_nameObject">Room  <span class="name-subject" style="margin-left: 20px">{{ dataDetail.room }}</span></p>
+
 
         <div class="wrapper-input">
           <span class="title-name">Lecturer</span>
@@ -140,9 +134,32 @@
             />
           </el-select>
         </div>
+        <div class="button">
+          <el-button type="primary" :disabled="!isEdit || dataDetail.lecturerShortName === ' NOT_ASSIGN'" @click="swap('LECTURER')">
+            Swap
+          </el-button>
+        </div>
+        <div class="wrapper-input">
+          <span class="title-name">Room Swap</span>
+          <el-select
+            v-model="idTimetableSwap"
+            filterable
+            placeholder="Select Room "
+            class="content-input"
+            :disabled="!isEdit"
+          >
+            <el-option
+
+              v-for="item in roomForSwap"
+              :key="item.id"
+              :label="item.room"
+              :value="item.id"
+            />
+          </el-select>
+        </div>
 
         <div class="button">
-          <el-button type="primary" :disabled="!isEdit || dataDetail.lecturerShortName === ' NOT_ASSIGN'" @click="swap">
+          <el-button type="primary" :disabled="!isEdit " @click="swap('ROOM')">
             Swap
           </el-button>
         </div>
@@ -226,14 +243,14 @@ export default {
       modelSubject: '',
       isEdit: false,
       dataListTeacherDetail: [],
-      dataListClassDetail: [],
+      // dataListClassDetail: [],
       listTeacherConfirm: [],
       groupBy: 'room',
       dataSwap: [],
       isSwap: false,
       listId: [],
-      dataListTeacherSwap: [],
       lecturerForSwap: [],
+      roomForSwap:[],
       idTimetableSwap: '',
       listStatus: [
         {
@@ -257,6 +274,7 @@ export default {
       listSlotExpectedView :[],
       listSubjectExpectedView :[],
       dataListSubject:[],
+       yearSelected:[],
       dialogViewAll: false
     }
   },
@@ -272,6 +290,10 @@ export default {
       })
     },
     optionId(){
+        this.yearSelected = this.listYear.filter(i => i.id === this.optionId)
+        if (!this.yearSelected[0].hasData) {
+            return;
+        }
       this.getDataListSubject()
       this.getDataListRoom()
       this.getDataListClass()
@@ -293,12 +315,18 @@ export default {
     getYear() {
       this.loading = true
       this.$store.dispatch('expected/getListYear').then((data) => {
+
+
         this.listYear = this.$store.state.expected.listYear
         this.listYear.forEach(element => {
           if (element.now) {
             this.optionId = element.id
           }
         })
+          this.yearSelected = this.listYear.filter(i => i.id === this.optionId)
+          if (!this.yearSelected[0].hasData) {
+              return;
+          }
         this.getDataListLecturer()
         this.getDataListSlot()
         this.getDataListSubject()
@@ -326,36 +354,53 @@ export default {
         this.loading = false
       })
     },
-    getListForSwap() {
+      getListForSwap() {
       const newArray = this.listSlot.flatMap(x => x.timetable)
       this.lecturerForSwap = newArray.filter(i => i.slot === this.dataDetail.slot && i.lecturerShortName !== ' NOT_ASSIGN' &&
           i.lecturerShortName !== this.dataDetail.lecturerShortName)
     },
-    swap() {
+      getListForSwapRoom() {
+          const newArray = this.listSlot.flatMap(x => x.timetable)
+          this.roomForSwap = newArray.filter(i => i.slot === this.dataDetail.slot && i.room !== 'NOT_ASSIGN' &&
+              i.room !== this.dataDetail.room)
+
+      },
+    swap(type) {
       const lecturerPublic = []
       const newArray = this.listSlot.flatMap(x => x.timetable)
       const timetableDetail = newArray.filter(x => x.id === this.idTimetableSwap)[0]
+
+
       if (timetableDetail.timetableStatus !== 'DRAFT') {
         lecturerPublic.push(timetableDetail.lecturerShortName)
       }
       if (this.dataDetail.timetableStatus !== 'DRAFT') {
         lecturerPublic.push(this.dataDetail.lecturerShortName)
       }
-      if (lecturerPublic.length > 0) {
+      const data = {
+          postData: [this.dataDetail.id, this.idTimetableSwap],
+          params:{
+              type:type
+          }
+
+      }
+      if (lecturerPublic.length > 0 && type === 'LECTURER') {
         this.$confirm('Timetable status  of lecturer <strong> \' ' + lecturerPublic + '\'</strong> is not <span style="color: #409EFF;"> DRAFT</span>,  you must send request again after edit. Do you still want edit?', 'Warning', {
           confirmButtonText: 'YES',
           cancelButtonText: 'NO',
           dangerouslyUseHTMLString: true,
           type: 'warning'
         }).then(async() => {
-          this.$store.dispatch('arrange/swapData', [this.dataDetail.id, this.idTimetableSwap]).then(() => {
+          this.$store.dispatch('arrange/swapData', data).then(() => {
             this.getListForSwap()
+            this.getListForSwapRoom()
             this.resetModifier()
           })
         })
       } else {
-        this.$store.dispatch('arrange/swapData', [this.dataDetail.id, this.idTimetableSwap]).then(() => {
+        this.$store.dispatch('arrange/swapData', data).then(() => {
           this.getListForSwap()
+          this.getListForSwapRoom()
           this.resetModifier()
         })
       }
@@ -529,28 +574,28 @@ export default {
       })
     },
 
-    getDataListClassDetail() {
-      const data = {
-        params: {
-          timetableDetailId: this.dataDetail.id
-        },
-        postData: {
-          criteria: {
-            status: 0,
-            login: true
-          }
-        }
-      }
-      this.$store.dispatch('arrange/getDataClassDetail', data).then((data) => {
-        this.dataListClassDetail = this.$store.state.arrange.dataListClassDetail
-        this.dataListClassDetail.unshift({
-          id: null,
-          name: 'NOT_ASSIGN'
-        })
-      }).catch(() => {
-        this.loading = false
-      })
-    },
+    // getDataListClassDetail() {
+    //   const data = {
+    //     params: {
+    //       timetableDetailId: this.dataDetail.id
+    //     },
+    //     postData: {
+    //       criteria: {
+    //         status: 0,
+    //         login: true
+    //       }
+    //     }
+    //   }
+    //   this.$store.dispatch('arrange/getDataClassDetail', data).then((data) => {
+    //     this.dataListClassDetail = this.$store.state.arrange.dataListClassDetail
+    //     this.dataListClassDetail.unshift({
+    //       id: null,
+    //       name: 'NOT_ASSIGN'
+    //     })
+    //   }).catch(() => {
+    //     this.loading = false
+    //   })
+    // },
 
     getDataListTeacherDetail() {
       const data = {
@@ -581,9 +626,9 @@ export default {
       this.modelRoom = itemSlot.room
       this.modelLecturer = itemSlot.lecturerShortName
       this.getListForSwap()
-
+      this.getListForSwapRoom()
       this.getDataListTeacherDetail()
-      this.getDataListClassDetail()
+      // this.getDataListClassDetail()
     },
     addConfirm() {
       this.$confirm('Do you want send request confirm to :<strong> \'' + this.listTeacherConfirm.map(x => x.shortName) + '\'</strong> ?', 'Warning', {
@@ -674,7 +719,9 @@ export default {
         width: 80%;
       }
     }
-
+    .arrange-content_nameObject{
+        display: block;
+     }
     .name-subject {
       padding-left: 25px;
     }
@@ -737,7 +784,14 @@ export default {
     &-item-select {
       text-transform: capitalize;
     }
-
+    .title-warning {
+      color: red;
+      text-transform: uppercase;
+      font-weight: 500;
+      width: 800px;
+      display: inline-block;
+      padding-top: 120px;
+    }
     &-header {
       display: flex;
       flex-wrap: wrap;

@@ -685,12 +685,13 @@ export default {
       })
     },
     getDataExpected() {
-      this.listLoading = true;
+
       this.expectedSlots = []
       this.yearSelected = this.listYear.filter(i => i.id === this.valueOption)
       if (!this.yearSelected[0].hasData) {
         return;
       }
+      this.listLoading = true;
       this.dataExpectedEdit = {
         expectedSubjects: [],
         expectedSlots: [],
