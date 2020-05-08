@@ -186,7 +186,8 @@
             <span class="reject">Reject</span>
             <span class="draft">Draft</span>
           </div>
-          <el-button type="primary" @click="dialogViewAll = true" class="ml-20">Viell All Expected</el-button>
+          <el-button type="primary" @click="dialogViewAll = true" class="ml-20">View All Expected</el-button>
+          <el-button type="primary"  class="ml-20" @click="exportFile">Export to excel</el-button>
         </div>
         <TableCustom
           :list-slot-data="listSlot"
@@ -335,7 +336,6 @@ export default {
 
         this.getListSlotExpForView();
         this.getListSubjectExpForView();
-        this.getDataListSubject()
       }).catch(() => {
         this.loading = false
       })
@@ -688,24 +688,29 @@ export default {
         this.listSubjectExpectedView = this.$store.state.expected.listExpected;
       })
     },
-    getDataListSubject() {
-      const data = {
-        params: {
-          semesterId: this.optionId
-        },
-        postData: {}
-      }
-      this.$store.dispatch('arrange/getDataSubject', data).then((data) => {
-        this.dataListSubject = this.$store.state.arrange.dataListSubject.map(x=>x.code);
-        this.sort(this.dataListSubject)
-        this.loading=false;
-      }).catch(() => {
-        this.loading = false
-      })
-    },
     showViewAll() {
       this.dialogViewAll = true
-    }
+    },
+      exportFile(){
+        const data ={}
+          this.$store.dispatch('request/exportFile', data).then((data) => {
+              this.loading = false
+              const url = window.URL.createObjectURL(new Blob([this.$store.state.request.fileExport]));
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', 'file.xls');
+              document.body.appendChild(link);
+              link.click();
+              this.$notify({
+                  title: 'Success',
+                  message: 'Submit file success',
+                  type: 'success',
+                  duration: 2000
+              })
+          }).catch(() => {
+              this.loading = false
+          })
+      }
   }
 }
 </script>
