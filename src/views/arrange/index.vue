@@ -136,7 +136,7 @@
         </div>
         <div class="button">
           <el-button type="primary" :disabled="!isEdit || dataDetail.lecturerShortName === ' NOT_ASSIGN'" @click="swap('LECTURER')">
-            Swap
+            Swap Lecturer
           </el-button>
         </div>
         <div class="wrapper-input">
@@ -160,7 +160,7 @@
 
         <div class="button">
           <el-button type="primary" :disabled="!isEdit " @click="swap('ROOM')">
-            Swap
+            Swap Room
           </el-button>
         </div>
         <p class="title" >Request Confirm
@@ -525,10 +525,6 @@ export default {
       }
       this.$store.dispatch('arrange/getDataRoom', data).then((data) => {
         this.dataListRoom = this.$store.state.arrange.dataListRoom
-        this.dataListRoom.unshift({
-          id: null,
-          name: 'NOT_ASSIGN'
-        })
       }).catch(() => {
         this.loading = false
       })
@@ -627,6 +623,7 @@ export default {
       this.getListForSwap()
       this.getListForSwapRoom()
       this.getDataListTeacherDetail()
+      this.idTimetableSwap = ''
       // this.getDataListClassDetail()
     },
     addConfirm() {
