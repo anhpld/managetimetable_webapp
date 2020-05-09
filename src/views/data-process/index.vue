@@ -518,7 +518,7 @@ export default {
         this.$store.dispatch('request/startArrange', data).then(() => {
           this.loading = false
         }).catch(() => {
-          this.isRunning = true
+          this.isRunning = false
           this.loading = false
           this.loadingGeneration = false
         })

@@ -206,7 +206,7 @@
           <TableCustom :list-slot-data="listSlotExpectedView" :header="slot" />
         </el-tab-pane>
         <el-tab-pane label="SUBJECT">
-          <TableCustom :list-slot-data="listSubjectExpectedView" :header="dataListSubject" />
+          <TableCustom :list-slot-data="listSubjectExpectedView" :header="dataListSubject.map(x=>x.code)" />
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
@@ -302,7 +302,6 @@ export default {
 
       this.getListSlotExpForView();
       this.getListSubjectExpForView();
-      this.getDataListSubject()
 
     }
   },
@@ -692,18 +691,23 @@ export default {
       this.dialogViewAll = true
     },
       exportFile(){
-        const data ={}
+        const data ={
+          params : {
+            semesterId: this.optionId
+          }
+        }
           this.$store.dispatch('request/exportFile', data).then((data) => {
               this.loading = false
               const url = window.URL.createObjectURL(new Blob([this.$store.state.request.fileExport]));
               const link = document.createElement('a');
               link.href = url;
-              link.setAttribute('download', 'file.xls');
+              const fileName = this.yearSelected[0].season +' '+this.yearSelected[0].year+'.xls'
+              link.setAttribute('download', fileName);
               document.body.appendChild(link);
               link.click();
               this.$notify({
                   title: 'Success',
-                  message: 'Submit file success',
+                  message: 'Export file success',
                   type: 'success',
                   duration: 2000
               })

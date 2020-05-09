@@ -16,7 +16,7 @@ export function exportFile(data) {
     url: '/requests/export',
     method: 'post',
 
-    params: data.data,
+    params: data.data.params,
     responseType:'blob'
   })
 }
