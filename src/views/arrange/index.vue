@@ -179,7 +179,7 @@
       <div class="arrange-table">
         <div class="group-by">
           <label>Group By :</label>
-          <el-select v-model="groupBy" placeholder="Select">
+          <el-select style="width: 100px" v-model="groupBy" placeholder="Select">
             <el-option value="lecturer" class="arrange-item-select">Lecturer</el-option>
             <el-option value="room" class="arrange-item-select">Room</el-option>
           </el-select>
@@ -926,7 +926,9 @@ export default {
       padding-left: 10px;
 
       .group-by {
-        margin-bottom: 10px;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 5px;
         position: fixed;
         top: 190px;
         display: block;
