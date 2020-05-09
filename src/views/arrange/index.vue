@@ -89,94 +89,97 @@
       style="font-weight: 700">DSST</span> for import data !</span>
     <div v-if="yearSelected[0] && yearSelected[0].hasData" class="arrange-content">
       <div v-loading="loading" class="arrange-content-detail">
-        <p class="title">Timetable Modify</p>
-        <p class="arrange-content_nameObject">Subject <span class="name-subject" style="margin-left: 8px">{{ dataDetail.subjectCode }}</span></p>
-        <p class="arrange-content_nameObject">Room  <span class="name-subject" style="margin-left: 20px">{{ dataDetail.room }}</span></p>
+        <div>
+          <p class="title">Timetable Modify</p>
+            <p class="arrange-content_nameObject">Subject <span class="name-subject" style="margin-left: 8px">{{ dataDetail.subjectCode }}</span></p>
+            <p class="arrange-content_nameObject">Room  <span class="name-subject" style="margin-left: 20px">{{ dataDetail.room }}</span></p>
 
 
-        <div class="wrapper-input">
-          <span class="title-name">Lecturer</span>
-          <el-select
-            v-model="modelLecturer"
-            filterable
-            placeholder="Select Lecturer"
-            class="content-input"
-            :disabled="!isEdit"
-          >
-            <el-option
-              v-for="item in dataListTeacherDetail"
-              :key="item.id"
-              :label="item.shortName"
-              :value="item.shortName"
-            />
-          </el-select>
+            <div class="wrapper-input">
+              <span class="title-name">Lecturer</span>
+              <el-select
+                v-model="modelLecturer"
+                filterable
+                placeholder="Select Lecturer"
+                class="content-input"
+                :disabled="!isEdit"
+              >
+                <el-option
+                  v-for="item in dataListTeacherDetail"
+                  :key="item.id"
+                  :label="item.shortName"
+                  :value="item.shortName"
+                />
+              </el-select>
+            </div>
+
+            <div class="button">
+              <el-button :disabled="!isEdit" type="primary" @click="saveCalendar">Edit</el-button>
+            </div>
+            <p class="title">Swap timetable</p>
+            <div class="wrapper-input">
+              <span class="title-name">Lecturer Swap</span>
+              <el-select
+                v-model="idTimetableSwap"
+                filterable
+                placeholder="Select Lecturer "
+                class="content-input"
+                :disabled="!isEdit"
+              >
+                <el-option
+
+                  v-for="item in lecturerForSwap"
+                  :key="item.id"
+                  :label="item.lecturerShortName"
+                  :value="item.id"
+                />
+              </el-select>
+            </div>
+            <div class="button">
+              <el-button type="primary" :disabled="!isEdit || dataDetail.lecturerShortName === ' NOT_ASSIGN'" @click="swap('LECTURER')">
+                Swap Lecturer
+              </el-button>
+            </div>
+            <div class="wrapper-input">
+              <span class="title-name">Room Swap</span>
+              <el-select
+                v-model="idTimetableSwap"
+                filterable
+                placeholder="Select Room "
+                class="content-input"
+                :disabled="!isEdit"
+              >
+                <el-option
+
+                  v-for="item in roomForSwap"
+                  :key="item.id"
+                  :label="item.room"
+                  :value="item.id"
+                />
+              </el-select>
+            </div>
+
+            <div class="button">
+              <el-button type="primary" :disabled="!isEdit " @click="swap('ROOM')">
+                Swap Room
+              </el-button>
+            </div>
+            <p class="title" >Request Confirm
+              <el-tooltip placement="bottom" effect="light">
+                <div slot="content">Select teacher in search section to send request confirm.<br/><u>Note:</u> Only available for status. <strong>DRAFT</strong></div>
+              <i class="el-icon-info"></i>
+            </el-tooltip></p>
+            <div class="button">
+              <el-button type="primary" :disabled="isDisableConfirm()" @click="addConfirm">Request Lecturer Confirm
+              </el-button>
+            </div>
+          </div>
         </div>
 
-        <div class="button">
-          <el-button :disabled="!isEdit" type="primary" @click="saveCalendar">Edit</el-button>
-        </div>
-        <p class="title">Swap timetable</p>
-        <div class="wrapper-input">
-          <span class="title-name">Lecturer Swap</span>
-          <el-select
-            v-model="idTimetableSwap"
-            filterable
-            placeholder="Select Lecturer "
-            class="content-input"
-            :disabled="!isEdit"
-          >
-            <el-option
-
-              v-for="item in lecturerForSwap"
-              :key="item.id"
-              :label="item.lecturerShortName"
-              :value="item.id"
-            />
-          </el-select>
-        </div>
-        <div class="button">
-          <el-button type="primary" :disabled="!isEdit || dataDetail.lecturerShortName === ' NOT_ASSIGN'" @click="swap('LECTURER')">
-            Swap Lecturer
-          </el-button>
-        </div>
-        <div class="wrapper-input">
-          <span class="title-name">Room Swap</span>
-          <el-select
-            v-model="idTimetableSwap"
-            filterable
-            placeholder="Select Room "
-            class="content-input"
-            :disabled="!isEdit"
-          >
-            <el-option
-
-              v-for="item in roomForSwap"
-              :key="item.id"
-              :label="item.room"
-              :value="item.id"
-            />
-          </el-select>
-        </div>
-
-        <div class="button">
-          <el-button type="primary" :disabled="!isEdit " @click="swap('ROOM')">
-            Swap Room
-          </el-button>
-        </div>
-        <p class="title" >Request Confirm
-          <el-tooltip placement="bottom" effect="light">
-            <div slot="content">Select teacher in search section to send request confirm.<br/><u>Note:</u> Only available for status. <strong>DRAFT</strong></div>
-          <i class="el-icon-info"></i>
-        </el-tooltip></p>
-        <div class="button">
-          <el-button type="primary" :disabled="isDisableConfirm()" @click="addConfirm">Request Lecturer Confirm
-          </el-button>
-        </div>
-      </div>
       <div class="arrange-table">
         <div class="group-by">
           <label>Group By :</label>
-          <el-select v-model="groupBy" placeholder="Select">
+          <el-select style="width: 100px" v-model="groupBy" placeholder="Select">
             <el-option value="lecturer" class="arrange-item-select">Lecturer</el-option>
             <el-option value="room" class="arrange-item-select">Room</el-option>
           </el-select>
@@ -188,7 +191,7 @@
           </div>
           <el-button type="primary" @click="showViewAll" class="ml-20">View All Expected</el-button>
 
-          <el-button type="primary"  class="ml-20" @click="exportFile">Export to excel</el-button>
+          <el-button type="primary"  class="ml-20 mt-20" @click="exportFile">Export to excel</el-button>
         </div>
         <TableCustom
           :list-slot-data="listSlot"
@@ -774,6 +777,10 @@ export default {
   .arrange {
     display: block;
 
+    .table-custom {
+      margin-top: 60px;
+    }
+
     .view-all {
       .el-dialog {
         width: 80%;
@@ -833,7 +840,6 @@ export default {
         padding: 20px;
         margin-right: 20px;
         border-radius: 4px;
-        position: fixed;
         margin-top: -48px;
       }
 
@@ -870,6 +876,7 @@ export default {
       top: 50px;
       width: auto;
       margin-right: 20px;
+      z-index: 9;
 
       .el-select {
         margin-bottom: 10px;
@@ -919,13 +926,24 @@ export default {
       padding-left: 10px;
 
       .group-by {
-        margin-bottom: 10px;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 5px;
         position: fixed;
         top: 190px;
         display: block;
+        top: 161px;
+        background: #fff;
+        z-index: 999;
+        padding-bottom: 20px;
+        padding-top: 20px;
 
         .ml-20 {
           margin-left: 20px;
+        }
+
+        .mt-20 {
+          margin-top: 20px;
         }
 
         .wrapper-color {
