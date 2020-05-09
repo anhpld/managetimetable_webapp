@@ -876,7 +876,7 @@ export default {
       top: 50px;
       width: auto;
       margin-right: 20px;
-      z-index: 99999;
+      z-index: 9;
 
       .el-select {
         margin-bottom: 10px;
