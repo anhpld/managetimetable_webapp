@@ -202,7 +202,7 @@
     </div>
 
     <el-dialog title="View All Expected" :visible.sync="dialogViewAll" class="view-all">
-
+      <p style="color: #304156;font-weight: 700">Search by lecturer :</p>
       <el-select v-model="lecturerExpected" placeholder="Select" class="filter_expected" filterable multiple>
         <el-option
           v-for="item in listLecturerExpected"
