@@ -186,7 +186,8 @@
             <span class="reject">Reject</span>
             <span class="draft">Draft</span>
           </div>
-          <el-button type="primary" @click="dialogViewAll = true" class="ml-20">View All Expected</el-button>
+          <el-button type="primary" @click="showViewAll" class="ml-20">View All Expected</el-button>
+
           <el-button type="primary"  class="ml-20" @click="exportFile">Export to excel</el-button>
         </div>
         <TableCustom
@@ -201,6 +202,16 @@
     </div>
 
     <el-dialog title="View All Expected" :visible.sync="dialogViewAll" class="view-all">
+
+      <el-select v-model="lecturerExpected" placeholder="Select" class="filter_expected" filterable multiple>
+        <el-option
+          v-for="item in listLecturerExpected"
+          :key="item"
+          :label="item"
+          :value="item"
+          class="arrange-item-select"/>
+      </el-select>
+
       <el-tabs type="border-card">
         <el-tab-pane label="SLOT">
           <TableCustom :list-slot-data="listSlotExpectedView" :header="slot" />
@@ -274,13 +285,34 @@ export default {
       valueStatus: '',
       listSlotExpectedView :[],
       listSubjectExpectedView :[],
+      listSlotExpectedViewTemp :[],
+      listSubjectExpectedViewTemp :[],
       dataListSubject:[],
        yearSelected:[],
-      dialogViewAll: false
+      dialogViewAll: false,
+      lecturerExpected:[],
+      listLecturerExpected:[],
+      listFull:[]
     }
   },
 
   watch: {
+    lecturerExpected() {
+      this.listSlotExpectedView = this.listSlotExpectedViewTemp.filter(item => {
+        if (this.lecturerExpected.length === 0) {
+          return true
+        } else {
+          return this.lecturerExpected.includes(item.lecturerName)
+        }
+      })
+      this.listSubjectExpectedView = this.listSubjectExpectedViewTemp.filter(item => {
+        if (this.lecturerExpected.length === 0) {
+          return true
+        } else {
+          return this.lecturerExpected.includes(item.lecturerName)
+        }
+      })
+    },
     groupBy() {
       this.getDataListSlot()
     },
@@ -295,10 +327,13 @@ export default {
         if (!this.yearSelected[0].hasData) {
             return;
         }
+      this.lecturerExpected = [],
       this.getDataListSubject()
       this.getDataListRoom()
       this.getDataListClass()
       this.getDataListLecturer()
+      this.getDataListSlot()
+
 
       this.getListSlotExpForView();
       this.getListSubjectExpForView();
@@ -394,6 +429,12 @@ export default {
             this.getListForSwap()
             this.getListForSwapRoom()
             this.resetModifier()
+            this.$notify({
+              title: 'Success',
+              message: 'Swap Successfully',
+              type: 'success',
+              duration: 2000
+            })
           })
         })
       } else {
@@ -401,6 +442,12 @@ export default {
           this.getListForSwap()
           this.getListForSwapRoom()
           this.resetModifier()
+          this.$notify({
+            title: 'Success',
+            message: 'Swap Successfully',
+            type: 'success',
+            duration: 2000
+          })
         })
       }
     },
@@ -672,6 +719,7 @@ export default {
       }
       this.$store.dispatch('expected/listExpectedForView',paramQuery).then((data) => {
         this.listSlotExpectedView = this.$store.state.expected.listExpected;
+        this.listSlotExpectedViewTemp = this.$store.state.expected.listExpected;
       })
     },
     getListSubjectExpForView() {
@@ -682,10 +730,16 @@ export default {
       }
       this.$store.dispatch('expected/listExpectedForView',paramQuery).then((data) => {
         this.listSubjectExpectedView = this.$store.state.expected.listExpected;
+        this.listSubjectExpectedViewTemp = this.$store.state.expected.listExpected;
       })
     },
     showViewAll() {
+
+      this.listLecturerExpected=[]
       this.dialogViewAll = true
+      this.listSlotExpectedViewTemp.forEach(element => {
+        this.listLecturerExpected.push(element.lecturerName)
+      })
     },
       exportFile(){
         const data ={
@@ -723,6 +777,9 @@ export default {
     .view-all {
       .el-dialog {
         width: 80%;
+      }
+      .filter_expected{
+        margin-bottom: 20px;
       }
     }
     .arrange-content_nameObject{

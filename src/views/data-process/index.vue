@@ -222,6 +222,7 @@ export default {
       listGeneration: [],
       loadingGeneration: false,
       listDetailGeneration: [],
+      listFull:[],
       dialogDetailGeneration: false,
       currentPage: 1,
       pageSize: 5,
@@ -297,10 +298,12 @@ export default {
     },
 
     valueTeacher() {
+      this.listDetailGeneration = this.listFull;
       this.listDetailGeneration = this.listDetailGeneration.filter(item => {
         if (this.valueTeacher.length === 0) {
           return true
         } else {
+
           return this.valueTeacher.includes(item.room)
         }
       })
@@ -449,6 +452,7 @@ export default {
       this.selected = row
       this.dialogDetailGeneration = true
       this.listDetailGeneration = row.timetableEdit
+      this.listFull = this.listDetailGeneration;
       this.listDetailGeneration.forEach(element => {
         this.listTeach.push(element.room)
       })
