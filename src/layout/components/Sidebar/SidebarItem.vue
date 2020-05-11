@@ -1,8 +1,8 @@
 <template>
-  <div v-if="!item.hidden">
+  <div v-if="!item.hidden" @click="changeRouter">
     <div>xxx</div>
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
-      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
+      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)" >
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}" v-if="!onlyOneChild.notShowMenu && role === onlyOneChild.meta.roles || !onlyOneChild.notShowMenu && !onlyOneChild.meta.roles">
           <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
         </el-menu-item>
@@ -63,6 +63,32 @@ export default {
     this.role = JSON.parse(localStorage.getItem('infoUser')).role.roleName
   },
   methods: {
+    changeRouter() {
+      const status = localStorage.getItem('infoUser')
+      const statusTemp = JSON.parse(status)
+      const postData = {
+        page: 0,
+        limit: 10,
+        criteria: {
+          email: statusTemp.email
+        }
+      }
+      this.$store.dispatch('user/getStatusUser', postData).then(() => {
+        const status = this.$store.state.user.status
+        if (status !== 'ACTIVATE') {
+          this.logout()
+        }
+      })
+    },
+
+    async logout() {
+      await this.$store.dispatch('user/logout')
+      localStorage.removeItem('infoUser')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      const startInterval = this.$store.state.request.startInterval
+      clearInterval(startInterval)
+    },
+
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
