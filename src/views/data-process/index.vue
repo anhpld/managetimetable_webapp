@@ -351,8 +351,8 @@ export default {
         }
       }
 
-      const messageIsNow = "<p style='color: red'>"+this.yearSelected[0].season.toUpperCase() +' '+ this.yearSelected[0].year +' already have data, up new data will delete all timetable and expected of this semester ?</p>'
-      const messageIsNotNow = 'Bạn muốn upload dữ liệu cho kỳ '+ this.yearSelected[0].season +' '+ this.yearSelected[0].year +' không?'
+      const messageIsNow = "<p style='color: red'>"+this.yearSelected[0].season.toUpperCase() +' '+ this.yearSelected[0].year +' already have data, do you want upload new data ?</p>'
+      const messageIsNotNow = 'Do you want upload data for '+ this.yearSelected[0].season +' '+ this.yearSelected[0].year +' không?'
       const message = this.yearSelected[0].now && this.yearSelected[0].hasData ? messageIsNow : messageIsNotNow
 
       this.$confirm(message, 'Warning', {
