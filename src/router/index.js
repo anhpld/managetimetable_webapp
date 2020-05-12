@@ -65,7 +65,7 @@ export const constantRoutes = [
       path: 'request',
       name: 'Request',
       component: () => import('@/views/data-process/index'),
-      meta: { title: 'DSST', icon: 'graphic', roles: 'ROLE_ADMIN' }
+      meta: { title: 'DSTT', icon: 'graphic', roles: 'ROLE_ADMIN' }
     }]
   },
   {

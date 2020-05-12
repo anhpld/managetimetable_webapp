@@ -9,7 +9,7 @@
         class="arrange-item-select"/>
     </el-select>
     <div class="content">
-      <span class="title">Upload data :</span>
+      <span class="title">Upload data for semester :</span>
       <div class="large-12 medium-12 small-12 cell mt-3 request-container__wrapper">
         <div class="upload-btn-wrapper">
           <button class="btn">Select File</button>
@@ -277,14 +277,14 @@ export default {
     ])
   },
   watch: {
-      valueModel(){
-          console.log(this.valueModel,'valueModel')
-      },
-    valueOptionId() {
-      this.yearSelected = this.listYear.filter(i => i.id === this.valueOptionId)
 
-      this.getListGeneration()
-    },
+      valueOptionId() {
+          this.yearSelected = this.listYear.filter(i => i.id === this.valueOptionId)
+          this.hasFile = false
+          this.nameFile = ''
+
+          this.getListGeneration()
+      },
 
     isRunning() {
       if (this.isRunning) {
@@ -351,13 +351,14 @@ export default {
         }
       }
 
-      const messageIsNow = this.yearSelected[0].season.toUpperCase() +' '+ this.yearSelected[0].year +' already have data, up new data will delete all timetable and expected of this semester ?'
+      const messageIsNow = "<p style='color: red'>"+this.yearSelected[0].season.toUpperCase() +' '+ this.yearSelected[0].year +' already have data, up new data will delete all timetable and expected of this semester ?</p>'
       const messageIsNotNow = 'Bạn muốn upload dữ liệu cho kỳ '+ this.yearSelected[0].season +' '+ this.yearSelected[0].year +' không?'
       const message = this.yearSelected[0].now && this.yearSelected[0].hasData ? messageIsNow : messageIsNotNow
 
       this.$confirm(message, 'Warning', {
         confirmButtonText: 'Confirm',
         cancelButtonText: 'Cancel',
+          dangerouslyUseHTMLString:true,
         type: 'warning'
       }).then(() => {
         this.loading = true
@@ -413,8 +414,6 @@ export default {
         this.isFileExcel = false
         this.hasFile = false
       }
-
-      console.log(this.isFileExcel)
     },
 
     getListGeneration() {
