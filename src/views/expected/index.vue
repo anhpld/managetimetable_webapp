@@ -20,9 +20,9 @@
                  type="primary" @click="reuseExpected">Reuse Expected
       </el-button>
     </div>
-    <span v-if="yearSelected[0] && yearSelected[0].now && this.$store.state.expected.dataExpected.id === 0" class="title">
+    <span v-if="yearSelected[0] && yearSelected[0].now && this.$store.state.expected.dataExpected.id === 0 && yearSelected[0].hasData" class="title">
 You have no expectations in this term,select other term to reuse or create new ! </span>
-    <span v-if="yearSelected[0] && yearSelected[0].now && this.$store.state.expected.dataExpected.id !== 0" class="title-done">
+    <span v-if="yearSelected[0] && yearSelected[0].now && this.$store.state.expected.dataExpected.id !== 0 && yearSelected[0].hasData" class="title-done">
 
 You have filled out expected for this term  ! </span>
     <span v-if="yearSelected[0] && !yearSelected[0].hasData" class="title-warning">Don't have data for this semester! Please go to <span
