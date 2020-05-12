@@ -927,16 +927,13 @@ export default {
 
       .group-by {
         width: 100%;
-        margin-top: 20px;
-        margin-bottom: 5px;
         position: fixed;
         top: 190px;
         display: block;
         top: 161px;
         background: #fff;
         z-index: 999;
-        padding-bottom: 20px;
-        padding-top: 20px;
+
 
         .ml-20 {
           margin-left: 20px;
