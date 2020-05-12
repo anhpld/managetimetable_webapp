@@ -62,7 +62,7 @@
           :value="item.code">
         </el-option>
       </el-select>
-      <el-button type="primary" @click="getListCalendar">Search</el-button>
+      <el-button type="primary" @click="getListCalendar" :disabled="yearSelected[0] && !yearSelected[0].hasData">Search</el-button>
     </div>
 
     <div class="calendar-view-content">
@@ -72,7 +72,7 @@
         <el-button type="danger" icon="el-icon-close" circle @click="dialogFormVisibleComment = true"></el-button>
       </div>
       <div v-if="lecturerConfirm && lecturerConfirm.status === 'DRAFT' && lecturerConfirm.confirmed ===  true" class="calendar-view-comment">
-        <span>Timetable is in process re-arrange !</span>
+        <span v-if="yearSelected[0] && yearSelected[0].hasData">Timetable is in process re-arrange !</span>
 
       </div>
 
@@ -132,19 +132,37 @@
           lecturerConfirm: null,
           titleDialogFormVisibleComment: "Reason",
           dialogFormVisibleComment: false,
+          yearSelected:[]
 
       }
     },
+      watch: {
+
+          optionId(){
+              this.yearSelected = this.listYear.filter(i => i.id === this.optionId)
+              if (!this.yearSelected[0].hasData) {
+                  return;
+              }
+              this.getDataListSubject()
+              this.getDataListRoom()
+              this.getDataListClass()
+              this.getDataListLecturer()
+              this.getLecturerConfirm()
+          }
+      },
 
     created() {
       this.infoUser = JSON.parse(localStorage.getItem('infoUser'))
+      this.valueTeacher.push(this.infoUser.shortName);
+
       this.getYear()
 
   },
   methods: {
     getListCalendar() {
-      console.log(this.infoUser,'uuser')
-      console.log(this.lecturerConfirm.status,'status')
+      // if(!this.valueTeacher.includes(this.infoUser.shortName) && !this.infoUser.role.roleName === 'ROLE_USER') {
+      //   this.valueTeacher.push(this.infoUser.shortName);
+      // }
       if((this.lecturerConfirm.status ==='DRAFT' || !this.lecturerConfirm)  && this.infoUser.role.roleName === 'ROLE_USER'){
         this.dataListCalendar = []
         return;
@@ -193,6 +211,10 @@
               this.optionId = element.id
             }
           })
+            this.yearSelected = this.listYear.filter(i => i.id === this.optionId)
+            if (!this.yearSelected[0].hasData) {
+                return;
+            }
           this.getDataListSubject()
           this.getDataListRoom()
           this.getDataListClass()
@@ -307,7 +329,6 @@
       this.$store.dispatch('arrange/getDataLecturer', postData).then((data) => {
         this.dataListLecturer = this.$store.state.arrange.dataListLecturer.results
         // this.$router.push({ path: this.redirect || '/' })
-        this.valueTeacher.push(this.infoUser.shortName)
       }).catch(() => {
         this.loading = false
       })

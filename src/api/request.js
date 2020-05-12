@@ -11,6 +11,15 @@ export function uploadFile(data) {
     }
   })
 }
+export function exportFile(data) {
+  return request({
+    url: '/requests/export',
+    method: 'post',
+
+    params: data.data.params,
+    responseType:'blob'
+  })
+}
 
 export function getList(data) {
   return request({

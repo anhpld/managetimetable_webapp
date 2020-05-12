@@ -1,14 +1,18 @@
-import { uploadFile, getList, getListGeneration, startArrange, stopArrange, setAsDefault } from '@/api/request'
+import { uploadFile, getList, getListGeneration, startArrange, stopArrange, setAsDefault,exportFile } from '@/api/request'
 
 const state = {
   listReport: [],
   listGeneration: [],
-  startInterval: ''
+  startInterval: '',
+  fileExport:{}
 }
 
 const mutations = {
   UPLOAD_FILE: (state, data) => {
     state.listReport = data
+  },
+  EXPORT_FILE: (state, data) => {
+    state.fileExport = data
   },
   GET_LIST: (state, data) => {
     state.listReport = data
@@ -27,11 +31,19 @@ const mutations = {
 
 const actions = {
   uploadFile({ commit }, data) {
-    console.log('aaa')
-
     return new Promise((resolve, reject) => {
       uploadFile({ data }).then(response => {
         commit('UPLOAD_FILE', response)
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  exportFile({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      exportFile({ data }).then(response => {
+        commit('EXPORT_FILE', response)
         resolve()
       }).catch(error => {
         reject(error)

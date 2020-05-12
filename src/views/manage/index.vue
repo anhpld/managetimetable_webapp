@@ -43,6 +43,9 @@
       <el-table-column label="Full Name">
         <template slot-scope="{row}">{{ row.fullName }}</template>
       </el-table-column>
+      <el-table-column label="Short Name">
+        <template slot-scope="{row}">{{ row.shortName }}</template>
+      </el-table-column>
       <el-table-column label="Expected" align="center">
         <template v-if="row.login" slot-scope="{row}">
           <el-tag v-if="row.fillingExpected && row.status === 'ACTIVATE'" class="text-success link-type" @click="infoexpected(row)">
@@ -54,7 +57,7 @@
         </template>
       </el-table-column>
       <el-table-column label="Status" align="center">
-        <template slot-scope="{row}" v-if="row.status === 1">
+        <template slot-scope="{row}" v-if="row.status === 'ACTIVATE'">
           <el-tag v-if="row.login" class="text-success">
             Logged in
           </el-tag>
@@ -119,7 +122,7 @@
           <el-checkbox v-model="temp.fullTime"></el-checkbox>
         </el-form-item>
         <el-form-item label="Min of class quota" prop="quotaClass">
-          <el-input-number v-model="temp.quotaClass" :min="1" :max="10"></el-input-number>
+          <el-input-number v-model="temp.quotaClass" :min="0" :max="10"></el-input-number>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -601,11 +604,12 @@ export default {
       this.dialogFormAdd = true
     },
     updateData() {
-      const regexPhoneNumber = /((09|03|07|08|05)+([0-9]{8})\b)/g
+      const regexPhoneNumber = /((0)+([0-9]{9}))/g
       this.$refs['dataForm'].validate((valid) => {
-        if (valid && regexPhoneNumber.test(this.temp.phone)) {
+        const isValidPhone = regexPhoneNumber.test(this.temp.phone) || !this.temp.phone && !regexPhoneNumber.test(this.temp.phone)
+        if (valid && isValidPhone) {
           this.$store.dispatch('manager/updateUser', this.temp).then(() => {
-            this.fetchData()
+            this.fetchData(this.valueOptionStatus, this.valueEmail)
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
@@ -616,8 +620,8 @@ export default {
           })
         }
 
-        if (valid && !regexPhoneNumber.test(this.temp.phone)) {
-          this.$confirm('Not correct phone format!.', 'Warning', {
+        if (!isValidPhone) {
+          this.$confirm('Số điện thoại không đúng định dạng.', 'Warning', {
             confirmButtonText: 'Ok',
             cancelButtonText: 'Cancel',
             dangerouslyUseHTMLString: true,
@@ -681,12 +685,13 @@ export default {
       })
     },
     getDataExpected() {
-      this.listLoading = true;
+
       this.expectedSlots = []
       this.yearSelected = this.listYear.filter(i => i.id === this.valueOption)
       if (!this.yearSelected[0].hasData) {
         return;
       }
+      this.listLoading = true;
       this.dataExpectedEdit = {
         expectedSubjects: [],
         expectedSlots: [],

@@ -30,6 +30,18 @@ export const constantRoutes = [
       meta: { title: 'Timetable', icon: 'dashboard' }
     }]
   },
+  {
+    path: '/manage',
+    component: Layout,
+    redirect: '/manage',
+    name: 'Nested',
+    children: [{
+      path: 'manage',
+      name: 'Manage',
+      component: () => import('@/views/manage/index'),
+      meta: { title: 'Manage', icon: 'tree', roles: 'ROLE_ADMIN' }
+    }]
+  },
 
   {
     path: '/example',
@@ -45,6 +57,18 @@ export const constantRoutes = [
   },
 
   {
+    path: '/request',
+    component: Layout,
+    redirect: '/request',
+    name: 'Request',
+    children: [{
+      path: 'request',
+      name: 'Request',
+      component: () => import('@/views/data-process/index'),
+      meta: { title: 'DSST', icon: 'graphic', roles: 'ROLE_ADMIN' }
+    }]
+  },
+  {
     path: '/nested',
     component: Layout,
     redirect: '/nested/menu1',
@@ -58,33 +82,6 @@ export const constantRoutes = [
       meta: { title: 'Arrange', icon: 'nested', roles: 'ROLE_ADMIN' }
     }]
   },
-
-  {
-    path: '/manage',
-    component: Layout,
-    redirect: '/manage',
-    name: 'Nested',
-    children: [{
-      path: 'manage',
-      name: 'Manage',
-      component: () => import('@/views/manage/index'),
-      meta: { title: 'Manage', icon: 'tree', roles: 'ROLE_ADMIN' }
-    }]
-  },
-
-  {
-    path: '/request',
-    component: Layout,
-    redirect: '/request',
-    name: 'Request',
-    children: [{
-      path: 'request',
-      name: 'Request',
-      component: () => import('@/views/data-process/index'),
-      meta: { title: 'DSST', icon: 'graphic', roles: 'ROLE_ADMIN' }
-    }]
-  },
-
   {
     path: '/infomation',
     component: Layout,

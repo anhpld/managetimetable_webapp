@@ -1,5 +1,5 @@
 import defaultSettings from '@/settings'
-import { getListYear, getDataExpected, saveDataExpected, reuseExected } from '@/api/expected'
+import { getListYear, getDataExpected, saveDataExpected, reuseExected,listExpectedForView } from '@/api/expected'
 
 const { showSettings, fixedHeader, sidebarLogo } = defaultSettings
 
@@ -9,7 +9,8 @@ const state = {
   sidebarLogo: sidebarLogo,
   listYear: [],
   dataExpected: [],
-  dataExpectedEdit: {}
+  dataExpectedEdit: {},
+  listExpected:[]
 }
 
 const mutations = {
@@ -33,6 +34,9 @@ const mutations = {
 
   REUSE_EXECTED: (state, data) => {
     state['dataExpected'] = data
+  },
+  LIST_EXPECTED_VIEW: (state, data) => {
+    state.listExpected = data
   }
 }
 
@@ -57,6 +61,17 @@ const actions = {
     return new Promise((resolve, reject) => {
       getDataExpected({ data }).then(response => {
         commit('DATA_EXPECTED', response)
+        // setToken(data.token)
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  listExpectedForView({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      listExpectedForView({ data }).then(response => {
+        commit('LIST_EXPECTED_VIEW', response)
         // setToken(data.token)
         resolve()
       }).catch(error => {

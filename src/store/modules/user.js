@@ -1,4 +1,4 @@
-import { login, logout, getInfo, loginGoogle } from '@/api/user'
+import { login, logout, getInfo, loginGoogle, getStatus } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -8,7 +8,8 @@ const getDefaultState = () => {
     name: '',
     avatar: '',
     userInfo: {},
-    role: ''
+    role: '',
+    status: ''
   }
 }
 
@@ -27,6 +28,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  GET_STATUS: (state, data) => {
+    state.status = data.results[0].status
   }
 }
 
@@ -50,7 +54,6 @@ const actions = {
     const { accessToken } = userInfo
     return new Promise((resolve, reject) => {
       loginGoogle({ accessToken: accessToken }).then(response => {
-        console.log('googleId', response)
         localStorage.setItem('infoUser', JSON.stringify(response))
         commit('SET_TOKEN', response.googleId)
         commit('SET_USER_INFOR', response)
@@ -99,6 +102,19 @@ const actions = {
       removeToken() // must remove  token  first
       commit('RESET_STATE')
       resolve()
+    })
+  },
+
+  getStatusUser({ commit }, data) {
+    console.log('xx', data)
+
+    return new Promise((resolve, reject) => {
+      getStatus(data).then(response => {
+        commit('GET_STATUS', response)
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
     })
   }
 }

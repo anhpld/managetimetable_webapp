@@ -23,16 +23,27 @@
       <span class="type-file" v-if="!isFileExcel">*Select excel file</span>
     </div>
     <div class="content">
-      <span class="title">Decision support system for timetabling :</span>
+      <span class="title">Decision support system for timetabling:</span>
+      <span class="title" style="padding-left: 70px">SELECT MODEL</span>
+      <el-select v-model="valueModel" placeholder="Select" class="arrange-item-select">
+        <el-option
+          v-for="item in listModel"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+          class="arrange-item-select"/>
+      </el-select>
+
       <div class="content-input">
+
         <div class="content-input-1">
           <div class="mt-1">
             <label class="title">Mutation rate</label>
-            <el-input-number v-model="mutationRate" :min="0" :max="1" precision="1" step="0.01"></el-input-number>
+            <el-input-number v-model="mutationRate"   :min="0" :max="1" precision="2" step="0.01"></el-input-number>
           </div>
           <div class="mt-1 border-bottom">
             <label class="title">Population size</label>
-            <el-input-number v-model="populationSize" :min="50"  precision="0"></el-input-number>
+            <el-input-number v-model="populationSize"   :min="50"  precision="0"></el-input-number>
           </div>
           <div class="mt-2">
             <label class="title">Hard Constraint Coefficient</label>
@@ -45,49 +56,49 @@
 
           <div class="mt-2">
             <label class="title">Slot Coefficient</label>
-            <el-input-number v-model="slotCoff" :min="0" :max="1" precision='2' step="0.01"></el-input-number>
+            <el-input-number v-model="slotCoff" :disabled="valueModel === 1"  :min="0" :max="1" precision='2' step="0.01"></el-input-number>
           </div>
           <div class="mt-2 border-bottom">
             <label class="title">Distance Coefficient</label>
-            <el-input-number v-model="distanceCoff" :min="0" :max="1" precision=2 step="0.01"></el-input-number>
+            <el-input-number v-model="distanceCoff" :disabled="valueModel === 1"  :min="0" :max="1" precision=2 step="0.01"></el-input-number>
           </div>
           <div class="mt-2">
             <label class="title">Satisfaction Sum Coefficient</label>
-            <el-input-number v-model="satisfactionSumCoff" :min="0" :max="1" precision=2 step="0.01"></el-input-number>
+            <el-input-number v-model="satisfactionSumCoff" :disabled="valueModel === 1"  :min="0" :max="1" precision=2 step="0.01"></el-input-number>
           </div>
           <div class="mt-2">
             <label class="title">Standard Coefficient</label>
-            <el-input-number v-model="stdCoff" :min="0" :max="1" precision=1 step="0.01"></el-input-number>
+            <el-input-number v-model="stdCoff" :disabled="valueModel === 1"  :min="0" :max="1" precision=1 step="0.01"></el-input-number>
           </div>
         </div>
 
         <div class="content-input-2">
           <div class="mt-1">
             <label class="title">Tournament size</label>
-            <el-input-number v-model="tournamentSize" :min="1"  precision="2"></el-input-number>
+            <el-input-number v-model="tournamentSize"   :min="1"  precision="2"></el-input-number>
           </div>
           <div class="mt-1 border-bottom">
             <label class="title">Convergence Check Range</label>
-            <el-input-number v-model="convergenceCheckRange" :min="1" precision="0"></el-input-number>
+            <el-input-number v-model="convergenceCheckRange"   :min="1" precision="0"></el-input-number>
           </div>
 
           <div class="mt-3">
             <label class="title">Parttime Coefficient</label>
-            <el-input-number v-model="parttimeCoff" :min="0" :max="1"  precision="2" step="0.01"></el-input-number>
+            <el-input-number v-model="parttimeCoff"   :min="0" :max="1"  precision="2" step="0.01"></el-input-number>
           </div>
 
           <div class="mt-3 border-bottom">
             <label class="title">Fulltime Coefficient</label>
-            <el-input-number v-model="fulltimeCoff" :min="0" :max="1" precision="2" step="0.01"></el-input-number>
+            <el-input-number v-model="fulltimeCoff"  :min="0" :max="1" precision="2" step="0.01"></el-input-number>
           </div>
 
           <div class="mt-2">
             <label class="title">Subject Coefficient</label>
-            <el-input-number v-model="subjectCoff" :min="0" :max="1" precision=2 step="0.01" ></el-input-number>
+            <el-input-number v-model="subjectCoff" :disabled="valueModel === 1"  :min="0" :max="1" precision=2 step="0.01" ></el-input-number>
           </div>
           <div class="mt-2 border-bottom">
             <label class="title">Number Of Class Coefficient</label>
-            <el-input-number v-model="numberOfClassCoff" :min="0" :max="1" precision=2 step="0.01"></el-input-number>
+            <el-input-number v-model="numberOfClassCoff" :disabled="valueModel === 1" :min="0" :max="1" precision=2 step="0.01"></el-input-number>
           </div>
           <div class="mt-2">
             <label class="title">Generation Step</label>
@@ -168,6 +179,7 @@
         <TableCustom :list-slot-data="listDetailGeneration" :header="slot" group-by="lecturer" />
       </div>
     </el-dialog>
+
   </div>
   </div>
 </template>
@@ -185,7 +197,7 @@ export default {
   },
   data() {
     return {
-      slot: ['M1', 'M2', 'M3', 'M4', 'M5', 'E1', 'E2', 'E3', 'E4', 'E5'],
+      slot: ['M1', 'M2', 'M3', 'E1', 'E2', 'E3', 'M4', 'M5', 'E4', 'E5'],
       file: '',
       valueOptionId: '',
       listYear: '',
@@ -210,6 +222,7 @@ export default {
       listGeneration: [],
       loadingGeneration: false,
       listDetailGeneration: [],
+      listFull:[],
       dialogDetailGeneration: false,
       currentPage: 1,
       pageSize: 5,
@@ -243,7 +256,19 @@ export default {
       satisfactionSumCoff: 1.0,
       distanceCoff: 0,
       consicutiveClassCoff: 0,
-      fulltimeCoff: 0.5
+      fulltimeCoff: 0.5,
+
+        valueModel:0,
+        listModel:[
+            {
+                label: 'SCALARIZING',
+                value: 0
+            },
+            {
+                label: 'COMPROMISING',
+                value: 1
+            }
+        ]
     }
   },
   computed: {
@@ -252,8 +277,13 @@ export default {
     ])
   },
   watch: {
+      valueModel(){
+          console.log(this.valueModel,'valueModel')
+      },
     valueOptionId() {
       this.yearSelected = this.listYear.filter(i => i.id === this.valueOptionId)
+
+      this.getListGeneration()
     },
 
     isRunning() {
@@ -268,14 +298,17 @@ export default {
     },
 
     valueTeacher() {
+      this.listDetailGeneration = this.listFull;
       this.listDetailGeneration = this.listDetailGeneration.filter(item => {
         if (this.valueTeacher.length === 0) {
           return true
         } else {
+
           return this.valueTeacher.includes(item.room)
         }
       })
     },
+
 
     fulltimeCoff() {
       this.parttimeCoff = 1 - this.fulltimeCoff
@@ -300,6 +333,7 @@ export default {
   created() {
     this.getYear()
     this.getListGeneration()
+
     this.infoUser = JSON.parse(localStorage.getItem('infoUser'))
   },
   methods: {
@@ -342,9 +376,11 @@ export default {
       })
     },
 
+
     handleDataExpectedEdit() {
 
     },
+
 
     getYear() {
       this.loading = true
@@ -356,8 +392,10 @@ export default {
           }
         })
         this.yearSelected = this.listYear.filter(i => i.id === this.valueOptionId)
-        this.getList()
-        this.loading = false
+
+        this.getListGeneration()
+
+
       }).catch(() => {
         this.loading = false
       })
@@ -396,42 +434,81 @@ export default {
         this.loading=false;
       })
     },
-
+    sort(list) {
+      list.sort(function (a, b) {
+        const nameA = a.toUpperCase()
+        const nameB = b.toUpperCase()
+        if (nameA < nameB) {
+          return -1
+        }
+        if (nameA > nameB) {
+          return 1
+        }
+        return 0
+      })
+    },
     previewGeneration(row) {
       this.listTeach=[]
       this.selected = row
       this.dialogDetailGeneration = true
       this.listDetailGeneration = row.timetableEdit
+      this.listFull = this.listDetailGeneration;
       this.listDetailGeneration.forEach(element => {
         this.listTeach.push(element.room)
       })
     },
 
     startArrange() {
-      const data = {
-        postData: {
-          mutationRate: parseFloat(this.mutationRate.toFixed(2)),
-          populationSize: parseFloat(this.populationSize),
-          tournamentSize: parseFloat(this.tournamentSize.toFixed(2)),
-          convergenceCheckRange: parseFloat(this.convergenceCheckRange),
-          stepGeneration:this.stepGen,
-          cofficient: {
-            hardConstraintCoff: parseFloat(this.hardConstraintCoff.toFixed(2)),
-            softConstraintCoff: parseFloat(this.softConstraintCoff.toFixed(2)),
-            parttimeCoff: parseFloat(this.parttimeCoff.toFixed(2)),
-            slotCoff: parseFloat(this.slotCoff.toFixed(2)),
-            subjectCoff: parseFloat(this.subjectCoff),
-            numberOfClassCoff: parseFloat(this.numberOfClassCoff.toFixed(2)),
-            stdCoff: parseFloat(this.stdCoff.toFixed(2)),
-            satisfactionSumCoff: parseFloat(this.satisfactionSumCoff.toFixed(2)),
-            distanceCoff: parseFloat(this.distanceCoff.toFixed(2)),
-            fulltimeCoff: parseFloat(this.fulltimeCoff.toFixed(2))
-          }
-        },
-        queryParam: {
-          semesterId: this.valueOptionId
+        var data ={}
+        if(this.valueModel === 0) {
+            data = {
+                postData: {
+                    modelType:this.valueModel,
+                    mutationRate: parseFloat(this.mutationRate.toFixed(2)),
+                    populationSize: parseFloat(this.populationSize),
+                    tournamentSize: parseFloat(this.tournamentSize.toFixed(2)),
+                    convergenceCheckRange: parseFloat(this.convergenceCheckRange),
+                    stepGeneration: this.stepGen,
+                    cofficient: {
+                        hardConstraintCoff: parseFloat(this.hardConstraintCoff.toFixed(2)),
+                        softConstraintCoff: parseFloat(this.softConstraintCoff.toFixed(2)),
+                        parttimeCoff: parseFloat(this.parttimeCoff.toFixed(2)),
+                        slotCoff: parseFloat(this.slotCoff.toFixed(2)),
+                        subjectCoff: parseFloat(this.subjectCoff),
+                        numberOfClassCoff: parseFloat(this.numberOfClassCoff.toFixed(2)),
+                        stdCoff: parseFloat(this.stdCoff.toFixed(2)),
+                        satisfactionSumCoff: parseFloat(this.satisfactionSumCoff.toFixed(2)),
+                        distanceCoff: parseFloat(this.distanceCoff.toFixed(2)),
+                        fulltimeCoff: parseFloat(this.fulltimeCoff.toFixed(2))
+
+                    }
+                },
+                queryParam: {
+                    semesterId: this.valueOptionId
+                }
+            }
+        } else {
+              data = {
+                postData: {
+                    modelType:this.valueModel,
+                    mutationRate: parseFloat(this.mutationRate.toFixed(2)),
+                    populationSize: parseFloat(this.populationSize),
+                    tournamentSize: parseFloat(this.tournamentSize.toFixed(2)),
+                    convergenceCheckRange: parseFloat(this.convergenceCheckRange),
+                    stepGeneration: this.stepGen,
+                    cofficient: {
+                        hardConstraintCoff: parseFloat(this.hardConstraintCoff.toFixed(2)),
+                        softConstraintCoff: parseFloat(this.softConstraintCoff.toFixed(2)),
+                        parttimeCoff: parseFloat(this.parttimeCoff.toFixed(2)),
+                        fulltimeCoff: parseFloat(this.fulltimeCoff.toFixed(2))
+                    }
+
+                },
+                queryParam: {
+                    semesterId: this.valueOptionId
+                }
+            }
         }
-      }
       const sum = this.slotCoff + this.subjectCoff + this.numberOfClassCoff + this.distanceCoff
       if (sum !== 1) {
         Message({
@@ -445,7 +522,7 @@ export default {
         this.$store.dispatch('request/startArrange', data).then(() => {
           this.loading = false
         }).catch(() => {
-          this.isRunning = true
+          this.isRunning = false
           this.loading = false
           this.loadingGeneration = false
         })
@@ -516,8 +593,10 @@ export default {
     .el-select-dropdown__item {
       text-transform: capitalize;
     }
+
     margin: 30px;
     .content-input {
+
       display: flex;
 
       .title {
@@ -617,6 +696,9 @@ export default {
       margin-bottom: 20px;
       border-radius: 4px;
       box-shadow: 0px 0px 4px -1px #d2d2d2;
+      .select-model{
+        padding-left: 30px;
+      }
 
       .title {
         color: #0089ff;

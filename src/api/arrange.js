@@ -82,8 +82,9 @@ export function addConfirm(data) {
 
 export function swapData(data) {
   return request({
-    url: 'timetableDetails/swap/lecturer',
+    url: 'timetableDetails/swap',
     method: 'put',
-    data: data.data
+    data: data.data.postData,
+    params: data.data.params
   })
 }

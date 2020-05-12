@@ -31,3 +31,10 @@ export function reuseExected(data) {
     params: data.data
   })
 }
+export function listExpectedForView(data) {
+  return request({
+    url: 'expects/listedForView',
+    method: 'get',
+    params: data.data
+  })
+}

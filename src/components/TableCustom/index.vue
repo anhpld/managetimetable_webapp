@@ -10,31 +10,31 @@
                 <div v-for="item in listSlotData" :key="item" class="list-subject-content">
                     <p v-if="item.room" class="list-subject-content_name">{{ item.room }}</p>
                     <p v-if="item.slotNumber" class="list-subject-content_name">Slot {{ item.slotNumber }}</p>
+                    <p v-if="item.lecturerName" class="list-subject-content_name"> {{ item.lecturerName }}</p>
                     <ul class="table-custom__main--lever">
                         <li v-for="oneSlot in header" :key="oneSlot" class="table-custom__main--lever-item">
-                            <div v-for="oneContent in item.timetable" :key="oneContent" class="table-custom__content"
+                            <div  v-for="oneContent in item.timetable" :key="oneContent" class="table-custom__content"
                                  v-if="oneContent.slot && oneContent.slot === oneSlot"
                                  @click="getDataItemArrange(oneContent)"
                                  v-bind:class="{active : oneContent.id===dataChange.id}">
-                                <div>
+                              <div :class="{ 'item-draft' : oneContent.timetableStatus==='DRAFT',
+                              'item-public' : oneContent.timetableStatus==='PUBLIC',
+                              'item-final' : oneContent.timetableStatus==='FINAL',
+                              'item-reject' : oneContent.timetableStatus==='REJECT'}">
                                     <span>{{ oneContent.className }}</span>
                                     <span>{{ oneContent.subjectCode }}</span>
-                                    <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='DRAFT'" class="name-item" >{{ oneContent.room }}</span>
-                                    <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='PUBLIC'" class="name-item-public" >{{ oneContent.room }}</span>
-                                  <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='FINAL'" class="name-item-final" >{{ oneContent.room }}</span>
-                                  <span v-if="groupBy==='lecturer' && oneContent.timetableStatus==='REJECT'" class="name-item-reject" >
-                                    <el-tooltip content="oneContent.resson" placement="bottom" effect="light">
-                                      <el-button>{{ oneContent.room }}</el-button>
-                                    </el-tooltip>
-                                  </span>
-                                    <span v-if="groupBy==='room' && oneContent.timetableStatus==='DRAFT'" class="name-item" >{{ oneContent.lecturerShortName }}</span>
-                                   <span v-if="groupBy==='room' && oneContent.timetableStatus==='PUBLIC'" class="name-item-public" >{{ oneContent.lecturerShortName }}</span>
-                                  <span v-if="groupBy==='room' && oneContent.timetableStatus==='FINAL'" class="name-item-final  " >{{ oneContent.lecturerShortName }}</span>
-                                  <span v-if="groupBy==='room' && oneContent.timetableStatus==='REJECT'" class="name-item-reject  " > {{ oneContent.lecturerShortName }}
-                                    <div class="content-tooltip">
+                                    <span v-if="groupBy==='lecturer' " class="name-item" >{{ oneContent.room }}</span>
+
+                                  <div v-if="oneContent.timetableStatus==='REJECT'" class="content-tooltip">
                                       {{ oneContent.reason}}
                                     </div>
                                   </span>
+                                    <span v-if="groupBy==='room'" class="name-item" >{{ oneContent.lecturerShortName }}</span>
+
+                                    <div v-if="oneContent.timetableStatus==='REJECT'" class="content-tooltip">
+                                      {{ oneContent.reason}}
+                                    </div>
+
 
                                 </div>
                             </div>
@@ -50,6 +50,15 @@
                                     <span class="name-item">{{ oneContent.lecturerShortName }}</span>
                                 </div>
                             </div>
+                          <div v-for="oneContent in item.timetable" :key="oneContent"
+                               v-if="oneContent.lecturerShortName && oneContent.subjectCode === oneSlot"
+                               @click="getDataItemArrange(oneContent)" class="text-center">
+                            <div>
+                              <span v-if="oneContent.levelOfPreference === 0">{{ oneContent.levelOfPreference }}</span>
+                              <span v-if="oneContent.levelOfPreference !== 0" class="name-item">{{ oneContent.levelOfPreference }}</span>
+                            </div>
+                          </div>
+
                         </li>
                     </ul>
                 </div>
@@ -125,6 +134,80 @@ export default {
 
         &__content {
           position: relative;
+
+          .item-public{
+            background-color: orange;
+            color: #FFF;
+            padding: 5px;
+          }
+          .item-final{
+            background-color: #13ce66;
+            color: #FFF;
+            padding: 5px;
+          }
+          .item-reject{
+            background-color: red;
+            color: #FFF;
+            padding: 5px;
+              .content-tooltip {
+                display: none;
+              }
+
+              /* width */
+              ::-webkit-scrollbar {
+                width: 0px;
+              }
+
+              /* Track */
+              ::-webkit-scrollbar-track {
+                background: #f1f1f1;
+              }
+
+              /* Handle */
+              ::-webkit-scrollbar-thumb {
+                background: #888;
+              }
+
+              /* Handle on hover */
+              ::-webkit-scrollbar-thumb:hover {
+                background: #555;
+              }
+
+              &:hover {
+                .content-tooltip {
+                  display: block;
+                  position: absolute;
+                  width: 200px;
+                  height: 74px;
+                  border-radius: 10px;
+                  background: #304156;
+                  color: #fff;
+                  padding: 10px;
+                  z-index: 99;
+                  right: 0px;
+                  font-weight: 400;
+                  overflow: auto;
+                  top: 60px;
+                }
+
+                &::after {
+                  content: " ";
+                  border-left: 5px solid transparent;
+                  border-right: 5px solid transparent;
+                  border-bottom: 5px solid #304156;
+                  width: 0;
+                  height: 0;
+                  position: absolute;
+                  top: 55px;
+                  right: 90px;
+                }
+              }
+
+          }
+          .item-draft{
+
+            padding: 5px;
+          }
             span {
                 display: block;
                 padding-bottom: 7px;
@@ -159,71 +242,8 @@ export default {
                 color: #409EFF;
                 font-weight: 700;
             }
-          .name-item-public {
-            color:orange;
-            font-weight: 700;
-          }.name-item-final {
-             color: #13ce66;
-             font-weight: 700;
-           }
-          .name-item-reject {
-            color: red;
-            font-weight: 700;
 
-            .content-tooltip {
-              display: none;
-            }
 
-            /* width */
-            ::-webkit-scrollbar {
-              width: 0px;
-            }
-
-            /* Track */
-            ::-webkit-scrollbar-track {
-              background: #f1f1f1;
-            }
-
-            /* Handle */
-            ::-webkit-scrollbar-thumb {
-              background: #888;
-            }
-
-            /* Handle on hover */
-            ::-webkit-scrollbar-thumb:hover {
-              background: #555;
-            }
-
-            &:hover {
-              .content-tooltip {
-                display: block;
-                position: absolute;
-                width: 200px;
-                height: 74px;
-                border-radius: 10px;
-                background: #304156;
-                color: #fff;
-                padding: 10px;
-                z-index: 99;
-                right: 0px;
-                font-weight: 400;
-                overflow: auto;
-                top: 60px;
-              }
-
-              &::after {
-                content: " ";
-                border-left: 5px solid transparent;
-                border-right: 5px solid transparent;
-                border-bottom: 5px solid #304156;
-                width: 0;
-                height: 0;
-                position: absolute;
-                top: 55px;
-                right: 90px;
-              }
-            }
-          }
 
             &-header {
                 width: calc(100% / 10);
@@ -280,6 +300,10 @@ export default {
             &:nth-child(odd) {
                 background: white;
             }
+        }
+
+        .text-center {
+          text-align: center;
         }
     }
 

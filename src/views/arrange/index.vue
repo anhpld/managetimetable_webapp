@@ -82,84 +82,104 @@
       <!--          :value="item.value">-->
       <!--        </el-option>-->
       <!--      </el-select>-->
-      <el-button type="primary" @click="getDataListSlot">Search</el-button>
+      <el-button type="primary" @click="getDataListSlot" :disabled="yearSelected[0] && !yearSelected[0].hasData" >Search</el-button>
+
     </div>
-    <div class="arrange-content">
+    <span v-if="yearSelected[0] && !yearSelected[0].hasData" class="title-warning" >Don't have data for this semester! Please go to <span
+      style="font-weight: 700">DSST</span> for import data !</span>
+    <div v-if="yearSelected[0] && yearSelected[0].hasData" class="arrange-content">
       <div v-loading="loading" class="arrange-content-detail">
-        <p class="title">Timetable Modify</p>
-        <p class="arrange-content_nameObject">Subject<span class="name-subject">{{ dataDetail.subjectCode }}</span></p>
-        <div class="wrapper-input">
-          <span class="title-name">Room</span>
-          <el-select v-model="modelRoom" filterable placeholder="Select" class="content-input" :disabled="!isEdit">
-            <el-option
-              v-for="item in dataListClassDetail"
-              :key="item.id"
-              :label="item.name"
-              :value="item.name"
-            />
-          </el-select>
+        <div>
+          <p class="title">Timetable Modify</p>
+            <p class="arrange-content_nameObject">Subject <span class="name-subject" style="margin-left: 8px">{{ dataDetail.subjectCode }}</span></p>
+            <p class="arrange-content_nameObject">Room  <span class="name-subject" style="margin-left: 20px">{{ dataDetail.room }}</span></p>
+
+
+            <div class="wrapper-input">
+              <span class="title-name">Lecturer</span>
+              <el-select
+                v-model="modelLecturer"
+                filterable
+                placeholder="Select Lecturer"
+                class="content-input"
+                :disabled="!isEdit"
+              >
+                <el-option
+                  v-for="item in dataListTeacherDetail"
+                  :key="item.id"
+                  :label="item.shortName"
+                  :value="item.shortName"
+                />
+              </el-select>
+            </div>
+
+            <div class="button">
+              <el-button :disabled="!isEdit" type="primary" @click="saveCalendar">Edit</el-button>
+            </div>
+            <p class="title">Swap timetable</p>
+            <div class="wrapper-input">
+              <span class="title-name">Lecturer Swap</span>
+              <el-select
+                v-model="idTimetableSwap"
+                filterable
+                placeholder="Select Lecturer "
+                class="content-input"
+                :disabled="!isEdit"
+              >
+                <el-option
+
+                  v-for="item in lecturerForSwap"
+                  :key="item.id"
+                  :label="item.lecturerShortName"
+                  :value="item.id"
+                />
+              </el-select>
+            </div>
+            <div class="button">
+              <el-button type="primary" :disabled="!isEdit || dataDetail.lecturerShortName === ' NOT_ASSIGN'" @click="swap('LECTURER')">
+                Swap Lecturer
+              </el-button>
+            </div>
+            <div class="wrapper-input">
+              <span class="title-name">Room Swap</span>
+              <el-select
+                v-model="idTimetableSwap"
+                filterable
+                placeholder="Select Room "
+                class="content-input"
+                :disabled="!isEdit"
+              >
+                <el-option
+
+                  v-for="item in roomForSwap"
+                  :key="item.id"
+                  :label="item.room"
+                  :value="item.id"
+                />
+              </el-select>
+            </div>
+
+            <div class="button">
+              <el-button type="primary" :disabled="!isEdit " @click="swap('ROOM')">
+                Swap Room
+              </el-button>
+            </div>
+            <p class="title" >Request Confirm
+              <el-tooltip placement="bottom" effect="light">
+                <div slot="content">Select teacher in search section to send request confirm.<br/><u>Note:</u> Only available for status. <strong>DRAFT</strong></div>
+              <i class="el-icon-info"></i>
+            </el-tooltip></p>
+            <div class="button">
+              <el-button type="primary" :disabled="isDisableConfirm()" @click="addConfirm">Request Lecturer Confirm
+              </el-button>
+            </div>
+          </div>
         </div>
 
-        <div class="wrapper-input">
-          <span class="title-name">Lecturer</span>
-          <el-select
-            v-model="modelLecturer"
-            filterable
-            placeholder="Select Lecturer"
-            class="content-input"
-            :disabled="!isEdit"
-          >
-            <el-option
-              v-for="item in dataListTeacherDetail"
-              :key="item.id"
-              :label="item.shortName"
-              :value="item.shortName"
-            />
-          </el-select>
-        </div>
-
-        <div class="button">
-          <el-button :disabled="!isEdit" type="primary" @click="saveCalendar">Edit</el-button>
-        </div>
-        <p class="title">Swap timetable</p>
-        <div class="wrapper-input">
-          <span class="title-name">Lecturer Swap</span>
-          <el-select
-            v-model="idTimetableSwap"
-            filterable
-            placeholder="Select Lecturer "
-            class="content-input"
-            :disabled="!isEdit"
-          >
-            <el-option
-
-              v-for="item in lecturerForSwap"
-              :key="item.id"
-              :label="item.lecturerShortName"
-              :value="item.id"
-            />
-          </el-select>
-        </div>
-
-        <div class="button">
-          <el-button type="primary" :disabled="!isEdit || dataDetail.lecturerShortName === ' NOT_ASSIGN'" @click="swap">
-            Swap
-          </el-button>
-        </div>
-        <p class="title" >Request Confirm
-          <el-tooltip placement="bottom" effect="light">
-            <div slot="content">Select teacher in search section to send request confirm.<br/><u>Note:</u> Only available for status. <strong>DRAFT</strong></div>
-          <i class="el-icon-info"></i>
-        </el-tooltip></p>
-        <div class="button">
-          <el-button type="primary" :disabled="isDisableConfirm()" @click="addConfirm">Request Lecturer Confirm
-          </el-button>
-        </div>
-      </div>
       <div class="arrange-table">
         <div class="group-by">
           <label>Group By :</label>
-          <el-select v-model="groupBy" placeholder="Select">
+          <el-select style="width: 100px" v-model="groupBy" placeholder="Select">
             <el-option value="lecturer" class="arrange-item-select">Lecturer</el-option>
             <el-option value="room" class="arrange-item-select">Room</el-option>
           </el-select>
@@ -169,6 +189,9 @@
             <span class="reject">Reject</span>
             <span class="draft">Draft</span>
           </div>
+          <el-button type="primary" @click="showViewAll" class="ml-20">View All Expected</el-button>
+
+          <el-button type="primary"  class="ml-20 mt-20" @click="exportFile">Export to excel</el-button>
         </div>
         <TableCustom
           :list-slot-data="listSlot"
@@ -178,8 +201,29 @@
           @dataEdit="getDataItemArrange"
         />
       </div>
+
     </div>
 
+    <el-dialog title="View All Expected" :visible.sync="dialogViewAll" class="view-all">
+      <p style="color: #304156;font-weight: 700">Search by lecturer :</p>
+      <el-select v-model="lecturerExpected" placeholder="Select" class="filter_expected" filterable multiple>
+        <el-option
+          v-for="item in listLecturerExpected"
+          :key="item"
+          :label="item"
+          :value="item"
+          class="arrange-item-select"/>
+      </el-select>
+
+      <el-tabs type="border-card">
+        <el-tab-pane label="SLOT">
+          <TableCustom :list-slot-data="listSlotExpectedView" :header="slot" />
+        </el-tab-pane>
+        <el-tab-pane label="SUBJECT">
+          <TableCustom :list-slot-data="listSubjectExpectedView" :header="dataListSubject.map(x=>x.code)" />
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
   </div>
 </template>
 
@@ -214,14 +258,14 @@ export default {
       modelSubject: '',
       isEdit: false,
       dataListTeacherDetail: [],
-      dataListClassDetail: [],
+      // dataListClassDetail: [],
       listTeacherConfirm: [],
       groupBy: 'room',
       dataSwap: [],
       isSwap: false,
       listId: [],
-      dataListTeacherSwap: [],
       lecturerForSwap: [],
+      roomForSwap:[],
       idTimetableSwap: '',
       listStatus: [
         {
@@ -241,18 +285,62 @@ export default {
           'value': 'DRAFT'
         }
       ],
-      valueStatus: ''
+      valueStatus: '',
+      listSlotExpectedView :[],
+      listSubjectExpectedView :[],
+      listSlotExpectedViewTemp :[],
+      listSubjectExpectedViewTemp :[],
+      dataListSubject:[],
+       yearSelected:[],
+      dialogViewAll: false,
+      lecturerExpected:[],
+      listLecturerExpected:[],
+      listFull:[]
     }
   },
 
   watch: {
+    lecturerExpected() {
+      this.listSlotExpectedView = this.listSlotExpectedViewTemp.filter(item => {
+        if (this.lecturerExpected.length === 0) {
+          return true
+        } else {
+          return this.lecturerExpected.includes(item.lecturerName)
+        }
+      })
+      this.listSubjectExpectedView = this.listSubjectExpectedViewTemp.filter(item => {
+        if (this.lecturerExpected.length === 0) {
+          return true
+        } else {
+          return this.lecturerExpected.includes(item.lecturerName)
+        }
+      })
+    },
     groupBy() {
       this.getDataListSlot()
     },
     valueTeacher() {
+      const heightHeader = document.querySelector('.arrange-header').offsetWidth
       this.listTeacherConfirm = this.dataListLecturer.filter(item => {
         return this.valueTeacher.includes(item.shortName)
       })
+    },
+    optionId(){
+        this.yearSelected = this.listYear.filter(i => i.id === this.optionId)
+        if (!this.yearSelected[0].hasData) {
+            return;
+        }
+      this.lecturerExpected = [],
+      this.getDataListSubject()
+      this.getDataListRoom()
+      this.getDataListClass()
+      this.getDataListLecturer()
+      this.getDataListSlot()
+
+
+      this.getListSlotExpForView();
+      this.getListSubjectExpForView();
+
     }
   },
 
@@ -265,17 +353,26 @@ export default {
     getYear() {
       this.loading = true
       this.$store.dispatch('expected/getListYear').then((data) => {
+
+
         this.listYear = this.$store.state.expected.listYear
         this.listYear.forEach(element => {
           if (element.now) {
             this.optionId = element.id
           }
         })
+          this.yearSelected = this.listYear.filter(i => i.id === this.optionId)
+          if (!this.yearSelected[0].hasData) {
+              return;
+          }
         this.getDataListLecturer()
         this.getDataListSlot()
         this.getDataListSubject()
         this.getDataListRoom()
         this.getDataListClass()
+
+        this.getListSlotExpForView();
+        this.getListSubjectExpForView();
       }).catch(() => {
         this.loading = false
       })
@@ -294,37 +391,66 @@ export default {
         this.loading = false
       })
     },
-    getListForSwap() {
+      getListForSwap() {
       const newArray = this.listSlot.flatMap(x => x.timetable)
       this.lecturerForSwap = newArray.filter(i => i.slot === this.dataDetail.slot && i.lecturerShortName !== ' NOT_ASSIGN' &&
           i.lecturerShortName !== this.dataDetail.lecturerShortName)
     },
-    swap() {
+      getListForSwapRoom() {
+          const newArray = this.listSlot.flatMap(x => x.timetable)
+          this.roomForSwap = newArray.filter(i => i.slot === this.dataDetail.slot && i.room !== 'NOT_ASSIGN' &&
+              i.room !== this.dataDetail.room)
+
+      },
+    swap(type) {
       const lecturerPublic = []
       const newArray = this.listSlot.flatMap(x => x.timetable)
       const timetableDetail = newArray.filter(x => x.id === this.idTimetableSwap)[0]
+
+
       if (timetableDetail.timetableStatus !== 'DRAFT') {
         lecturerPublic.push(timetableDetail.lecturerShortName)
       }
       if (this.dataDetail.timetableStatus !== 'DRAFT') {
         lecturerPublic.push(this.dataDetail.lecturerShortName)
       }
-      if (lecturerPublic.length > 0) {
+      const data = {
+          postData: [this.dataDetail.id, this.idTimetableSwap],
+          params:{
+              type:type
+          }
+
+      }
+      if (lecturerPublic.length > 0 && type === 'LECTURER') {
         this.$confirm('Timetable status  of lecturer <strong> \' ' + lecturerPublic + '\'</strong> is not <span style="color: #409EFF;"> DRAFT</span>,  you must send request again after edit. Do you still want edit?', 'Warning', {
           confirmButtonText: 'YES',
           cancelButtonText: 'NO',
           dangerouslyUseHTMLString: true,
           type: 'warning'
         }).then(async() => {
-          this.$store.dispatch('arrange/swapData', [this.dataDetail.id, this.idTimetableSwap]).then(() => {
+          this.$store.dispatch('arrange/swapData', data).then(() => {
             this.getListForSwap()
+            this.getListForSwapRoom()
             this.resetModifier()
+            this.$notify({
+              title: 'Success',
+              message: 'Swap Successfully',
+              type: 'success',
+              duration: 2000
+            })
           })
         })
       } else {
-        this.$store.dispatch('arrange/swapData', [this.dataDetail.id, this.idTimetableSwap]).then(() => {
+        this.$store.dispatch('arrange/swapData', data).then(() => {
           this.getListForSwap()
+          this.getListForSwapRoom()
           this.resetModifier()
+          this.$notify({
+            title: 'Success',
+            message: 'Swap Successfully',
+            type: 'success',
+            duration: 2000
+          })
         })
       }
     },
@@ -449,10 +575,6 @@ export default {
       }
       this.$store.dispatch('arrange/getDataRoom', data).then((data) => {
         this.dataListRoom = this.$store.state.arrange.dataListRoom
-        this.dataListRoom.unshift({
-          id: null,
-          name: 'NOT_ASSIGN'
-        })
       }).catch(() => {
         this.loading = false
       })
@@ -497,28 +619,28 @@ export default {
       })
     },
 
-    getDataListClassDetail() {
-      const data = {
-        params: {
-          timetableDetailId: this.dataDetail.id
-        },
-        postData: {
-          criteria: {
-            status: 0,
-            login: true
-          }
-        }
-      }
-      this.$store.dispatch('arrange/getDataClassDetail', data).then((data) => {
-        this.dataListClassDetail = this.$store.state.arrange.dataListClassDetail
-        this.dataListClassDetail.unshift({
-          id: null,
-          name: 'NOT_ASSIGN'
-        })
-      }).catch(() => {
-        this.loading = false
-      })
-    },
+    // getDataListClassDetail() {
+    //   const data = {
+    //     params: {
+    //       timetableDetailId: this.dataDetail.id
+    //     },
+    //     postData: {
+    //       criteria: {
+    //         status: 0,
+    //         login: true
+    //       }
+    //     }
+    //   }
+    //   this.$store.dispatch('arrange/getDataClassDetail', data).then((data) => {
+    //     this.dataListClassDetail = this.$store.state.arrange.dataListClassDetail
+    //     this.dataListClassDetail.unshift({
+    //       id: null,
+    //       name: 'NOT_ASSIGN'
+    //     })
+    //   }).catch(() => {
+    //     this.loading = false
+    //   })
+    // },
 
     getDataListTeacherDetail() {
       const data = {
@@ -549,9 +671,10 @@ export default {
       this.modelRoom = itemSlot.room
       this.modelLecturer = itemSlot.lecturerShortName
       this.getListForSwap()
-
+      this.getListForSwapRoom()
       this.getDataListTeacherDetail()
-      this.getDataListClassDetail()
+      this.idTimetableSwap = ''
+      // this.getDataListClassDetail()
     },
     addConfirm() {
       this.$confirm('Do you want send request confirm to :<strong> \'' + this.listTeacherConfirm.map(x => x.shortName) + '\'</strong> ?', 'Warning', {
@@ -590,27 +713,62 @@ export default {
         return true
       }
       return false
-    }
+    },
+    getListSlotExpForView() {
+      const paramQuery = {
+        semesterId: this.optionId,
+        groupBy:'slot',
 
-    //
-    // saveSwap() {
-    //   this.$store.dispatch('arrange/swapData', this.listId).then(() => {
-    //     this.listId = []
-    //     this.dataSwap = []
-    //     this.isSwap = false
-    //     this.getDataListSlot()
-    //   })
-    // },
-    //
-    // getDataSwap(data) {
-    //   this.dataSwap = data
-    //   if (this.dataSwap.length === 2) {
-    //     this.isSwap = true
-    //   } else {
-    //     this.isSwap = false
-    //   }
-    //   this.listId = this.dataSwap.map(x => x.id)
-    // }
+      }
+      this.$store.dispatch('expected/listExpectedForView',paramQuery).then((data) => {
+        this.listSlotExpectedView = this.$store.state.expected.listExpected;
+        this.listSlotExpectedViewTemp = this.$store.state.expected.listExpected;
+      })
+    },
+    getListSubjectExpForView() {
+      const paramQuery = {
+        semesterId: this.optionId,
+        groupBy:'subject',
+
+      }
+      this.$store.dispatch('expected/listExpectedForView',paramQuery).then((data) => {
+        this.listSubjectExpectedView = this.$store.state.expected.listExpected;
+        this.listSubjectExpectedViewTemp = this.$store.state.expected.listExpected;
+      })
+    },
+    showViewAll() {
+
+      this.listLecturerExpected=[]
+      this.dialogViewAll = true
+      this.listSlotExpectedViewTemp.forEach(element => {
+        this.listLecturerExpected.push(element.lecturerName)
+      })
+    },
+      exportFile(){
+        const data ={
+          params : {
+            semesterId: this.optionId
+          }
+        }
+          this.$store.dispatch('request/exportFile', data).then((data) => {
+              this.loading = false
+              const url = window.URL.createObjectURL(new Blob([this.$store.state.request.fileExport]));
+              const link = document.createElement('a');
+              link.href = url;
+              const fileName = this.yearSelected[0].season +' '+this.yearSelected[0].year+'.xls'
+              link.setAttribute('download', fileName);
+              document.body.appendChild(link);
+              link.click();
+              this.$notify({
+                  title: 'Success',
+                  message: 'Export file success',
+                  type: 'success',
+                  duration: 2000
+              })
+          }).catch(() => {
+              this.loading = false
+          })
+      }
   }
 }
 </script>
@@ -619,6 +777,21 @@ export default {
   .arrange {
     display: block;
 
+    .table-custom {
+      margin-top: 60px;
+    }
+
+    .view-all {
+      .el-dialog {
+        width: 80%;
+      }
+      .filter_expected{
+        margin-bottom: 20px;
+      }
+    }
+    .arrange-content_nameObject{
+        display: block;
+     }
     .name-subject {
       padding-left: 25px;
     }
@@ -667,8 +840,7 @@ export default {
         padding: 20px;
         margin-right: 20px;
         border-radius: 4px;
-        position: fixed;
-        margin-top: -70px;
+        margin-top: -48px;
       }
 
       &_nameObject {
@@ -681,7 +853,14 @@ export default {
     &-item-select {
       text-transform: capitalize;
     }
-
+    .title-warning {
+      color: red;
+      text-transform: uppercase;
+      font-weight: 500;
+      width: 800px;
+      display: inline-block;
+      padding-top: 120px;
+    }
     &-header {
       display: flex;
       flex-wrap: wrap;
@@ -697,6 +876,7 @@ export default {
       top: 50px;
       width: auto;
       margin-right: 20px;
+      z-index: 9;
 
       .el-select {
         margin-bottom: 10px;
@@ -746,10 +926,25 @@ export default {
       padding-left: 10px;
 
       .group-by {
-        margin-bottom: 10px;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 5px;
         position: fixed;
-        top: 182px;
+        top: 190px;
         display: block;
+        top: 161px;
+        background: #fff;
+        z-index: 999;
+        padding-bottom: 20px;
+        padding-top: 20px;
+
+        .ml-20 {
+          margin-left: 20px;
+        }
+
+        .mt-20 {
+          margin-top: 20px;
+        }
 
         .wrapper-color {
           display: inline-block;
