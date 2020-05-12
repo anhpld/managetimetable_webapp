@@ -37,10 +37,10 @@
       :row-class-name="tableRowClassName"
       style="box-shadow: 0px 0px 4px -1px #d2d2d2;"
     >
-      <el-table-column label="Email">
-        <template slot-scope="{row}"><span @click="info(row)" class="link-type">{{ row.email }}</span></template>
+      <el-table-column  width="200" label="Email">
+        <template   slot-scope="{row}"><span @click="info(row)" class="link-type">{{ row.email }}</span></template>
       </el-table-column>
-      <el-table-column label="Full Name">
+      <el-table-column width="200" label="Full Name">
         <template slot-scope="{row}">{{ row.fullName }}</template>
       </el-table-column>
       <el-table-column label="Short Name">
