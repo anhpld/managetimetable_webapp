@@ -12,7 +12,7 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path"/>
       </el-menu>
     </el-scrollbar>
   </div>
@@ -51,6 +51,34 @@ export default {
     isCollapse() {
       return !this.sidebar.opened
     }
-  }
+  },
+
+  methods: {
+    changeRouter() {
+      const status = this.$store.state.userInfo.status
+      if (status === 'ACTIVATE') {
+        this.logout()
+      }
+      const postData = {
+        page: 0,
+        limit: 10,
+        criteria: {
+          email: this.$store.state.userInfo.email
+        }
+      }
+      this.$store.dispatch('user/getStatusUser', postData).then(() => {
+        console.log(this.$store.state.status)
+      })
+    },
+
+    async logout() {
+      await this.$store.dispatch('user/logout')
+      localStorage.removeItem('infoUser')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      const startInterval = this.$store.state.request.startInterval
+      clearInterval(startInterval)
+    },
+
+  },
 }
 </script>

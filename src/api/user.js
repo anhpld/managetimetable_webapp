@@ -34,3 +34,11 @@ export function loginGoogle(data) {
     params: objectToSend
   })
 }
+
+export function getStatus(data) {
+  return request({
+    url: 'lecturers/filter',
+    method: 'post',
+    data: data
+  })
+}
