@@ -191,7 +191,8 @@
           </div>
           <el-button type="primary" @click="showViewAll" class="ml-20">View All Expected</el-button>
 
-          <el-button type="primary"  class="ml-20 mt-20" @click="exportFile">Export to excel</el-button>
+          <el-button type="primary"  class="ml-20 mt-20" @click="exportFile('line')">Export line </el-button>
+          <el-button type="primary"  class="ml-20 mt-20" @click="exportFile('lecturer')">Export group by lecturer</el-button>
         </div>
         <TableCustom
           :list-slot-data="listSlot"
@@ -744,12 +745,14 @@ export default {
         this.listLecturerExpected.push(element.lecturerName)
       })
     },
-      exportFile(){
+      exportFile(groupBy){
         const data ={
           params : {
-            semesterId: this.optionId
+            semesterId: this.optionId,
+            groupBy:groupBy
           }
         }
+
           this.$store.dispatch('request/exportFile', data).then((data) => {
               this.loading = false
               const url = window.URL.createObjectURL(new Blob([this.$store.state.request.fileExport]));
