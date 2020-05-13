@@ -194,13 +194,7 @@
           <el-button type="primary"  class="ml-20 mt-20" @click="exportFile('line')">Export line </el-button>
           <el-button type="primary"  class="ml-20 mt-20" @click="exportFile('lecturer')">Export group by lecturer</el-button>
         </div>
-        <div>
-                  <ul class="table-custom__main--lever-wrapper">
-          <li v-for="oneSlot in slot" :key="oneSlot" class="table-custom__main--lever-header">
-              {{ oneSlot }}
-          </li>
-        </ul>
-        </div>
+
         <TableCustom
           :list-slot-data="listSlot"
           :header="slot"
