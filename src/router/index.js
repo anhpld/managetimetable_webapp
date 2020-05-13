@@ -20,14 +20,15 @@ export const constantRoutes = [
   },
 
   {
-    path: '/',
+    path: '/example',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/example/table',
+    name: 'Example',
     children: [{
       path: 'dashboard',
       name: 'Dashboard',
-      component: () => import('@/views/calendar-view/index'),
-      meta: { title: 'Timetable', icon: 'dashboard' }
+      component: () => import('@/views/expected/index'),
+      meta: { title: 'Expected', icon: 'example' }
     }]
   },
   {
@@ -43,18 +44,7 @@ export const constantRoutes = [
     }]
   },
 
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/expected/index'),
-      meta: { title: 'Expected', icon: 'example' }
-    }]
-  },
+
 
   {
     path: '/request',
@@ -108,6 +98,17 @@ export const constantRoutes = [
         meta: { title: 'Profile', icon: 'user', noCache: true }
       }
     ]
+  },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [{
+      path: 'dashboard',
+      name: 'Dashboard',
+      component: () => import('@/views/calendar-view/index'),
+      meta: { title: 'Timetable', icon: 'dashboard' }
+    }]
   },
 
   {

@@ -288,7 +288,7 @@ export default {
 
     isRunning() {
       if (this.isRunning) {
-        this.startInterval = setInterval(this.getListGeneration, 5000)
+        this.startInterval = setInterval(this.getListGeneration, 3000)
         console.log('aaa', this.startInterval)
 
         this.$store.dispatch('request/startInterval', this.startInterval)
