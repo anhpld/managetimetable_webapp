@@ -44,17 +44,7 @@ export const constantRoutes = [
     }]
   },
 
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/calendar-view/index'),
-      meta: { title: 'Timetable', icon: 'dashboard' }
-    }]
-  },
+
 
   {
     path: '/request',
@@ -108,6 +98,17 @@ export const constantRoutes = [
         meta: { title: 'Profile', icon: 'user', noCache: true }
       }
     ]
+  },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [{
+      path: 'dashboard',
+      name: 'Dashboard',
+      component: () => import('@/views/calendar-view/index'),
+      meta: { title: 'Timetable', icon: 'dashboard' }
+    }]
   },
 
   {
