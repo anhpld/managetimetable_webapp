@@ -280,7 +280,7 @@ export default {
         }
 
         .list-subject-content_name {
-            font-size: 1.2em;
+            font-size: 12px;
             color: #304156;
             width: 92px;
             display: block;

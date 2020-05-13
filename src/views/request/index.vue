@@ -359,14 +359,15 @@ export default {
       this.dialogFormAdd = true
     },
     addData() {
+      this.form.purpose = this.form.purpose.trim()
       this.$refs['dataFormAdd'].validate((valid) => {
         const postData = {
-          'content': this.form.purpose
+          'content': this.form.purpose.trim()
         }
 
-        if (valid) {
+        if (valid && this.form.purpose.trim()) {
             this.dialogFormAdd = false
-            this.loading =true
+            this.loading = true
             this.$store.dispatch('report/addReport', postData).then(() => {
               this.$notify({
                 title: 'Success',
@@ -386,13 +387,14 @@ export default {
       this.formReply.id = row.id
     },
     changeReport(status) {
+      this.formReply.reply = this.formReply.reply.trim()
       this.$refs['dialogFormReply'].validate((valid) => {
         const postData = {
           'id': this.formReply.id,
           'replyContent': this.formReply.reply,
           'status': status
         }
-        if (valid) {
+        if (valid ) {
           this.dialogFormReply = false
           this.$store.dispatch('report/approveReport', postData).then(() => {
             this.$notify({
