@@ -876,7 +876,7 @@ export default {
     background: #f5f5f5;
   }
   .el-table {
-    width: 84%;
+    width:auto ;
   }
   .el-table tr {
     .show {
