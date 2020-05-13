@@ -23,7 +23,7 @@
       <span class="type-file" v-if="!isFileExcel">*Select excel file</span>
     </div>
     <div class="content">
-      <span class="title">Decision support system for timetabling:</span>
+      <span class="title">Decision support tool for timetabling:</span>
       <span class="title" style="padding-left: 70px">SELECT MODEL</span>
       <el-select v-model="valueModel" placeholder="Select" class="arrange-item-select">
         <el-option
@@ -261,11 +261,11 @@ export default {
         valueModel:0,
         listModel:[
             {
-                label: 'SCALARIZING',
+                label: 'Linear Scalarization',
                 value: 0
             },
             {
-                label: 'COMPROMISING',
+                label: 'Compromise Programming',
                 value: 1
             }
         ]

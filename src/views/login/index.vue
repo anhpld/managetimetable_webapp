@@ -2,7 +2,7 @@
   <div v-loading="loading" class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
-        <span class="logo-titlte">DECISION SUPPORT SYSTEM FOR TIMETABLING</span>
+        <span class="logo-titlte">DECISION SUPPORT TOOL FOR TIMETABLING</span>
         <div class="logo">
           <img src="@/assets/logofpt.png">
         </div>

@@ -261,7 +261,7 @@ export default {
       dataListTeacherDetail: [],
       // dataListClassDetail: [],
       listTeacherConfirm: [],
-      groupBy: 'room',
+      groupBy: 'lecturer',
       dataSwap: [],
       isSwap: false,
       listId: [],
