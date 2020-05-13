@@ -16,7 +16,7 @@
         <el-button v-if="!isEdit" type="primary" @click="editExpected">Edit</el-button>
         <el-button v-if="isEdit" type="primary" @click="saveExected">Save</el-button>
       </div>
-      <el-button class="reUseButton" v-if="!yearSelected[0].now && this.$store.state.expected.dataExpected.canReuse "
+      <el-button class="reUseButton" v-if="!yearSelected[0].now && this.$store.state.expected.dataExpected.canReuse && yearSelected[0].hasData "
                  type="primary" @click="reuseExpected">Reuse Expected
       </el-button>
     </div>

@@ -118,7 +118,7 @@
         <el-form-item label="Department" prop="department">
           <span>{{temp.department}}</span>
         </el-form-item>
-        <el-form-item label="Full-time Lecturer?" prop="fullTime">
+        <el-form-item label="Full-time" prop="fullTime">
           <el-checkbox v-model="temp.fullTime"></el-checkbox>
         </el-form-item>
         <el-form-item label="Min of class quota" prop="quotaClass">
@@ -460,6 +460,12 @@ export default {
       this.$store.dispatch('manager/changeStatus', data).then(() => {
         this.fetchData()
         this.listLoading = false
+        this.$notify({
+          title: 'Success',
+          message: 'Change status successfully',
+          type: 'success',
+          duration: 2000
+        })
         }).catch(() => {
           this.listLoading = false
       })
@@ -742,6 +748,7 @@ export default {
       }
       this.$store.dispatch('expected/reuseExected', paramQuery).then((data) => {
         this.getDataExpected()
+        this.fetchData()
         this.$notify({
           title: 'Success',
           message: 'Update Successfully',
