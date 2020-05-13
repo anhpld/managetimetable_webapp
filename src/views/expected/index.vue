@@ -26,7 +26,7 @@ You have no expectations in this term,select other term to reuse or create new !
 
 You have filled out expected for this term  ! </span>
     <span v-if="yearSelected[0] && !yearSelected[0].hasData" class="title-warning">Don't have data for this semester! Please go to <span
-      style="font-weight: 700">DSST</span> for import data !</span>
+      style="font-weight: 700">DSTT</span> for import data !</span>
 
     <div v-if="yearSelected[0].hasData" class="expected_content">
       <div class="expected_wrap">
