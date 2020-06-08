@@ -251,17 +251,17 @@ export default {
       convergenceCheckRange: 70,
       hardConstraintCoff: 0.7,
       softConstraintCoff: 0.3,
-      parttimeCoff: 0.5,
-      slotCoff: 0.2,
-      subjectCoff: 0.2,
+      parttimeCoff: 0.35,
+      slotCoff: 0.25,
+      subjectCoff: 0.25,
       partOfDayCoff :0.2,
-      numberOfClassCoff: 0.2,
+      numberOfClassCoff: 0.3,
       stepGen:10,
       stdCoff: 0,
       satisfactionSumCoff: 1.0,
-      distanceCoff: 0.2,
+      distanceCoff: 0.0,
       consicutiveClassCoff: 0,
-      fulltimeCoff: 0.5,
+      fulltimeCoff: 0.65,
 
         valueModel:0,
         listModel:[
@@ -483,7 +483,7 @@ export default {
                         stdCoff: parseFloat(this.stdCoff.toFixed(2)),
                         satisfactionSumCoff: parseFloat(this.satisfactionSumCoff.toFixed(2)),
                         distanceCoff: parseFloat(this.distanceCoff.toFixed(2)),
-                        partOfDayCoff: parseFloat(this.distanceCoff.toFixed(2)),
+                        partOfDayCoff: parseFloat(this.partOfDayCoff.toFixed(2)),
                         fulltimeCoff: parseFloat(this.fulltimeCoff.toFixed(2))
 
                     }
@@ -505,7 +505,7 @@ export default {
                         hardConstraintCoff: parseFloat(this.hardConstraintCoff.toFixed(2)),
                         softConstraintCoff: parseFloat(this.softConstraintCoff.toFixed(2)),
                         parttimeCoff: parseFloat(this.parttimeCoff.toFixed(2)),
-                        fulltimeCoff: parseFloat(this.fulltimeCoff.toFixed(2))
+                        fulltimeCoff: parseFloat(this.fulltimeCoff.toFixed(2)),
                     }
 
                 },
