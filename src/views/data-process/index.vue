@@ -100,6 +100,10 @@
             <label class="title">Number Of Class Coefficient</label>
             <el-input-number v-model="numberOfClassCoff" :disabled="valueModel === 1" :min="0" :max="1" precision=2 step="0.01"></el-input-number>
           </div>
+          <div class="mt-2 ">
+            <label class="title">Part Of Day Coefficient</label>
+            <el-input-number v-model="partOfDayCoff" :disabled="valueModel === 1" :min="0" :max="1" precision=2 step="0.01"></el-input-number>
+          </div>
           <div class="mt-2">
             <label class="title">Generation Step</label>
             <el-input-number v-model="stepGen" :min="1" precision=0 ></el-input-number>
@@ -248,13 +252,14 @@ export default {
       hardConstraintCoff: 0.7,
       softConstraintCoff: 0.3,
       parttimeCoff: 0.5,
-      slotCoff: 0.35,
-      subjectCoff: 0.35,
-      numberOfClassCoff: 0.3,
+      slotCoff: 0.2,
+      subjectCoff: 0.2,
+      partOfDayCoff :0.2,
+      numberOfClassCoff: 0.2,
       stepGen:10,
       stdCoff: 0,
       satisfactionSumCoff: 1.0,
-      distanceCoff: 0,
+      distanceCoff: 0.2,
       consicutiveClassCoff: 0,
       fulltimeCoff: 0.5,
 
@@ -478,6 +483,7 @@ export default {
                         stdCoff: parseFloat(this.stdCoff.toFixed(2)),
                         satisfactionSumCoff: parseFloat(this.satisfactionSumCoff.toFixed(2)),
                         distanceCoff: parseFloat(this.distanceCoff.toFixed(2)),
+                        partOfDayCoff: parseFloat(this.distanceCoff.toFixed(2)),
                         fulltimeCoff: parseFloat(this.fulltimeCoff.toFixed(2))
 
                     }
@@ -508,7 +514,7 @@ export default {
                 }
             }
         }
-      const sum = this.slotCoff + this.subjectCoff + this.numberOfClassCoff + this.distanceCoff
+      const sum = this.slotCoff + this.subjectCoff + this.numberOfClassCoff + this.distanceCoff+this.partOfDayCoff
       if (sum !== 1) {
         Message({
           message: 'Sum of SlotCoefficient,SubjectCoefficient,NumberOfClassCoefficient and DistanceCoefficient must be equal 1 !',
