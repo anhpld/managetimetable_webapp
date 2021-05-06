@@ -11,6 +11,17 @@ export function uploadFile(data) {
     }
   })
 }
+export function uploadFile1(data) {
+  return request({
+    url: '/requests/generateAdditional',
+    method: 'post',
+    data: data.data.formData,
+    params: data.data.headers,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
 export function exportFile(data) {
   return request({
     url: '/requests/export',

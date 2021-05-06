@@ -10,7 +10,7 @@
     </el-select>
     <div class="content">
       <span class="title">Upload data for semester :</span>
-      <div class="large-12 medium-12 small-12 cell mt-3 request-container__wrapper">
+      <div class="large-5 medium-5 small-5 request-container__wrapper">
         <div class="upload-btn-wrapper">
           <button class="btn">Select File</button>
           <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
@@ -19,9 +19,15 @@
         <el-button type="primary" class="ml-2" :disabled="!hasFile" @click="submitFile">
           Submit file
         </el-button>
+        <el-button type="primary" class="ml-2" :disabled="!hasFile" @click="additional">
+          Additional
+        </el-button>
       </div>
       <span class="type-file" v-if="!isFileExcel">*Select excel file</span>
+
     </div>
+
+
     <div class="content">
       <span class="title">Decision support tool for timetabling:</span>
       <span class="title" style="padding-left: 70px">SELECT MODEL</span>
@@ -382,9 +388,41 @@ export default {
       })
     },
 
+    additional() {
+      const formData = new FormData()
+      formData.append('file', this.file)
 
-    handleDataExpectedEdit() {
+      const data = {
+        formData: formData,
+        headers: {
+          semesterId: this.valueOptionId,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      }
 
+      const message = 'Are you sure?'
+
+      this.$confirm(message, 'Warning', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.loading = true
+        this.$store.dispatch('request/uploadFile1', data).then((data) => {
+          this.loading = false
+          this.nameFile = ''
+          this.$notify({
+            title: 'Success',
+            message: 'Submit file success',
+            type: 'success',
+            duration: 2000
+          })
+        }).catch(() => {
+          this.loading = false
+        })
+      })
     },
 
 
@@ -408,6 +446,20 @@ export default {
     },
 
     handleFileUpload() {
+      this.file = this.$refs.file.files[0]
+      this.nameFile = this.file.name
+      this.typeFile = this.nameFile.slice(this.nameFile.length - 5, this.nameFile.length)
+
+      if (this.typeFile === '.xlsx') {
+        this.isFileExcel = true
+        this.hasFile = true
+      } else {
+        this.isFileExcel = false
+        this.hasFile = false
+      }
+    },
+
+    handleFileUploađ1() {
       this.file = this.$refs.file.files[0]
       this.nameFile = this.file.name
       this.typeFile = this.nameFile.slice(this.nameFile.length - 5, this.nameFile.length)

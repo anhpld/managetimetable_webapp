@@ -1,4 +1,4 @@
-import { uploadFile, getList, getListGeneration, startArrange, stopArrange, setAsDefault,exportFile } from '@/api/request'
+import { uploadFile, getList, getListGeneration, startArrange, stopArrange, setAsDefault,exportFile,uploadFile1 } from '@/api/request'
 
 const state = {
   listReport: [],
@@ -34,6 +34,16 @@ const actions = {
     return new Promise((resolve, reject) => {
       uploadFile({ data }).then(response => {
         commit('UPLOAD_FILE', response)
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  uploadFile1({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      uploadFile1({ data }).then(response => {
+        commit('UPLOAD_FILE1', response)
         resolve()
       }).catch(error => {
         reject(error)
